@@ -17,16 +17,16 @@
   .shell { max-width:1180px; margin:0 auto; background:#1A1917; padding:24px; border-radius:30px; box-shadow:0 40px 90px -50px rgba(0,0,0,0.8); }
 
   #app { display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
-    grid-template-areas:'hero hero time quote' 'hero hero skills skills' 'cal cal tasks tasks' 'cal cal tasks tasks' 'live live live live' 'quran quran quran quran' 'about about gallery gallery' 'social social social social' 'tasbih tasbih tasbih tasbih'; }
+    grid-template-areas:'hero hero time quote' 'hero hero skills skills' 'cal cal tasks tasks' 'cal cal tasks tasks' 'live live live live' 'quran quran quran quran' 'about about gallery gallery' 'tasbih tasbih tasbih tasbih' 'social social social social'; }
   @media (max-width:820px){
     #app { grid-template-columns:repeat(2,1fr);
-      grid-template-areas:'hero hero' 'time quote' 'skills skills' 'cal cal' 'tasks tasks' 'live live' 'quran quran' 'about about' 'gallery gallery' 'social social' 'tasbih tasbih'; }
+      grid-template-areas:'hero hero' 'time quote' 'skills skills' 'cal cal' 'tasks tasks' 'live live' 'quran quran' 'about about' 'gallery gallery' 'tasbih tasbih' 'social social'; }
     #hero-name { font-size:48px !important; }
     .shell { padding:16px !important; border-radius:22px !important; }
   }
   @media (max-width:520px){
     #app { grid-template-columns:1fr;
-      grid-template-areas:'hero' 'time' 'quote' 'skills' 'cal' 'tasks' 'live' 'quran' 'about' 'gallery' 'social' 'tasbih'; }
+      grid-template-areas:'hero' 'time' 'quote' 'skills' 'cal' 'tasks' 'live' 'quran' 'about' 'gallery' 'tasbih' 'social'; }
     #hero-name { font-size:44px !important; }
     #social-row { flex-direction:column; align-items:flex-start !important; }
   }
@@ -39,7 +39,7 @@
   #hero { grid-area:hero; background:radial-gradient(circle at 85% -10%,rgba(201,169,106,0.14),transparent 55%),linear-gradient(160deg,#0E3B24,#0A2B1A 60%,#081F13); border:1px solid rgba(201,169,106,0.18); padding:30px; display:flex; flex-direction:column; justify-content:space-between; min-height:280px; position:relative; overflow:hidden; }
   #hero::before { content:''; position:absolute; top:-70px; left:-40px; width:240px; height:240px; border-radius:50%; background:radial-gradient(circle,rgba(201,169,106,0.18),transparent 70%); }
   #hero .top { position:relative; }
-  #hero-greet { margin-top:24px; font-size:22px; font-weight:500; color:#9A9488; }
+  #hero-greet { margin-top:4px; font-size:22px; font-weight:500; color:#9A9488; }
   #hero-name { font-size:72px; font-weight:800; color:#E9C878; line-height:1.05; margin-top:2px; text-shadow:0 2px 18px rgba(201,169,106,0.35); }
   #hero .subtitle-en { font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:28px; color:#C9A96A; margin-top:4px; text-align:right; }
   #hero .footer-row { position:relative; display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:24px; padding-top:20px; border-top:1px solid rgba(237,233,224,0.1); }
@@ -306,7 +306,7 @@
     100% { box-shadow:inset 0 0 30px rgba(0,0,0,0.45); }
   }
   .tasbih-count { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:50px; color:#E9C878; line-height:1; }
-  .tasbih-phrase { font-family:'Amiri',serif; font-size:16px; color:#F1EEE6; margin-top:6px; text-align:center; padding:0 10px; }
+  .tasbih-phrase { font-family:'Amiri',serif; font-size:16px; line-height:1.35; color:#F1EEE6; margin-top:6px; text-align:center; padding:0 12px; max-height:78px; overflow:hidden; }
   .tasbih-target { font-size:11px; color:#C9A96A; margin-top:4px; }
 
   .tasbih-controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; }
@@ -325,7 +325,6 @@
       <!-- HERO -->
       <div id="hero" class="card">
         <div class="top">
-          <div class="eyebrow">لوحة التحكم الشخصية · Personal Dashboard</div>
           <div id="hero-greet"></div>
           <div id="hero-name">أبو سعد</div>
           <div class="subtitle-en">Abu Saad</div>
@@ -594,24 +593,8 @@
         <div id="gallery-grid"></div>
       </div>
 
-      <!-- SOCIAL -->
-      <div id="social-row" class="card">
-        <div class="connect">تواصل معي · <span dir="ltr" class="en">Let's connect</span></div>
-        <div class="links">
-          <span class="social-badge"><b>X</b> تويتر</span>
-          <span class="social-badge"><b>in</b> لينكدإن</span>
-          <span class="social-badge"><b>◎</b> إنستغرام</span>
-          <a href="mailto:msms11111@gmail.com" class="social-badge"><b>@</b> البريد <span dir="ltr" class="mail">msms11111@gmail.com</span></a>
-        </div>
-      </div>
-
       <!-- TASBIH -->
       <div id="tasbih" class="card">
-        <div class="head">
-          <div class="eyebrow">سبحة إلكترونية · Tasbih Counter</div>
-          <div class="sub">اضغط على الدائرة لعد الذكر</div>
-        </div>
-
         <div class="tasbih-chips" id="tasbih-chips"></div>
 
         <div class="tasbih-circle-wrap">
@@ -634,6 +617,17 @@
             <div class="t-btn" data-t="1000">١٠٠٠</div>
           </div>
           <div class="tasbih-reset" id="tasbih-reset">↺ إعادة</div>
+        </div>
+      </div>
+
+      <!-- SOCIAL -->
+      <div id="social-row" class="card">
+        <div class="connect">تواصل معي · <span dir="ltr" class="en">Let's connect</span></div>
+        <div class="links">
+          <span class="social-badge"><b>X</b> تويتر</span>
+          <span class="social-badge"><b>in</b> لينكدإن</span>
+          <span class="social-badge"><b>◎</b> إنستغرام</span>
+          <a href="mailto:msms11111@gmail.com" class="social-badge"><b>@</b> البريد <span dir="ltr" class="mail">msms11111@gmail.com</span></a>
         </div>
       </div>
 
@@ -1324,9 +1318,12 @@
   var TASBIH_PHRASES = [
     { key: "subhan", text: "سبحان الله" },
     { key: "hamd", text: "الحمد لله" },
-    { key: "takbir", text: "الله أكبر" },
     { key: "tahlil", text: "لا إله إلا الله" },
-    { key: "istighfar", text: "أستغفر الله" }
+    { key: "takbir", text: "الله أكبر" },
+    { key: "hawqala", text: "لا حول ولا قوة إلا بالله" },
+    { key: "mulk", text: "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير" },
+    { key: "rabbi", text: "الله الله ربي لا أشرك به شيئًا" },
+    { key: "yunus", text: "لا إله إلا أنت سبحانك إني كنت من الظالمين" }
   ];
   var TASBIH_CIRC = 2 * Math.PI * 88;
   var tasbihData = loadTasbihData();
@@ -1351,7 +1348,9 @@
   function renderTasbih() {
     var st = activeTasbihState();
     var phraseObj = TASBIH_PHRASES.filter(function (p) { return p.key === tasbihData.active; })[0];
-    document.getElementById("tasbih-phrase").textContent = phraseObj.text;
+    var phraseEl = document.getElementById("tasbih-phrase");
+    phraseEl.textContent = phraseObj.text;
+    phraseEl.style.fontSize = phraseObj.text.length > 40 ? "10.5px" : (phraseObj.text.length > 22 ? "12.5px" : (phraseObj.text.length > 12 ? "14px" : "16px"));
     document.getElementById("tasbih-count").textContent = toAr(st.count);
     document.getElementById("tasbih-target-label").textContent = "الهدف " + toAr(st.target);
 
