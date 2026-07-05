@@ -189,12 +189,11 @@
   #live .badge .lbl { font-size:12px; font-weight:700; color:#E0796F; }
   #live .name { font-size:18px; font-weight:700; color:#F1EEE6; }
   #live .name .en { font-family:'Cormorant Garamond',serif; font-style:italic; color:#C9A96A; font-weight:500; font-size:15px; }
-  #live .cta { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; width:100%; aspect-ratio:16/6; border-radius:16px; overflow:hidden; text-decoration:none; background:radial-gradient(circle at 50% 30%,rgba(201,169,106,0.12),transparent 60%),linear-gradient(160deg,#1F2C3A,#141D28 70%,#0F161E); border:1px solid rgba(201,169,106,0.25); cursor:pointer; transition:border-color .2s ease; }
-  #live .cta:hover { border-color:#C9A96A; }
-  #live .cta .play { width:64px; height:64px; border-radius:50%; background:linear-gradient(155deg,#C9A96A,#A98243); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 26px -8px rgba(201,169,106,0.5); }
-  #live .cta .play span { color:#1A1917; font-size:24px; margin-right:-4px; }
-  #live .cta .cta-title { color:#F1EEE6; font-size:16px; font-weight:700; }
-  #live .cta .cta-sub { color:#9A9488; font-size:12px; }
+  #live .player-wrap { position:relative; width:100%; aspect-ratio:16/9; border-radius:16px; overflow:hidden; border:1px solid rgba(201,169,106,0.25); background:#0F161E; }
+  #live .player-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  #live .fallback { text-align:center; font-size:12px; color:#9A9488; }
+  #live .fallback a { color:#C9A96A; text-decoration:none; }
+  #live .fallback a:hover { text-decoration:underline; }
 
   /* GALLERY */
   #gallery { grid-area:gallery; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:26px; }
@@ -426,12 +425,12 @@
           <div class="eyebrow">البث المباشر · Live</div>
           <div class="badge"><span class="dot"></span><span class="lbl">مباشر</span></div>
         </div>
-        <div class="name">قناة العربية <span dir="ltr" class="en">Al Arabiya</span></div>
-        <a class="cta" href="https://www.youtube.com/c/AlArabiya/live" target="_blank" rel="noopener">
-          <div class="play"><span>▶</span></div>
-          <div class="cta-title">شاهد البث المباشر لقناة العربية</div>
-          <div class="cta-sub">يُفتح البث الرسمي على يوتيوب في تبويب جديد</div>
-        </a>
+        <div class="name">قناة القرآن الكريم <span dir="ltr" class="en">Quran Kareem KSA</span></div>
+        <div class="player-wrap">
+          <iframe src="https://www.youtube.com/embed/live_stream?channel=UCos52azQNBgW63_9uDJoPDA&autoplay=0"
+            title="بث قناة القرآن الكريم السعودية المباشر" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="fallback">إذا لم يعمل البث هنا، شاهده مباشرة على <a href="https://www.youtube.com/channel/UCos52azQNBgW63_9uDJoPDA/live" target="_blank" rel="noopener">يوتيوب</a></div>
       </div>
 
       <!-- GALLERY -->
