@@ -318,7 +318,6 @@
             </svg>
 
             <div class="wc-date wc-date-g">
-              <div class="wcp">التاريخ الميلادي</div>
               <div class="wcy" id="g-year"></div>
               <div class="wcd" id="g-day"></div>
               <div class="wcm" id="g-month"></div>
@@ -326,7 +325,6 @@
               <div class="wcw" id="g-weekday"></div>
             </div>
             <div class="wc-date wc-date-h">
-              <div class="wcp">التاريخ الهجري</div>
               <div class="wcy" id="h-year"></div>
               <div class="wcd" id="h-day"></div>
               <div class="wcm" id="h-month"></div>
@@ -524,12 +522,12 @@
       }
     } catch (e) {}
 
-    document.getElementById("g-year").textContent = gYear;
-    document.getElementById("g-day").textContent = gDay;
+    document.getElementById("g-year").textContent = toAr(gYear);
+    document.getElementById("g-day").textContent = toAr(gDay);
     document.getElementById("g-month").textContent = gMonth;
     document.getElementById("g-weekday").textContent = weekday;
-    document.getElementById("h-year").textContent = hYear;
-    document.getElementById("h-day").textContent = hDay;
+    document.getElementById("h-year").textContent = toAr(hYear);
+    document.getElementById("h-day").textContent = toAr(hDay);
     document.getElementById("h-month").textContent = hMonth;
     document.getElementById("h-weekday").textContent = weekday;
   }
