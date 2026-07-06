@@ -246,13 +246,13 @@
   .book-cover .cover-open-btn { position:absolute; bottom:7%; left:50%; transform:translateX(-50%); background:linear-gradient(155deg,#C9A96A,#A98243); color:#1A1917; font-size:12px; font-weight:700; padding:7px 20px; border-radius:20px; white-space:nowrap; box-shadow:0 8px 18px -8px rgba(0,0,0,0.7); }
   .book-cover:hover .cover-open-btn { filter:brightness(1.08); }
 
-  .quran-book { position:relative; display:flex; gap:0; width:100%; max-width:340px; margin:0 auto; border-radius:16px; box-shadow:0 30px 60px -32px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(201,169,106,0.3); background:linear-gradient(160deg,#2b1c0f,#1c1209); padding:14px; transform-origin:center; }
+  .quran-book { position:relative; display:flex; flex-direction:column; align-items:center; width:100%; max-width:450px; margin:0 auto; border-radius:16px; box-shadow:0 30px 60px -32px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(201,169,106,0.3); background:linear-gradient(160deg,#2b1c0f,#1c1209); padding:14px; transform-origin:center; }
   #quran-page-2 { display:none; }
   .quran-book.opening { animation:bookOpen .4s ease; }
-  @keyframes bookOpen { from { opacity:0; transform:scaleX(.35); } to { opacity:1; transform:scaleX(1); } }
+  @keyframes bookOpen { from { opacity:0; transform:scaleY(.8); } to { opacity:1; transform:scaleY(1); } }
   .quran-book .book-spine { display:none; }
   .quran-book .book-close-btn { position:absolute; top:8px; left:8px; z-index:3; width:26px; height:26px; border-radius:8px; background:rgba(20,19,18,0.65); color:#EDE9E0; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; }
-  .quran-page { flex:1; min-width:0; aspect-ratio:3/4.2; background:radial-gradient(circle at 30% 0%, #fbf3dc, #f3e6c4 60%, #e9d7a8); border-radius:6px; padding:0; display:flex; flex-direction:column; box-shadow:inset 0 0 26px rgba(120,90,40,0.14); position:relative; overflow:hidden; }
+  .quran-page { width:100%; aspect-ratio:3/4.2; background:radial-gradient(circle at 30% 0%, #fbf3dc, #f3e6c4 60%, #e9d7a8); border-radius:6px; padding:0; display:flex; flex-direction:column; box-shadow:inset 0 0 26px rgba(120,90,40,0.14); position:relative; overflow:hidden; }
   .quran-page .page-frame { position:absolute; inset:9px; border:2px solid #b08b46; border-radius:4px; pointer-events:none; box-shadow:0 0 0 3px rgba(176,139,70,0.0), inset 0 0 0 1px rgba(176,139,70,0.35); }
   .quran-page .page-frame::before { content:''; position:absolute; inset:3px; border:1px solid rgba(176,139,70,0.55); border-radius:2px; }
   .quran-page .page-inner { position:relative; flex:1; display:flex; flex-direction:column; margin:20px 22px 30px; overflow:auto; scrollbar-width:thin; scrollbar-color:rgba(176,139,70,0.4) transparent; }
@@ -1074,7 +1074,7 @@
   // ---------- Quran ----------
   var QURAN_BOOKMARK_KEY = "abusaad_quran_bookmark_v1";
   var QURAN_LAST_KEY = "abusaad_quran_last_v1";
-  var QURAN_PAGE_SIZE = 6;
+  var QURAN_PAGE_SIZE = 15;
   var QURAN_SURAHS = [
     [1,"الفاتحة",7],[2,"البقرة",286],[3,"آل عمران",200],[4,"النساء",176],[5,"المائدة",120],
     [6,"الأنعام",165],[7,"الأعراف",206],[8,"الأنفال",75],[9,"التوبة",129],[10,"يونس",109],
@@ -1235,7 +1235,7 @@
 
     if (!quranState.ayahs) {
       page1.innerHTML = '<div class="page-frame"></div><div class="page-loading">جارِ تحميل السورة…</div>';
-      page2.innerHTML = '<div class="page-frame"></div>';
+      page2.innerHTML = '';
       document.getElementById("quran-surah-info").textContent = info.name + " · " + toAr(info.count) + " آية";
       return;
     }
@@ -1243,10 +1243,10 @@
     var chunks = quranChunk(quranState.ayahs, QURAN_PAGE_SIZE);
     var idx = quranState.pageIndex;
     renderQuranPageContent(page1, chunks[idx] || [], info, idx === 0, idx + 1);
-    page2.innerHTML = "";
+    page2.style.display = "none";
 
     document.getElementById("quran-loc-label").textContent =
-      "صفحة " + toAr(idx + 1) + " من " + toAr(chunks.length);
+      "وجه " + toAr(idx + 1) + " من " + toAr(chunks.length);
     document.getElementById("quran-surah-info").textContent = info.name + " · " + toAr(info.count) + " آية";
   }
 
