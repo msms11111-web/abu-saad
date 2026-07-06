@@ -597,7 +597,6 @@
             <div class="book-spine"></div>
             <div class="book-close-btn" id="quran-close-btn">✕</div>
             <div class="quran-page" id="quran-page-1"></div>
-            <div class="quran-page" id="quran-page-2"></div>
           </div>
         </div>
 
@@ -1230,12 +1229,10 @@
 
   function renderQuranBook() {
     var page1 = document.getElementById("quran-page-1");
-    var page2 = document.getElementById("quran-page-2");
     var info = surahInfo(quranState.surah);
 
     if (!quranState.ayahs) {
       page1.innerHTML = '<div class="page-frame"></div><div class="page-loading">جارِ تحميل السورة…</div>';
-      page2.innerHTML = '';
       document.getElementById("quran-surah-info").textContent = info.name + " · " + toAr(info.count) + " آية";
       return;
     }
@@ -1243,7 +1240,6 @@
     var chunks = quranChunk(quranState.ayahs, QURAN_PAGE_SIZE);
     var idx = quranState.pageIndex;
     renderQuranPageContent(page1, chunks[idx] || [], info, idx === 0, idx + 1);
-    page2.style.display = "none";
 
     document.getElementById("quran-loc-label").textContent =
       "وجه " + toAr(idx + 1) + " من " + toAr(chunks.length);
