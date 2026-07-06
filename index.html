@@ -303,7 +303,8 @@
   #lightbox img { max-width:90%; max-height:90%; border-radius:12px; box-shadow:0 0 40px rgba(0,0,0,0.5); }
   
   /* Quran Search & Tafsir */
-  .search-container { position:relative; margin-bottom:12px; }
+  .quran-top-controls { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .search-container { position:relative; }
   .quran-search-input { width:100%; background:#1A1917; border:1.5px solid rgba(201,169,106,0.3); color:#F1EEE6; border-radius:12px; padding:10px 14px; font-family:'Tajawal',sans-serif; font-size:13.5px; outline:none; }
   .quran-search-input:focus { border-color:#C9A96A; }
   .tafsir-modal { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:10000; display:none; align-items:center; justify-content:center; padding:20px; }
@@ -601,19 +602,20 @@
           </div>
         </div>
 
-        <div class="search-container">
-          <input type="text" class="quran-search-input" id="quran-search" placeholder="ابحث عن سورة أو رقم...">
+        <div class="quran-top-controls">
+          <div class="search-container" style="flex: 1;">
+            <input type="text" class="quran-search-input" id="quran-search" placeholder="ابحث عن سورة...">
+          </div>
+          <div class="audio-controls" id="audio-controls" style="display:none; margin-bottom: 12px;">
+            <div class="play-btn" id="quran-audio-btn">▶</div>
+            <div class="audio-info" id="audio-info">سورة الفاتحة - سعود الشريم</div>
+            <audio id="quran-audio-player"></audio>
+          </div>
         </div>
 
         <div class="quran-bookmark-bar">
           <div class="bm-label" id="quran-bookmark-label">لم تتوقف عند أي آية بعد</div>
           <div class="bm-resume" id="quran-resume-btn">تابع من آخر موضع</div>
-        </div>
-        
-        <div class="audio-controls" id="audio-controls" style="display:none;">
-          <div class="play-btn" id="quran-audio-btn">▶</div>
-          <div class="audio-info" id="audio-info">تلاوة سورة الفاتحة</div>
-          <audio id="quran-audio-player"></audio>
         </div>
 
         <div class="book-stage">
@@ -1426,11 +1428,13 @@
     var info = document.getElementById("audio-info");
     var sInfo = surahInfo(quranState.surah);
     
-    var url = "https://download.quranicaudio.com/quran/mishari_rashid_al_afasy/" + String(quranState.surah).padStart(3, '0') + ".mp3";
+    var url = "https://server7.mp3quran.net/shur/ " + String(quranState.surah).padStart(3, '0') + ".mp3";
+    // Using a more reliable source for Shuraym
+    url = "https://download.quranicaudio.com/quran/sa3ud_ash-shuraym/" + String(quranState.surah).padStart(3, '0') + ".mp3";
     
     if (player.src !== url) {
       player.src = url;
-      info.textContent = "تلاوة سورة " + sInfo.name + " - مشاري العفاسي";
+      info.textContent = "تلاوة سورة " + sInfo.name + " - الشيخ سعود الشريم";
     }
     
     if (player.paused) {
