@@ -304,6 +304,11 @@
   
   /* Quran Search & Tafsir */
   .quran-top-controls { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .bookmark-tag { background:rgba(201,169,106,0.15); border:1px solid rgba(201,169,106,0.3); color:#C9A96A; padding:6px 12px; border-radius:12px; font-size:12px; font-weight:500; cursor:pointer; display:flex; align-items:center; gap:8px; transition: all 0.2s ease; }
+  .bookmark-tag:hover { background:rgba(201,169,106,0.25); border-color:#C9A96A; }
+  .bookmark-tag .remove-bm { font-weight:bold; font-size:14px; color:#E07A5F; padding: 0 4px; }
+  .bookmark-tag .remove-bm:hover { color:#ff4d4d; }
+  .ayah-num.bookmarked { background:#C9A96A !important; color:#1A1917 !important; border-color:#C9A96A !important; box-shadow: 0 0 8px rgba(201,169,106,0.5); }
   .search-container { position:relative; }
   .quran-search-input { width:100%; background:#1A1917; border:1.5px solid rgba(201,169,106,0.3); color:#F1EEE6; border-radius:12px; padding:10px 14px; font-family:'Tajawal',sans-serif; font-size:13.5px; outline:none; }
   .quran-search-input:focus { border-color:#C9A96A; }
@@ -1128,6 +1133,7 @@
 
   // ---------- Quran ----------
   var QURAN_BOOKMARK_KEY = "abusaad_quran_bookmark_v1";
+  var QURAN_BOOKMARKS_LIST_KEY = "abusaad_quran_bookmarks_list_v1";
   var QURAN_LAST_KEY = "abusaad_quran_last_v1";
   var QURAN_PAGE_SIZE = 15;
   var QURAN_SURAHS = [
@@ -1171,7 +1177,33 @@
     return null;
   }
   function saveQuranBookmark(surah, ayah) {
-    try { localStorage.setItem(QURAN_BOOKMARK_KEY, JSON.stringify({ surah: surah, ayah: ayah })); } catch (e) {}
+    try { 
+      localStorage.setItem(QURAN_BOOKMARK_KEY, JSON.stringify({ surah: surah, ayah: ayah }));
+      
+      // Also add to multiple bookmarks list
+      var list = loadQuranBookmarksList();
+      var exists = list.some(function(b) { return b.surah === surah && b.ayah === ayah; });
+      if (!exists) {
+        list.push({ surah: surah, ayah: ayah, time: Date.now() });
+        localStorage.setItem(QURAN_BOOKMARKS_LIST_KEY, JSON.stringify(list));
+      }
+    } catch (e) {}
+  }
+  
+  function loadQuranBookmarksList() {
+    try {
+      var raw = localStorage.getItem(QURAN_BOOKMARKS_LIST_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  }
+  
+  function removeQuranBookmark(surah, ayah) {
+    var list = loadQuranBookmarksList().filter(function(b) {
+      return !(b.surah === surah && b.ayah === ayah);
+    });
+    localStorage.setItem(QURAN_BOOKMARKS_LIST_KEY, JSON.stringify(list));
+    updateQuranBookmarksUI();
+    renderQuranBook();
   }
   function persistQuranLast() {
     try { localStorage.setItem(QURAN_LAST_KEY, JSON.stringify({ surah: quranState.surah, pageIndex: quranState.pageIndex })); } catch (e) {}
@@ -1262,13 +1294,14 @@
     var ayatEl = document.createElement("div");
     ayatEl.className = "ayat";
     ayatEl.style.fontSize = quranState.fontSize + "px";
-    var bookmark = loadQuranBookmark();
+    var bookmarks = loadQuranBookmarksList();
     ayahChunk.forEach(function (a) {
+      var isBookmarked = bookmarks.some(function(b) { return b.surah === info.number && b.ayah === a.n; });
       var span = document.createElement("span");
       span.textContent = a.text + " ";
       ayatEl.appendChild(span);
       var num = document.createElement("span");
-      num.className = "ayah-num" + ((bookmark && bookmark.surah === info.number && bookmark.ayah === a.n) ? " bookmarked" : "");
+      num.className = "ayah-num" + (isBookmarked ? " bookmarked" : "");
       num.textContent = toAr(a.n);
       num.addEventListener("click", function () {
         saveQuranBookmark(info.number, a.n);
@@ -1377,9 +1410,49 @@
   function updateQuranBookmarkBar() {
     var bm = loadQuranBookmark();
     var label = document.getElementById("quran-bookmark-label");
-    if (!bm) { label.textContent = "لم تتوقف عند أي آية بعد"; return; }
-    var info = surahInfo(bm.surah);
-    label.innerHTML = "آخر موضع توقفت عنده: <b>سورة " + info.name + " - آية " + toAr(bm.ayah) + "</b>";
+    if (!bm) { label.textContent = "لم تتوقف عند أي آية بعد"; }
+    else {
+      var info = surahInfo(bm.surah);
+      label.innerHTML = "آخر موضع: <b>سورة " + info.name + " - آية " + toAr(bm.ayah) + "</b>";
+    }
+    updateQuranBookmarksUI();
+  }
+  
+  function updateQuranBookmarksUI() {
+    var list = loadQuranBookmarksList();
+    var container = document.getElementById("bookmarks-container");
+    var wrapper = document.getElementById("quran-bookmarks-list");
+    
+    if (list.length === 0) {
+      wrapper.style.display = "none";
+      return;
+    }
+    
+    wrapper.style.display = "block";
+    container.innerHTML = "";
+    
+    list.forEach(function(bm) {
+      var info = surahInfo(bm.surah);
+      var tag = document.createElement("div");
+      tag.className = "bookmark-tag";
+      tag.innerHTML = "<span>" + info.name + " (" + toAr(bm.ayah) + ")</span>";
+      
+      var removeBtn = document.createElement("span");
+      removeBtn.className = "remove-bm";
+      removeBtn.textContent = "×";
+      removeBtn.onclick = function(e) {
+        e.stopPropagation();
+        removeQuranBookmark(bm.surah, bm.ayah);
+      };
+      
+      tag.appendChild(removeBtn);
+      tag.onclick = function() {
+        goToSurah(bm.surah, { targetAyah: bm.ayah });
+        if (document.getElementById("quran-book").style.display === "none") openBook();
+      };
+      
+      container.appendChild(tag);
+    });
   }
 
   document.getElementById("quran-prev").addEventListener("click", quranPrev);
