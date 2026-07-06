@@ -597,6 +597,10 @@
             <div class="sub" id="quran-surah-info"></div>
           </div>
           <div class="controls">
+            <div class="font-controls" style="display:flex; gap:5px; margin-left:10px;">
+              <div class="icon-btn" id="quran-font-plus" title="تكبير الخط">A+</div>
+              <div class="icon-btn" id="quran-font-minus" title="تصغير الخط">A-</div>
+            </div>
             <select class="surah-select" id="surah-select"></select>
             <div class="icon-btn" id="quran-fullscreen-btn" title="تكبير الصفحة">⤢</div>
           </div>
@@ -1152,7 +1156,7 @@
     [111,"المسد",5],[112,"الإخلاص",4],[113,"الفلق",5],[114,"الناس",6]
   ];
 
-  var quranState = { surah: 1, pageIndex: 0, ayahs: null };
+  var quranState = { surah: 1, pageIndex: 0, ayahs: null, fontSize: 18 };
 
   function surahInfo(n) {
     var row = QURAN_SURAHS[n - 1];
@@ -1257,6 +1261,7 @@
     }
     var ayatEl = document.createElement("div");
     ayatEl.className = "ayat";
+    ayatEl.style.fontSize = quranState.fontSize + "px";
     var bookmark = loadQuranBookmark();
     ayahChunk.forEach(function (a) {
       var span = document.createElement("span");
@@ -1450,6 +1455,22 @@
     populateSurahSelect();
     updateQuranBookmarkBar();
     
+    // Load font size preference
+    var savedFontSize = localStorage.getItem("abusaad_quran_font_size");
+    if (savedFontSize) quranState.fontSize = parseInt(savedFontSize, 10);
+
+    document.getElementById("quran-font-plus").addEventListener("click", function() {
+      quranState.fontSize = Math.min(40, quranState.fontSize + 2);
+      localStorage.setItem("abusaad_quran_font_size", quranState.fontSize);
+      renderQuranBook();
+    });
+
+    document.getElementById("quran-font-minus").addEventListener("click", function() {
+      quranState.fontSize = Math.max(12, quranState.fontSize - 2);
+      localStorage.setItem("abusaad_quran_font_size", quranState.fontSize);
+      renderQuranBook();
+    });
+
     document.getElementById("quran-audio-btn").addEventListener("click", handleAudio);
     
     document.getElementById("quran-search").addEventListener("input", function(e) {
