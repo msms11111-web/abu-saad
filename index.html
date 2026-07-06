@@ -297,6 +297,25 @@
   .gallery-slot img { width:100%; height:100%; object-fit:cover; display:block; }
   .gallery-slot .remove-btn { position:absolute; top:6px; left:6px; width:24px; height:24px; border-radius:8px; background:rgba(20,19,18,0.75); color:#EDE9E0; display:none; align-items:center; justify-content:center; font-size:14px; cursor:pointer; }
   .gallery-slot.filled:hover .remove-btn { display:flex; }
+  
+  /* Lightbox */
+  #lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; display:none; align-items:center; justify-content:center; cursor:zoom-out; }
+  #lightbox img { max-width:90%; max-height:90%; border-radius:12px; box-shadow:0 0 40px rgba(0,0,0,0.5); }
+  
+  /* Quran Search & Tafsir */
+  .search-container { position:relative; margin-bottom:12px; }
+  .quran-search-input { width:100%; background:#1A1917; border:1.5px solid rgba(201,169,106,0.3); color:#F1EEE6; border-radius:12px; padding:10px 14px; font-family:'Tajawal',sans-serif; font-size:13.5px; outline:none; }
+  .quran-search-input:focus { border-color:#C9A96A; }
+  .tafsir-modal { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:10000; display:none; align-items:center; justify-content:center; padding:20px; }
+  .tafsir-content { background:#232120; border:1px solid #C9A96A; border-radius:22px; max-width:500px; width:100%; padding:26px; position:relative; box-shadow:0 30px 60px rgba(0,0,0,0.5); }
+  .tafsir-content h3 { color:#C9A96A; margin-top:0; font-size:18px; border-bottom:1px solid rgba(201,169,106,0.2); padding-bottom:10px; }
+  .tafsir-text { color:#C4BFB3; line-height:1.8; font-size:15px; margin-top:16px; max-height:300px; overflow:auto; }
+  .close-tafsir { position:absolute; top:16px; left:16px; color:#7C766A; cursor:pointer; font-size:20px; }
+  
+  /* Audio Player */
+  .audio-controls { display:flex; align-items:center; gap:10px; margin-top:10px; background:rgba(201,169,106,0.05); padding:8px 14px; border-radius:12px; border:1px solid rgba(201,169,106,0.15); }
+  .play-btn { background:#C9A96A; color:#1A1917; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px; }
+  .audio-info { font-size:12px; color:#C4BFB3; flex:1; }
 
   /* SOCIAL */
   #social-row { grid-area:social; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:22px 26px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
@@ -582,9 +601,19 @@
           </div>
         </div>
 
+        <div class="search-container">
+          <input type="text" class="quran-search-input" id="quran-search" placeholder="ابحث عن سورة أو رقم...">
+        </div>
+
         <div class="quran-bookmark-bar">
           <div class="bm-label" id="quran-bookmark-label">لم تتوقف عند أي آية بعد</div>
           <div class="bm-resume" id="quran-resume-btn">تابع من آخر موضع</div>
+        </div>
+        
+        <div class="audio-controls" id="audio-controls" style="display:none;">
+          <div class="play-btn" id="quran-audio-btn">▶</div>
+          <div class="audio-info" id="audio-info">تلاوة سورة الفاتحة</div>
+          <audio id="quran-audio-player"></audio>
         </div>
 
         <div class="book-stage">
@@ -655,6 +684,20 @@
       </div>
 
     </div>
+  </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightbox">
+  <img id="lightbox-img" src="" alt="View Large">
+</div>
+
+<!-- Tafsir Modal -->
+<div class="tafsir-modal" id="tafsir-modal">
+  <div class="tafsir-content">
+    <span class="close-tafsir" id="close-tafsir">×</span>
+    <h3 id="tafsir-title">تفسير الآية</h3>
+    <div class="tafsir-text" id="tafsir-text">جارِ التحميل...</div>
   </div>
 </div>
 
@@ -1048,11 +1091,18 @@
           removeBtn.textContent = "×";
           removeBtn.addEventListener("click", function (e) { e.stopPropagation(); clearImage(); });
           slot.appendChild(removeBtn);
+          
+          slot.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var lb = document.getElementById("lightbox");
+            var lbImg = document.getElementById("lightbox-img");
+            lbImg.src = gallery[key];
+            lb.style.display = "flex";
+          });
         } else {
           slot.textContent = galleryLabels[idx];
+          slot.addEventListener("click", function () { fileInput.click(); });
         }
-
-        slot.addEventListener("click", function () { fileInput.click(); });
         fileInput.addEventListener("change", function () {
           if (fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
         });
@@ -1143,11 +1193,15 @@
     book.classList.add("opening");
     setTimeout(function () { book.classList.remove("opening"); }, 400);
     document.getElementById("quran-nav").style.display = "flex";
+    document.getElementById("audio-controls").style.display = "flex";
   }
   function closeBook() {
     document.getElementById("quran-cover").style.display = "flex";
     document.getElementById("quran-book").style.display = "none";
     document.getElementById("quran-nav").style.display = "none";
+    document.getElementById("audio-controls").style.display = "none";
+    document.getElementById("quran-audio-player").pause();
+    document.getElementById("quran-audio-btn").textContent = "▶";
   }
 
   function fetchSurahAyahs(number, callback) {
@@ -1214,6 +1268,17 @@
         renderQuranBook();
         updateQuranBookmarkBar();
       });
+      num.addEventListener("click", function (e) {
+        e.stopPropagation();
+        saveQuranBookmark(info.number, a.n);
+        renderQuranBook();
+        updateQuranBookmarkBar();
+      });
+      
+      span.addEventListener("click", function() {
+        showTafsir(info.number, a.n, a.text);
+      });
+      
       ayatEl.appendChild(num);
       ayatEl.appendChild(document.createTextNode(" "));
     });
@@ -1337,9 +1402,71 @@
     btn.textContent = document.fullscreenElement ? "×" : "⤢";
   });
 
+  function showTafsir(surah, ayah, text) {
+    var modal = document.getElementById("tafsir-modal");
+    var title = document.getElementById("tafsir-title");
+    var body = document.getElementById("tafsir-text");
+    title.textContent = "تفسير الآية " + toAr(ayah) + " من سورة " + surahInfo(surah).name;
+    body.textContent = "جارِ تحميل التفسير...";
+    modal.style.display = "flex";
+    
+    fetch("https://api.alquran.cloud/v1/ayah/" + surah + ":" + ayah + "/ar.jalalayn")
+      .then(function(r) { return r.json(); })
+      .then(function(json) {
+        body.textContent = json.data.text;
+      })
+      .catch(function() {
+        body.textContent = "تعذر تحميل التفسير حالياً.";
+      });
+  }
+
+  function handleAudio() {
+    var btn = document.getElementById("quran-audio-btn");
+    var player = document.getElementById("quran-audio-player");
+    var info = document.getElementById("audio-info");
+    var sInfo = surahInfo(quranState.surah);
+    
+    var url = "https://download.quranicaudio.com/quran/mishari_rashid_al_afasy/" + String(quranState.surah).padStart(3, '0') + ".mp3";
+    
+    if (player.src !== url) {
+      player.src = url;
+      info.textContent = "تلاوة سورة " + sInfo.name + " - مشاري العفاسي";
+    }
+    
+    if (player.paused) {
+      player.play();
+      btn.textContent = "⏸";
+    } else {
+      player.pause();
+      btn.textContent = "▶";
+    }
+  }
+
   function initQuran() {
     populateSurahSelect();
     updateQuranBookmarkBar();
+    
+    document.getElementById("quran-audio-btn").addEventListener("click", handleAudio);
+    
+    document.getElementById("quran-search").addEventListener("input", function(e) {
+      var val = e.target.value.trim();
+      if (!val) return;
+      var found = QURAN_SURAHS.find(function(s) {
+        return s[1].includes(val) || String(s[0]) === val;
+      });
+      if (found) {
+        goToSurah(found[0]);
+        if (document.getElementById("quran-book").style.display === "none") openBook();
+      }
+    });
+    
+    document.getElementById("close-tafsir").addEventListener("click", function() {
+      document.getElementById("tafsir-modal").style.display = "none";
+    });
+    
+    document.getElementById("lightbox").addEventListener("click", function() {
+      this.style.display = "none";
+    });
     var startSurah = 1, startPageIndex = 0;
     try {
       var last = JSON.parse(localStorage.getItem(QURAN_LAST_KEY) || "null");
