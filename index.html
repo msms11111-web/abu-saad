@@ -1242,17 +1242,30 @@
     document.getElementById("quran-audio-btn").textContent = "▶";
   }
 
+  var quranDataCache = {}; // In-memory cache for ultra-fast access
+
   function fetchSurahAyahs(number, callback) {
+    if (quranDataCache[number]) {
+      callback(quranDataCache[number]);
+      return;
+    }
+
     var cacheKey = "abusaad_quran_cache_v1_" + number;
     try {
       var raw = localStorage.getItem(cacheKey);
-      if (raw) { callback(JSON.parse(raw)); return; }
+      if (raw) {
+        var data = JSON.parse(raw);
+        quranDataCache[number] = data;
+        callback(data);
+        return;
+      }
     } catch (e) {}
 
     fetch("https://api.alquran.cloud/v1/surah/" + number + "/quran-uthmani")
       .then(function (r) { return r.json(); })
       .then(function (json) {
         var ayahs = json.data.ayahs.map(function (a) { return { n: a.numberInSurah, text: a.text }; });
+        quranDataCache[number] = ayahs;
         try { localStorage.setItem(cacheKey, JSON.stringify(ayahs)); } catch (e) {}
         callback(ayahs);
       })
@@ -1506,22 +1519,47 @@
     var info = document.getElementById("audio-info");
     var sInfo = surahInfo(quranState.surah);
     
-    var url = "https://server7.mp3quran.net/shur/ " + String(quranState.surah).padStart(3, '0') + ".mp3";
-    // Using a more reliable source for Shuraym
-    url = "https://download.quranicaudio.com/quran/sa3ud_ash-shuraym/" + String(quranState.surah).padStart(3, '0') + ".mp3";
+    // Multiple sources for reliability
+    var sources = [
+      "https://download.quranicaudio.com/quran/sa3ud_ash-shuraym/" + String(quranState.surah).padStart(3, '0') + ".mp3",
+      "https://server7.mp3quran.net/shur/" + String(quranState.surah).padStart(3, '0') + ".mp3"
+    ];
     
-    if (player.src !== url) {
-      player.src = url;
-      info.textContent = "تلاوة سورة " + sInfo.name + " - الشيخ سعود الشريم";
+    var currentSourceIdx = 0;
+    
+    function tryPlay(idx) {
+      if (idx >= sources.length) {
+        info.textContent = "تعذر تشغيل الصوت، جرب سورة أخرى.";
+        btn.textContent = "▶";
+        return;
+      }
+      
+      player.src = sources[idx];
+      player.play().then(function() {
+        btn.textContent = "⏸";
+        info.textContent = "تلاوة سورة " + sInfo.name + " - الشيخ سعود الشريم";
+      }).catch(function(e) {
+        console.log("Audio source failed, trying next...");
+        tryPlay(idx + 1);
+      });
     }
-    
-    if (player.paused) {
-      player.play();
-      btn.textContent = "⏸";
+
+    if (player.paused || player.src.indexOf(String(quranState.surah).padStart(3, '0')) === -1) {
+      if (player.src.indexOf(String(quranState.surah).padStart(3, '0')) === -1) {
+        info.textContent = "جارِ التحميل...";
+        tryPlay(0);
+      } else {
+        player.play();
+        btn.textContent = "⏸";
+      }
     } else {
       player.pause();
       btn.textContent = "▶";
     }
+    
+    player.onended = function() {
+      btn.textContent = "▶";
+    };
   }
 
   function initQuran() {
