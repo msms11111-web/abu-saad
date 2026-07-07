@@ -1855,6 +1855,8 @@
   initTasbih();
   initPrayerTimes();
   initNewsCards();
+  // Auto-update news every 30 minutes
+  setInterval(initNewsCards, 30 * 60 * 1000);
 })();
 </script>
 </body>
