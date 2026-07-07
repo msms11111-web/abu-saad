@@ -84,7 +84,7 @@
   #hero .footer-row .en2 { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:17px; color:#9A9488; }
 
   /* CLOCK */
-  #time { grid-area:time; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:18px 14px; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  #time { grid-area:time; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:18px 14px; display:flex; flex-direction:column; align-items:center; gap:8px; }
   #time .eyebrow { align-self:flex-start; }
   /* All clock measurements use cqw (1cqw = 1% of clock width) so the whole
      face scales as one photographic unit, matching the reference image. */
@@ -175,11 +175,17 @@
   #adhkar .next-btn:hover { filter:brightness(1.06); }
 
   /* ABOUT */
-  #about { grid-area:about; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:26px; }
-  #about .body-text { font-size:16px; line-height:1.85; color:#C4BFB3; margin-top:12px; }
+  #about { grid-area:about; position:relative; overflow:hidden; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:28px 30px; display:flex; flex-direction:column; }
+  #about .about-quote { position:absolute; top:8px; left:20px; font-family:'Cormorant Garamond',serif; font-size:150px; line-height:1; color:rgba(201,169,106,0.10); pointer-events:none; user-select:none; }
+  #about .body-text { position:relative; font-family:'Cormorant Garamond',serif; font-size:20px; font-style:italic; line-height:1.95; color:#D8D2C6; margin-top:14px; flex:1; }
+  #about .body-text .ar { font-family:'Tajawal',sans-serif; font-style:normal; font-size:16.5px; }
+  #about .about-sign { position:relative; margin-top:20px; padding-top:16px; border-top:1px solid rgba(201,169,106,0.14); display:flex; align-items:center; gap:12px; }
+  #about .about-sign .line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(201,169,106,0.35)); }
+  #about .about-sign .name { font-family:'Aref Ruqaa',serif; font-weight:700; font-size:22px; color:#E4C687; }
+  #about .about-sign .dot { width:6px; height:6px; border-radius:50%; background:#C9A96A; box-shadow:0 0 8px rgba(201,169,106,0.6); }
 
   /* ===== TASKS (upgraded) ===== */
-  #tasks { grid-area:tasks; background:linear-gradient(160deg,#242220,#1B1A18); border:1px solid rgba(237,233,224,0.08); padding:26px; display:flex; flex-direction:column; gap:14px; }
+  #tasks { grid-area:tasks; background:radial-gradient(120% 120% at 0% -20%,rgba(201,169,106,0.07),transparent 45%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#282420,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.14); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; display:flex; flex-direction:column; gap:14px; }
   #tasks .t-head { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
   #tasks .t-head .t-title { display:flex; align-items:baseline; gap:10px; }
   #tasks .t-head .title { font-size:19px; font-weight:700; color:#F1EEE6; }
@@ -314,7 +320,7 @@
   .cal-summary .sep { color:rgba(201,169,106,0.35); }
 
   /* LIVE TV */
-  #live { grid-area:live; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:26px; display:flex; flex-direction:column; gap:16px; }
+  #live { grid-area:live; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; display:flex; flex-direction:column; gap:16px; }
   #live .head { display:flex; align-items:center; justify-content:space-between; }
   #live .head .sub { font-size:12px; color:#7C766A; margin-top:2px; }
   #live .live-grid { display:grid; grid-template-columns:repeat(3, 110px); gap:15px; justify-content:center; }
@@ -332,7 +338,7 @@
   .live-channel .ch-name { position:relative; font-size:13px; font-weight:700; color:#F1EEE6; text-align:center; padding:0 6px; line-height:1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
   /* QURAN */
-  #quran { grid-area:quran; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:26px; display:flex; flex-direction:column; gap:16px; }
+  #quran { grid-area:quran; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; display:flex; flex-direction:column; gap:16px; }
   #quran .head { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:10px; }
   #quran .head .sub { font-size:12px; color:#7C766A; margin-top:4px; }
   #quran .controls { display:flex; align-items:center; gap:8px; }
@@ -399,7 +405,7 @@
   }
 
   /* GALLERY */
-  #gallery { grid-area:gallery; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:26px; }
+  #gallery { grid-area:gallery; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; }
   #gallery .head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; }
   #gallery .title { font-size:18px; font-weight:700; color:#F1EEE6; }
   #gallery .label-en { font-family:'Space Mono',monospace; font-size:11px; color:#9A9488; }
@@ -441,7 +447,7 @@
   .audio-info { font-size:12px; color:#C4BFB3; flex:1; }
 
   /* SOCIAL */
-  #social-row { grid-area:social; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:22px 26px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+  #social-row { grid-area:social; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:22px 26px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
   #social-row .connect { color:#F1EEE6; font-size:16px; font-weight:500; }
   #social-row .connect .en { color:#C9A96A; }
   #social-row .links { display:flex; flex-wrap:wrap; gap:10px; }
@@ -830,8 +836,14 @@
 
       <!-- ABOUT -->
       <div id="about" class="card">
+        <div class="about-quote">❝</div>
         <div class="eyebrow">نبذة عني · About</div>
-        <div class="body-text">شغوف بتحويل الأفكار إلى منتجات ملموسة تُحدث فرقاً. أوازن بين الدقة في التفاصيل والرؤية الأوسع للصورة الكاملة، وأؤمن أن البساطة هي قمة الأناقة.</div>
+        <div class="body-text"><span class="ar">شغوف بتحويل الأفكار إلى منتجات ملموسة تُحدث فرقاً. أوازن بين الدقة في التفاصيل والرؤية الأوسع للصورة الكاملة، وأؤمن أن البساطة هي قمة الأناقة.</span></div>
+        <div class="about-sign">
+          <span class="line"></span>
+          <span class="dot"></span>
+          <span class="name">أبو سعد</span>
+        </div>
       </div>
 
       <!-- GALLERY -->
