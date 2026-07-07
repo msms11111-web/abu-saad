@@ -180,21 +180,32 @@
   .t-filter { font-size:12.5px; color:#9A9488; background:rgba(237,233,224,0.04); border:1px solid rgba(237,233,224,0.08); border-radius:20px; padding:6px 15px; cursor:pointer; user-select:none; transition:all .2s ease; }
   .t-filter:hover { color:#C4BFB3; }
   .t-filter.active { background:linear-gradient(155deg,#C9A96A,#A98243); color:#1A1917; font-weight:700; border-color:transparent; }
-  .t-filter .n { font-family:'Space Mono',monospace; opacity:0.7; margin-right:4px; }
+  .t-filter .n { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; margin-right:6px; border-radius:9px; font-family:'Space Mono',monospace; font-size:10.5px; background:rgba(0,0,0,0.28); color:#E4C687; }
+  .t-filter.active .n { background:rgba(26,25,23,0.28); color:#3a2a12; }
 
-  .task-composer { display:flex; gap:8px; align-items:stretch; }
-  .composer-prio { display:flex; flex-direction:column; gap:3px; justify-content:center; flex-shrink:0; }
-  .prio-dot { width:11px; height:11px; border-radius:50%; cursor:pointer; opacity:0.35; transition:opacity .15s ease, transform .15s ease; border:1px solid rgba(0,0,0,0.25); }
+  /* elegant add-task panel */
+  .task-composer { display:flex; gap:9px; align-items:stretch; padding:13px; border-radius:16px; position:relative;
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgba(201,169,106,0.14), transparent 55%),
+      linear-gradient(150deg, rgba(201,169,106,0.07), rgba(201,169,106,0.015) 55%),
+      linear-gradient(#211F1C,#1B1917);
+    border:1px solid rgba(201,169,106,0.20);
+    box-shadow: inset 0 1px 0 rgba(255,235,190,0.07), inset 0 0 22px rgba(201,169,106,0.04), 0 10px 26px -16px rgba(0,0,0,0.7); }
+  .task-composer::before { content:''; position:absolute; top:0; right:16px; left:16px; height:1px; background:linear-gradient(90deg, transparent, rgba(201,169,106,0.5), transparent); }
+  .composer-prio { display:flex; flex-direction:column; gap:4px; justify-content:center; flex-shrink:0; padding:0 2px; }
+  .prio-dot { width:12px; height:12px; border-radius:50%; cursor:pointer; opacity:0.32; transition:opacity .15s ease, transform .15s ease; border:1px solid rgba(0,0,0,0.3); }
   .prio-dot:hover { opacity:0.7; }
-  .prio-dot.sel { opacity:1; transform:scale(1.25); box-shadow:0 0 8px currentColor; }
+  .prio-dot.sel { opacity:1; transform:scale(1.28); box-shadow:0 0 9px currentColor; }
   .prio-dot.p-high { background:#E0655A; color:#E0655A; }
   .prio-dot.p-med { background:#E4C687; color:#E4C687; }
   .prio-dot.p-low { background:#7FB5C9; color:#7FB5C9; }
-  .composer-input { flex:1; min-width:0; background:#1A1917; border:1.5px solid rgba(237,233,224,0.12); border-radius:12px; padding:11px 14px; color:#F1EEE6; font-size:14px; font-family:'Tajawal',sans-serif; outline:none; transition:border-color .2s ease; }
-  .composer-input:focus { border-color:rgba(201,169,106,0.5); }
-  .composer-time { width:112px; flex-shrink:0; background:#1A1917; border:1.5px solid rgba(237,233,224,0.12); border-radius:12px; padding:11px 10px; color:#C4BFB3; font-size:13px; font-family:'Tajawal',sans-serif; outline:none; }
+  .composer-input { flex:1; min-width:0; background:rgba(15,14,13,0.72); border:1.5px solid rgba(201,169,106,0.14); border-radius:12px; padding:12px 15px; color:#F1EEE6; font-size:14.5px; font-family:'Tajawal',sans-serif; outline:none; transition:border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+  .composer-input::placeholder { color:#8A8378; }
+  .composer-input:focus { border-color:rgba(201,169,106,0.6); background:rgba(15,14,13,0.9); box-shadow:0 0 0 3px rgba(201,169,106,0.1); }
+  .composer-time { width:118px; flex-shrink:0; background:rgba(15,14,13,0.72); border:1.5px solid rgba(201,169,106,0.14); border-radius:12px; padding:12px 11px; color:#C9A96A; font-size:13px; font-family:'Tajawal',sans-serif; outline:none; transition:border-color .2s ease; }
+  .composer-time:focus { border-color:rgba(201,169,106,0.5); }
   .composer-time::-webkit-calendar-picker-indicator { filter:invert(0.7) sepia(1) saturate(3) hue-rotate(3deg); cursor:pointer; }
-  .task-add-btn { flex-shrink:0; width:46px; background:linear-gradient(155deg,#C9A96A,#A98243); color:#1A1917; font-size:24px; font-weight:700; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; transition:filter .15s ease, transform .1s ease; }
+  .task-add-btn { flex-shrink:0; width:48px; background:linear-gradient(155deg,#E4C687,#A98243); color:#1A1917; font-size:24px; font-weight:700; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; box-shadow:0 8px 18px -8px rgba(201,169,106,0.55), inset 0 1px 0 rgba(255,255,255,0.3); transition:filter .15s ease, transform .1s ease; }
   .task-add-btn:hover { filter:brightness(1.08); }
   .task-add-btn:active { transform:scale(0.93); }
 
@@ -935,13 +946,10 @@
     var raw = null, arr = null;
     try { raw = localStorage.getItem(TASKS_KEY); } catch (e) {}
     if (raw) { try { arr = JSON.parse(raw); } catch (e) { arr = null; } }
-    if (!arr || !arr.length) {
+    if (!arr) {
       var todayStr = fmt(new Date());
       arr = [
-        { id: 1, text: "اجتماع الفريق · Team standup", done: true, date: todayStr, priority: "high", time: "09:00", order: 0 },
-        { id: 2, text: "مراجعة العرض التقديمي", done: true, date: todayStr, priority: "med", time: "", order: 1 },
-        { id: 3, text: "قراءة ٣٠ دقيقة", done: false, date: todayStr, priority: "low", time: "", order: 2 },
-        { id: 4, text: "تمرين رياضي", done: false, date: todayStr, priority: "med", time: "18:00", order: 3 }
+        { id: 1, text: "اضغط ＋ لإضافة مهمتك الأولى", done: false, date: todayStr, priority: "med", time: "", order: 0 }
       ];
     }
     arr.forEach(function (t, i) {
