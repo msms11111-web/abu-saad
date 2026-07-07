@@ -1829,16 +1829,29 @@
       fetch(f.url)
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          if (data.status === "ok") {
+          if (data.status === "ok" && data.items && data.items.length > 0) {
             container.innerHTML = "";
             data.items.slice(0, 3).forEach(function(item) {
               var div = document.createElement("div");
               div.className = "news-item";
-              div.textContent = item.title;
+              div.style.marginBottom = "8px";
+              div.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+              div.style.paddingBottom = "8px";
+              
+              var link = document.createElement("a");
+              link.href = item.link;
+              link.target = "_blank";
+              link.textContent = item.title;
+              link.style.color = "inherit";
+              link.style.textDecoration = "none";
+              link.style.fontSize = "0.9rem";
+              link.style.display = "block";
+              
+              div.appendChild(link);
               container.appendChild(div);
             });
           } else {
-            container.textContent = "تعذر التحميل.";
+            container.textContent = "لا توجد أخبار حالياً.";
           }
         })
         .catch(function() {
