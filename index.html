@@ -146,18 +146,18 @@
   #quote .quote-text { font-size:18px; font-weight:500; color:#FFFFFF; line-height:1.6; }
   #quote .quote-en { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:#FFFFFF; text-align:right; }
 
-  /* NEWS TICKER */
-  #news { grid-area:news; background:#1A1917; border:1px solid rgba(201,169,106,0.2); padding:0; overflow:hidden; display:flex; align-items:center; height:60px; position:relative; }
-  .news-label { background:linear-gradient(155deg,#C9A96A,#A98243); color:#1A1917; padding:0 20px; height:100%; display:flex; align-items:center; font-weight:700; font-size:14px; z-index:10; white-space:nowrap; box-shadow: 5px 0 15px rgba(0,0,0,0.3); }
-  .ticker-wrap { flex:1; overflow:hidden; height:100%; display:flex; align-items:center; position:relative; }
-  .ticker { display:flex; white-space:nowrap; padding-right:100%; animation: ticker 40s linear infinite; }
-  .ticker:hover { animation-play-state: paused; }
-  .ticker-item { display:inline-flex; align-items:center; padding:0 30px; color:#F1EEE6; font-size:15px; border-left:1px solid rgba(201,169,106,0.15); }
-  .ticker-item .cat { color:#C9A96A; font-weight:700; margin-left:10px; font-size:12px; padding:2px 8px; border:1px solid rgba(201,169,106,0.3); border-radius:4px; }
-  @keyframes ticker {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
+  /* NEWS CARDS */
+  #news { grid-area:news; background:linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border:1px solid rgba(255,255,255,0.15); padding:20px; display:flex; flex-direction:column; gap:15px; min-height:200px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+  .news-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; }
+  .news-header .title { font-size:18px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px; }
+  .news-header .title::before { content:''; width:8px; height:8px; background:#ff4b2b; border-radius:50%; display:inline-block; animation: pulse 1.5s infinite; }
+  .news-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:15px; flex:1; }
+  .news-col { background:rgba(255,255,255,0.05); border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:8px; }
+  .news-col .cat-label { font-size:11px; font-weight:700; color:#C9A96A; text-transform:uppercase; letter-spacing:1px; }
+  .news-item { font-size:13.5px; color:#e0e0e0; line-height:1.5; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; }
+  .news-item:last-child { border-bottom:none; }
+  @keyframes pulse { 0% { opacity:1; } 50% { opacity:0.3; } 100% { opacity:1; } }
+  @media (max-width:600px) { .news-grid { grid-template-columns: 1fr; } }
 
   /* ABOUT */
   #about { grid-area:about; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:26px; }
@@ -510,12 +510,24 @@
 
 
 
-      <!-- NEWS TICKER -->
+      <!-- NEWS CARDS -->
       <div id="news" class="card">
-        <div class="news-label">أهم الأخبار</div>
-        <div class="ticker-wrap">
-          <div class="ticker" id="news-ticker">
-            <div class="ticker-item">جارِ تحميل آخر الأخبار...</div>
+        <div class="news-header">
+          <div class="title">موجز الأخبار المباشر</div>
+          <div class="eyebrow" style="color:rgba(255,255,255,0.6)">محدث الآن</div>
+        </div>
+        <div class="news-grid" id="news-grid">
+          <div class="news-col" id="news-global">
+            <div class="cat-label">عالمي</div>
+            <div class="news-content">جارِ التحميل...</div>
+          </div>
+          <div class="news-col" id="news-local">
+            <div class="cat-label">محلي</div>
+            <div class="news-content">جارِ التحميل...</div>
+          </div>
+          <div class="news-col" id="news-sports">
+            <div class="cat-label">رياضي</div>
+            <div class="news-content">جارِ التحميل...</div>
           </div>
         </div>
       </div>
@@ -1802,59 +1814,35 @@
     setInterval(updateNextPrayer, 30000);
   }
 
-  // ---------- News Ticker ----------
-  function initNewsTicker() {
-    var ticker = document.getElementById("news-ticker");
+  // ---------- News Cards ----------
+  function initNewsCards() {
     var feeds = [
-      { cat: "عالمي", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.net/aljazeerarss/a7c18606-3ce1-4556-a133-5bf41705ee9c/48a8600c-33fa-4a37-8843-07bc5b7b157d" },
-      { cat: "محلي", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.spa.gov.sa/rss.xml" },
-      { cat: "رياضي", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.kooora.com/rss.aspx" }
+      { id: "news-global", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.net/aljazeerarss/a7c18606-3ce1-4556-a133-5bf41705ee9c/48a8600c-33fa-4a37-8843-07bc5b7b157d" },
+      { id: "news-local", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.spa.gov.sa/rss.xml" },
+      { id: "news-sports", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.kooora.com/rss.aspx" }
     ];
 
-    var allNews = [];
-    var loadedCount = 0;
-
     feeds.forEach(function(f) {
+      var container = document.getElementById(f.id).querySelector(".news-content");
       fetch(f.url)
         .then(function(r) { return r.json(); })
         .then(function(data) {
           if (data.status === "ok") {
-            data.items.slice(0, 5).forEach(function(item) {
-              allNews.push({ cat: f.cat, title: item.title });
+            container.innerHTML = "";
+            data.items.slice(0, 3).forEach(function(item) {
+              var div = document.createElement("div");
+              div.className = "news-item";
+              div.textContent = item.title;
+              container.appendChild(div);
             });
+          } else {
+            container.textContent = "تعذر التحميل.";
           }
-          loadedCount++;
-          if (loadedCount === feeds.length) renderTicker();
         })
         .catch(function() {
-          loadedCount++;
-          if (loadedCount === feeds.length) renderTicker();
+          container.textContent = "خطأ في الاتصال.";
         });
     });
-
-    function renderTicker() {
-      if (allNews.length === 0) {
-        ticker.innerHTML = '<div class="ticker-item">تعذر تحميل الأخبار حالياً، يرجى المحاولة لاحقاً.</div>';
-        return;
-      }
-      // Shuffle news for variety
-      allNews.sort(function() { return 0.5 - Math.random(); });
-      
-      ticker.innerHTML = "";
-      allNews.forEach(function(item) {
-        var div = document.createElement("div");
-        div.className = "ticker-item";
-        div.innerHTML = '<span class="cat">' + item.cat + '</span> ' + item.title;
-        ticker.appendChild(div);
-      });
-      // Duplicate for seamless loop
-      allNews.forEach(function(item) {
-        var div = document.createElement("div");
-        div.className = "ticker-item";
-        div.innerHTML = '<span class="cat">' + item.cat + '</span> ' + item.title;
-        ticker.appendChild(div);
-      });
-    }
   }
 
   // ---------- Init ----------
@@ -1864,7 +1852,7 @@
   initQuran();
   initTasbih();
   initPrayerTimes();
-  initNewsTicker();
+  initNewsCards();
 })();
 </script>
 </body>
