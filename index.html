@@ -2,18 +2,35 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>أبو سعد · لوحة التحكم الشخصية</title>
+<meta name="theme-color" content="#141312">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="أبو سعد">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231A1917'/%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%23C9A96A' stroke-width='3'/%3E%3Ctext x='50' y='50' font-family='serif' font-size='20' fill='%23C9A96A' text-anchor='middle'%3E%D8%A3%D8%B3%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  html, body { margin:0; background:#141312; }
+  html, body { margin:0; background:#141312; overflow-x:hidden; }
+  html { -webkit-text-size-adjust:100%; }
   * { box-sizing:border-box; }
-  body { font-family:'Tajawal',sans-serif; }
+  body { font-family:'Tajawal',sans-serif; -webkit-tap-highlight-color:transparent; overscroll-behavior-y:none; }
+  /* prevent iOS auto-zoom on input focus */
+  @media (pointer:coarse){
+    .composer-input, .composer-time, .task-edit-input, .quran-search-input, .surah-select, #new-task-input { font-size:16px; }
+  }
 
-  .page { min-height:100vh; background:radial-gradient(1200px 600px at 80% -10%,rgba(201,169,106,0.08),transparent 60%),#141312; padding:22px 16px; direction:rtl; }
+  .page { min-height:100vh; min-height:100dvh; background:radial-gradient(1200px 600px at 80% -10%,rgba(201,169,106,0.08),transparent 60%),#141312; direction:rtl;
+    padding-top:calc(22px + env(safe-area-inset-top));
+    padding-bottom:calc(22px + env(safe-area-inset-bottom));
+    padding-left:calc(16px + env(safe-area-inset-left));
+    padding-right:calc(16px + env(safe-area-inset-right)); }
   .shell { max-width:1180px; margin:0 auto; background:#1A1917; padding:24px; border-radius:30px; box-shadow:0 40px 90px -50px rgba(0,0,0,0.8); }
 
   #app { display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
@@ -468,6 +485,23 @@
   .t-btn.active { background:rgba(201,169,106,0.2); color:#E9C878; border-color:#C9A96A; }
   .tasbih-reset { background:rgba(224,122,95,0.12); border:1px solid rgba(224,122,95,0.3); color:#E0796F; padding:6px 15px; border-radius:10px; font-size:12.5px; cursor:pointer; user-select:none; }
   .tasbih-reset:hover { background:rgba(224,122,95,0.2); }
+
+  /* iOS install hint */
+  #ios-install { position:fixed; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom)); z-index:9998;
+    max-width:460px; margin:0 auto; display:none; align-items:center; gap:12px;
+    background:linear-gradient(160deg,#26221c,#191613); border:1px solid rgba(201,169,106,0.35); border-radius:18px;
+    padding:13px 15px; box-shadow:0 20px 50px -18px rgba(0,0,0,0.85); direction:rtl;
+    animation:iosUp .45s cubic-bezier(.3,1.2,.5,1); }
+  @keyframes iosUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:none; } }
+  #ios-install .ii-icon { width:42px; height:42px; border-radius:11px; flex-shrink:0; box-shadow:0 4px 12px -4px rgba(0,0,0,0.6); }
+  #ios-install .ii-body { flex:1; min-width:0; }
+  #ios-install .ii-title { font-size:13.5px; font-weight:700; color:#F1EEE6; }
+  #ios-install .ii-sub { font-size:12px; color:#C4BFB3; margin-top:2px; line-height:1.5; }
+  #ios-install .ii-sub b { color:#E4C687; }
+  #ios-install .ii-share { display:inline-flex; width:17px; height:17px; vertical-align:-3px; }
+  #ios-install .ii-close { flex-shrink:0; width:28px; height:28px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    color:#9A9488; font-size:17px; cursor:pointer; background:rgba(237,233,224,0.05); }
+  #ios-install .ii-close:hover { color:#E0796F; }
 </style>
 </head>
 <body>
@@ -836,6 +870,16 @@
     <h3 id="tafsir-title">تفسير الآية</h3>
     <div class="tafsir-text" id="tafsir-text">جارِ التحميل...</div>
   </div>
+</div>
+
+<!-- iOS install hint -->
+<div id="ios-install">
+  <img class="ii-icon" src="assets/icon-180.png" alt="أبو سعد">
+  <div class="ii-body">
+    <div class="ii-title">ثبّت «أبو سعد» كتطبيق</div>
+    <div class="ii-sub">اضغط زر المشاركة <svg class="ii-share" viewBox="0 0 24 24" fill="none" stroke="#E4C687" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> ثم اختر <b>«إضافة إلى الشاشة الرئيسية»</b></div>
+  </div>
+  <div class="ii-close" id="ios-install-close">×</div>
 </div>
 
 <script>
@@ -2189,6 +2233,28 @@
   initTasbih();
   initPrayerTimes();
   initAdhkar();
+
+  // ---------- iOS "Add to Home Screen" hint ----------
+  (function () {
+    var IOS_HINT_KEY = "abusaad_ios_hint_dismissed_v1";
+    var ua = navigator.userAgent || "";
+    var isIOS = /iphone|ipod/i.test(ua) || (/ipad/i.test(ua)) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    var standalone = ("standalone" in navigator && navigator.standalone) ||
+      (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    var isSafari = /safari/i.test(ua) && !/crios|fxios|edgios|chrome/i.test(ua);
+    var dismissed = false;
+    try { dismissed = localStorage.getItem(IOS_HINT_KEY) === "1"; } catch (e) {}
+    if (!isIOS || standalone || dismissed || !isSafari) return;
+
+    var el = document.getElementById("ios-install");
+    if (!el) return;
+    el.style.display = "flex";
+    document.getElementById("ios-install-close").addEventListener("click", function () {
+      el.style.display = "none";
+      try { localStorage.setItem(IOS_HINT_KEY, "1"); } catch (e) {}
+    });
+  })();
 })();
 </script>
 </body>
