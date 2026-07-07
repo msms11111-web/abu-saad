@@ -146,18 +146,20 @@
   #quote .quote-text { font-size:18px; font-weight:500; color:#FFFFFF; line-height:1.6; }
   #quote .quote-en { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:#FFFFFF; text-align:right; }
 
-  /* NEWS CARDS */
-  #news { grid-area:news; background:linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border:1px solid rgba(255,255,255,0.15); padding:20px; display:flex; flex-direction:column; gap:15px; min-height:200px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-  .news-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; }
-  .news-header .title { font-size:18px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px; }
-  .news-header .title::before { content:''; width:8px; height:8px; background:#ff4b2b; border-radius:50%; display:inline-block; animation: pulse 1.5s infinite; }
-  .news-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:15px; flex:1; }
-  .news-col { background:rgba(255,255,255,0.05); border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:8px; }
-  .news-col .cat-label { font-size:11px; font-weight:700; color:#C9A96A; text-transform:uppercase; letter-spacing:1px; }
-  .news-item { font-size:13.5px; color:#e0e0e0; line-height:1.5; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; }
+  /* NEWS CARDS - PREMIUM MARBLE STYLE */
+  #news { grid-area:news; background: url('https://www.transparenttextures.com/patterns/dark-matter.png'), linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%); border: 1px solid #C9A96A; padding:20px; display:flex; flex-direction:column; gap:15px; min-height:200px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden; }
+  #news::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #C9A96A, transparent); }
+  .news-header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(201,169,106,0.3); padding-bottom:12px; }
+  .news-header .title { font-size:20px; font-weight:700; color:#C9A96A; display:flex; align-items:center; gap:10px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+  .news-header .title::before { content:''; width:10px; height:10px; background:#ff4b2b; border-radius:50%; display:inline-block; animation: pulse 1.5s infinite; box-shadow: 0 0 8px #ff4b2b; }
+  .news-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; flex:1; }
+  .news-col { background: rgba(255,255,255,0.03); border-radius:15px; padding:15px; border: 1px solid rgba(201,169,106,0.15); display:flex; flex-direction:column; gap:10px; transition: transform 0.3s ease; }
+  .news-col:hover { transform: translateY(-5px); border-color: #C9A96A; background: rgba(255,255,255,0.05); }
+  .news-col .cat-label { font-size:12px; font-weight:800; color:#C9A96A; text-transform:uppercase; letter-spacing:1.5px; border-bottom: 1px solid rgba(201,169,106,0.2); padding-bottom:5px; margin-bottom:5px; }
+  .news-item { font-size:14px; color:#F1EEE6; line-height:1.6; border-bottom:1px solid rgba(255,255,255,0.05); padding:8px 0; font-weight: 500; }
   .news-item:last-child { border-bottom:none; }
-  @keyframes pulse { 0% { opacity:1; } 50% { opacity:0.3; } 100% { opacity:1; } }
-  @media (max-width:600px) { .news-grid { grid-template-columns: 1fr; } }
+  @keyframes pulse { 0% { opacity:1; transform: scale(1); } 50% { opacity:0.4; transform: scale(1.2); } 100% { opacity:1; transform: scale(1); } }
+  @media (max-width:820px) { .news-grid { grid-template-columns: 1fr; } }
 
   /* ABOUT */
   #about { grid-area:about; background:#232120; border:1px solid rgba(237,233,224,0.08); padding:26px; }
@@ -1818,8 +1820,8 @@
   function initNewsCards() {
     var feeds = [
       { id: "news-global", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.aljazeera.net/aljazeerarss/a7c18606-3ce1-4556-a133-5bf41705ee9c/48a8600c-33fa-4a37-8843-07bc5b7b157d" },
-      { id: "news-local", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.spa.gov.sa/rss.xml" },
-      { id: "news-sports", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.kooora.com/rss.aspx" }
+      { id: "news-local", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.alarabiya.net/.mrss/ar/saudi-arabia.xml" },
+      { id: "news-sports", url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.alarabiya.net/.mrss/ar/sport.xml" }
     ];
 
     feeds.forEach(function(f) {
