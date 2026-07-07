@@ -299,8 +299,13 @@
   .gallery-slot.filled:hover .remove-btn { display:flex; }
   
   /* Lightbox */
-  #lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; display:none; align-items:center; justify-content:center; cursor:zoom-out; }
+  #lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; display:none; align-items:center; justify-content:center; cursor:pointer; }
   #lightbox img { max-width:90%; max-height:90%; border-radius:12px; box-shadow:0 0 40px rgba(0,0,0,0.5); }
+  
+  .tafsir-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:10000; justify-content:center; align-items:center; padding:20px; }
+  .tafsir-content { background:#1a1a1a; border:1px solid #C9A96A; border-radius:16px; padding:25px; max-width:500px; width:100%; position:relative; color:#e0e0e0; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+  .close-tafsir { position:absolute; top:15px; left:15px; font-size:24px; cursor:pointer; color:#C9A96A; line-height:1; padding: 5px; }
+  .tafsir-text { line-height:1.8; font-size:1.1rem; margin-top:15px; text-align:justify; }
   
   /* Quran Search & Tafsir */
   .quran-top-controls { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
@@ -625,6 +630,11 @@
         <div class="quran-bookmark-bar">
           <div class="bm-label" id="quran-bookmark-label">لم تتوقف عند أي آية بعد</div>
           <div class="bm-resume" id="quran-resume-btn">تابع من آخر موضع</div>
+        </div>
+
+        <div id="quran-bookmarks-list" class="quran-bookmarks-list" style="display:none; margin-top:10px; padding:10px; background:rgba(201,169,106,0.05); border-radius:12px; border:1px solid rgba(201,169,106,0.15);">
+          <div class="eyebrow" style="margin-bottom:8px;">العلامات المرجعية المحفوظة</div>
+          <div id="bookmarks-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
         </div>
 
         <div class="book-stage">
@@ -1502,6 +1512,7 @@
     title.textContent = "تفسير الآية " + toAr(ayah) + " من سورة " + surahInfo(surah).name;
     body.textContent = "جارِ تحميل التفسير...";
     modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
     
     fetch("https://api.alquran.cloud/v1/ayah/" + surah + ":" + ayah + "/ar.jalalayn")
       .then(function(r) { return r.json(); })
@@ -1563,6 +1574,14 @@
     player.onended = function() {
       btn.textContent = "▶";
     };
+    
+    player.onerror = function() {
+      console.log("Audio player error, trying next source...");
+      if (currentSourceIdx < sources.length - 1) {
+        currentSourceIdx++;
+        tryPlay(currentSourceIdx);
+      }
+    };
   }
 
   function initQuran() {
@@ -1601,10 +1620,12 @@
     
     document.getElementById("close-tafsir").addEventListener("click", function() {
       document.getElementById("tafsir-modal").style.display = "none";
+      document.body.style.overflow = "auto";
     });
     
     document.getElementById("lightbox").addEventListener("click", function() {
       this.style.display = "none";
+      document.body.style.overflow = "auto";
     });
     var startSurah = 1, startPageIndex = 0;
     try {
