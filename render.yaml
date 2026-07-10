@@ -19,4 +19,19 @@ services:
       - key: JWT_EXPIRE
         value: 7d
       - key: CLIENT_URL
-        sync: false # set to your Vercel URL, e.g. https://saudi-essence.vercel.app
+        value: https://saudi-essence-shop.onrender.com,http://localhost:5173
+
+  - type: web
+    name: saudi-essence-shop
+    runtime: static
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://saudi-essence-api.onrender.com/api
+    routes:
+      # SPA fallback: let React Router handle all paths
+      - type: rewrite
+        source: /*
+        destination: /index.html
