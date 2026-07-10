@@ -94,7 +94,7 @@ export default function AdminPage() {
                 <tbody>
                   {[1, 2, 3].map((i) => (
                     <tr key={i} className="border-b hover:bg-gray-50">
-                      <td className="py-3">ORD-2026-{i:03d}</td>
+                      <td className="py-3">ORD-2026-{String(i).padStart(3, '0')}</td>
                       <td className="text-center">عميل</td>
                       <td className="text-center">450 ر.س</td>
                       <td className="text-right"><span className="badge bg-green-100 text-green-800">تم التسليم</span></td>
