@@ -15,8 +15,13 @@ const PORT = process.env.PORT || 5000;
 
 // Security Middleware
 app.use(helmet());
+// CLIENT_URL accepts a comma-separated list, e.g. "https://app.vercel.app,http://localhost:5173"
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+  .split(',')
+  .map((o) => o.trim());
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']

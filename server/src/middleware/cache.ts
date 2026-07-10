@@ -1,18 +1,27 @@
 import { Request, Response, NextFunction } from 'express'
 import redis from 'redis'
 
-const client = redis.createClient({
-  url: process.env.REDIS_URL || 'redis://localhost:6379'
-})
+// Redis is optional: only connect when REDIS_URL is explicitly configured.
+// Without it (e.g. free hosting tiers) the API works normally, just uncached.
+type RedisClient = ReturnType<typeof redis.createClient>
+let client: RedisClient | null = null
 
-client.on('error', (err) => console.log('Redis Client Error', err))
-client.connect()
+if (process.env.REDIS_URL) {
+  client = redis.createClient({ url: process.env.REDIS_URL })
+  client.on('error', (err) => console.log('Redis Client Error', err))
+  client.connect().catch((err) => {
+    console.log('Redis unavailable, continuing without cache:', err.message)
+    client = null
+  })
+} else {
+  console.log('REDIS_URL not set — running without cache')
+}
 
 // Cache middleware
 export const cacheMiddleware = (duration: number = 3600) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    // Only cache GET requests
-    if (req.method !== 'GET') {
+    // Only cache GET requests when Redis is available
+    if (req.method !== 'GET' || !client || !client.isOpen) {
       return next()
     }
 
@@ -30,7 +39,7 @@ export const cacheMiddleware = (duration: number = 3600) => {
       // Override res.json to cache the response
       const originalJson = res.json.bind(res)
       res.json = function (data: any) {
-        client.setEx(key, duration, JSON.stringify(data)).catch(console.error)
+        client?.setEx(key, duration, JSON.stringify(data)).catch(console.error)
         return originalJson(data)
       }
 
@@ -44,6 +53,7 @@ export const cacheMiddleware = (duration: number = 3600) => {
 
 // Clear cache
 export const clearCache = async (pattern: string) => {
+  if (!client || !client.isOpen) return
   try {
     const keys = await client.keys(`cache:${pattern}*`)
     if (keys.length > 0) {

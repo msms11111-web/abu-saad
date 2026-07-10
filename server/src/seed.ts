@@ -45,7 +45,7 @@ const seedDatabase = async () => {
         vendor: adminUser._id,
         sku: 'OUD-001',
         isFeature: true,
-        isNew: true,
+        isLatest: true,
         fragrance: {
           type: 'Eau de Parfum',
           family: 'Oriental',
@@ -72,7 +72,7 @@ const seedDatabase = async () => {
         vendor: adminUser._id,
         sku: 'ROSE-001',
         isFeature: true,
-        isNew: true,
+        isLatest: true,
         fragrance: {
           type: 'Eau de Toilette',
           family: 'Floral',
@@ -146,7 +146,7 @@ const seedDatabase = async () => {
         vendor: adminUser._id,
         sku: 'OIL-001',
         isFeature: true,
-        isNew: true,
+        isLatest: true,
         fragrance: {
           type: 'Pure Oil',
           family: 'Oriental',
