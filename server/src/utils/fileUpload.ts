@@ -8,10 +8,10 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
 // Storage configuration
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req: any, file: any, cb: any) => {
     cb(null, 'uploads/')
   },
-  filename: (req, file, cb) => {
+  filename: (req: any, file: any, cb: any) => {
     const ext = path.extname(file.originalname)
     const filename = `${uuidv4()}${ext}`
     cb(null, filename)

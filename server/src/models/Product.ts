@@ -27,7 +27,7 @@ export interface IProduct extends Document {
     ingredients?: string[];
   };
   isFeature: boolean;
-  isNew: boolean;
+  isLatest: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -63,9 +63,9 @@ const productSchema = new Schema<IProduct>(
       type: Number,
       default: null,
       validate: {
-        validator: function (v: number | null) {
+        validator: function (v: number | null): boolean {
           if (v === null) return true;
-          return v < this.price;
+          return v < (this as any).price;
         },
         message: 'Discount price must be less than original price'
       }
@@ -135,7 +135,7 @@ const productSchema = new Schema<IProduct>(
       type: Boolean,
       default: false
     },
-    isNew: {
+    isLatest: {
       type: Boolean,
       default: true
     }

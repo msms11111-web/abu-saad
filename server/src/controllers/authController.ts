@@ -40,7 +40,7 @@ export class AuthController {
     await emailService.sendWelcomeEmail(email, name)
 
     // Generate token
-    const token = jwt.sign(
+    const token = (jwt.sign as any)(
       { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET || 'secret',
       { expiresIn: process.env.JWT_EXPIRE || '7d' }
@@ -88,7 +88,7 @@ export class AuthController {
       })
     }
 
-    const token = jwt.sign(
+    const token = (jwt.sign as any)(
       { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET || 'secret',
       { expiresIn: process.env.JWT_EXPIRE || '7d' }
