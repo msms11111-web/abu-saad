@@ -13,6 +13,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Behind Render/Nginx the client IP arrives in X-Forwarded-For; without this
+// rate limiting would treat all visitors as one IP (the proxy's)
+app.set('trust proxy', 1);
+
 // Security Middleware
 app.use(helmet());
 // CLIENT_URL accepts a comma-separated list, e.g. "https://app.vercel.app,http://localhost:5173"

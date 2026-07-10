@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../store/slices/userSlice'
+import { usersAPI } from '../services/api'
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -21,14 +22,11 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register'
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      })
+      const response = isLogin
+        ? await usersAPI.login({ email: formData.email, password: formData.password })
+        : await usersAPI.register(formData)
 
-      const data = await response.json()
+      const data = response.data
 
       if (data.success) {
         localStorage.setItem('token', data.token)
@@ -37,8 +35,12 @@ export default function LoginPage() {
       } else {
         alert(data.message)
       }
-    } catch (error) {
-      alert('حدث خطأ في المحاولة')
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.errors?.[0]?.msg ||
+        'حدث خطأ في المحاولة — تأكد من البيانات وحاول مجدداً'
+      alert(message)
     } finally {
       setLoading(false)
     }

@@ -22,7 +22,10 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isAuthAttempt = error.config?.url?.includes('/auth/')
+    // A 401 on a normal request means the session expired — send the user
+    // to login. A 401 on login/register itself just means wrong credentials.
+    if (error.response?.status === 401 && !isAuthAttempt) {
       localStorage.removeItem('token')
       window.location.href = '/login'
     }
