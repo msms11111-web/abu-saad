@@ -69,6 +69,35 @@ app.get('/api/health', (req: Request, res: Response) => {
 
 // Import routes
 import authRouter from './routes/auth.js';
+import Product from './models/Product.js';
+import User from './models/User.js';
+import { runSeed } from './utils/seedData.js';
+
+// One-time setup: seeds demo data ONLY while the database is still empty.
+// Once any product or user exists it permanently refuses, so it is safe
+// to leave enabled in production.
+app.get('/api/setup/seed', async (req: Request, res: Response) => {
+  try {
+    const [productCount, userCount] = await Promise.all([
+      Product.countDocuments(),
+      User.countDocuments()
+    ]);
+    if (productCount > 0 || userCount > 0) {
+      return res.status(403).json({
+        success: false,
+        message: 'Database already has data — seeding is disabled'
+      });
+    }
+    const result = await runSeed();
+    res.json({
+      success: true,
+      message: 'Database seeded successfully',
+      created: result
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 // API Routes
 app.use('/api/auth', authRouter);
