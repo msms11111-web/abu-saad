@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: saudi-essence-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-password}
+      MONGO_INITDB_DATABASE: saudi-essence
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - saudi-essence-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:alpine
+    container_name: saudi-essence-cache
+    ports:
+      - "6379:6379"
+    networks:
+      - saudi-essence-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: saudi-essence-api
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      MONGODB_URI: mongodb://admin:password@mongodb:27017/saudi-essence?authSource=admin
+      REDIS_URL: redis://redis:6379
+      CLIENT_URL: http://localhost:5173
+    ports:
+      - "5000:5000"
+    networks:
+      - saudi-essence-network
+    volumes:
+      - ./server/src:/app/src
+    command: npm run dev
+
+  # Frontend (Development)
+  frontend:
+    image: node:20-alpine
+    container_name: saudi-essence-web
+    working_dir: /app
+    volumes:
+      - ./client:/app
+    ports:
+      - "5173:5173"
+    networks:
+      - saudi-essence-network
+    environment:
+      VITE_API_URL: http://localhost:5000/api
+    command: sh -c "npm install && npm run dev"
+
+volumes:
+  mongodb_data:
+
+networks:
+  saudi-essence-network:
+    driver: bridge

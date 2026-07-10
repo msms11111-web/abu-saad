@@ -1,0 +1,30 @@
+{
+  "name": "saudi-essence-ecommerce",
+  "version": "1.0.0",
+  "description": "منصة عطور فاخرة سعودية - Saudi Essence E-Commerce Platform",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "cd server && npm run dev",
+    "client:dev": "cd client && npm run dev",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "start": "cd server && npm start",
+    "test": "concurrently \"npm run test:server\" \"npm run test:client\"",
+    "test:server": "cd server && npm test",
+    "test:client": "cd client && npm test"
+  },
+  "keywords": [
+    "ecommerce",
+    "saudi",
+    "perfume",
+    "عطور",
+    "سعودي"
+  ],
+  "author": "Saudi Essence Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
