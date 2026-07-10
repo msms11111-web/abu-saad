@@ -3,14 +3,16 @@ version: '3.8'
 services:
   # MongoDB Database
   mongodb:
-    image: mongo:latest
+    image: mongo:7.0
     container_name: saudi-essence-db
+    restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-admin}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-password}
       MONGO_INITDB_DATABASE: saudi-essence
     volumes:
       - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
     ports:
       - "27017:27017"
     networks:
@@ -20,15 +22,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    command: --auth
 
   # Redis Cache
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
     container_name: saudi-essence-cache
+    restart: always
     ports:
       - "6379:6379"
     networks:
       - saudi-essence-network
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -40,44 +47,92 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NODE_ENV: ${NODE_ENV:-production}
     container_name: saudi-essence-api
+    restart: always
     depends_on:
       mongodb:
         condition: service_healthy
       redis:
         condition: service_healthy
     environment:
-      NODE_ENV: development
+      NODE_ENV: ${NODE_ENV:-production}
       PORT: 5000
-      MONGODB_URI: mongodb://admin:password@mongodb:27017/saudi-essence?authSource=admin
+      MONGODB_URI: mongodb://${MONGODB_USER:-admin}:${MONGODB_PASSWORD:-password}@mongodb:27017/saudi-essence?authSource=admin
       REDIS_URL: redis://redis:6379
-      CLIENT_URL: http://localhost:5173
+      CLIENT_URL: ${CLIENT_URL:-http://localhost:5173}
+      JWT_SECRET: ${JWT_SECRET}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
     ports:
       - "5000:5000"
     networks:
       - saudi-essence-network
     volumes:
-      - ./server/src:/app/src
-    command: npm run dev
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Frontend (Development)
   frontend:
     image: node:20-alpine
     container_name: saudi-essence-web
+    restart: always
     working_dir: /app
     volumes:
       - ./client:/app
+      - /app/node_modules
     ports:
       - "5173:5173"
     networks:
       - saudi-essence-network
     environment:
-      VITE_API_URL: http://localhost:5000/api
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:5000/api}
     command: sh -c "npm install && npm run dev"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    container_name: saudi-essence-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    networks:
+      - saudi-essence-network
+    depends_on:
+      - backend
+      - frontend
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   mongodb_data:
+  mongodb_config:
+  redis_data:
 
 networks:
   saudi-essence-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

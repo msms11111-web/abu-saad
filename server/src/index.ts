@@ -62,12 +62,15 @@ app.get('/api/health', (req: Request, res: Response) => {
   });
 });
 
+// Import routes
+import authRouter from './routes/auth.js';
+
 // API Routes
+app.use('/api/auth', authRouter);
 app.use('/api/products', cacheMiddleware(3600), productsRouter);
 // app.use('/api/orders', ordersRouter);
 // app.use('/api/users', usersRouter);
 // app.use('/api/reviews', reviewsRouter);
-// app.use('/api/auth', authRouter);
 // app.use('/api/analytics', analyticsRouter);
 
 // API Documentation

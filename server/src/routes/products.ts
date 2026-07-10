@@ -1,76 +1,44 @@
-import express from 'express';
-import { authenticate, authorize } from '../middleware/auth.js';
-import { asyncHandler } from '../middleware/errorHandler.js';
+import express from 'express'
+import { authenticate, authorize } from '../middleware/auth.js'
+import productController from '../controllers/productController.js'
+import { validateProductName, validatePrice, validateObjectId } from '../utils/validators.js'
 
-const router = express.Router();
+const router = express.Router()
 
-// Get all products
-router.get(
-  '/',
-  asyncHandler(async (req, res) => {
-    // TODO: Implement product fetching with filters
-    res.json({ message: 'Get all products' });
-  })
-);
+// Public routes
+router.get('/', productController.getAllProducts)
+router.get('/featured', productController.getFeaturedProducts)
+router.get('/new', productController.getNewProducts)
+router.get('/popular', productController.getPopularProducts)
+router.get('/category/:category', productController.getByCategory)
+router.get('/search', productController.searchProducts)
+router.get('/stats', productController.getStatistics)
+router.get('/:id/related', validateObjectId('id'), productController.getRelatedProducts)
+router.get('/:id', validateObjectId('id'), productController.getProductById)
 
-// Get product by ID
-router.get(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    // TODO: Implement get single product
-    res.json({ message: 'Get product by ID' });
-  })
-);
-
-// Create product (Admin/Vendor only)
+// Protected routes (Admin/Vendor only)
 router.post(
   '/',
   authenticate,
   authorize('admin', 'vendor'),
-  asyncHandler(async (req, res) => {
-    // TODO: Implement product creation
-    res.status(201).json({ message: 'Product created' });
-  })
-);
+  [validateProductName(), validatePrice()],
+  productController.createProduct
+)
 
-// Update product
 router.put(
   '/:id',
   authenticate,
   authorize('admin', 'vendor'),
-  asyncHandler(async (req, res) => {
-    // TODO: Implement product update
-    res.json({ message: 'Product updated' });
-  })
-);
+  validateObjectId('id'),
+  productController.updateProduct
+)
 
-// Delete product
 router.delete(
   '/:id',
   authenticate,
   authorize('admin'),
-  asyncHandler(async (req, res) => {
-    // TODO: Implement product deletion
-    res.json({ message: 'Product deleted' });
-  })
-);
+  validateObjectId('id'),
+  productController.deleteProduct
+)
 
-// Get featured products
-router.get(
-  '/featured/list',
-  asyncHandler(async (req, res) => {
-    // TODO: Implement featured products
-    res.json({ message: 'Get featured products' });
-  })
-);
-
-// Search products
-router.get(
-  '/search/query',
-  asyncHandler(async (req, res) => {
-    // TODO: Implement search
-    res.json({ message: 'Search products' });
-  })
-);
-
-export default router;
+export default router
