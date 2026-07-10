@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>أبو سعد · لوحة التحكم الشخصية</title>
+<meta name="description" content="لوحة أبو سعد الشخصية — مواقيت الصلاة، القرآن الكريم، الأذكار، المسبحة، المهام والتقويم، والبث المباشر في مكان واحد.">
+<meta property="og:title" content="أبو سعد · لوحة التحكم الشخصية">
+<meta property="og:description" content="مواقيت الصلاة، القرآن الكريم، الأذكار، المهام والتقويم — في لوحة واحدة أنيقة.">
+<meta property="og:type" content="website">
 <meta name="theme-color" content="#141312">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -64,6 +68,27 @@
   ::-webkit-scrollbar-track { background:#141312; }
   ::-webkit-scrollbar-thumb { background:linear-gradient(#A98243,#6f5526); border-radius:8px; border:2px solid #141312; }
   ::-webkit-scrollbar-thumb:hover { background:#C9A96A; }
+  :is(a,button,input,select,textarea,[tabindex]):focus-visible { outline:2px solid rgba(201,169,106,0.75); outline-offset:2px; border-radius:6px; }
+
+  /* card entrance animation (skipped for reduced-motion users) */
+  .card.reveal { opacity:0; transform:translateY(14px); }
+  .card.reveal-in { opacity:1; transform:none; transition:opacity .6s ease, transform .6s cubic-bezier(.22,.7,.3,1); }
+  @media (prefers-reduced-motion:reduce){
+    html { scroll-behavior:auto; }
+    *, *::before, *::after { animation-duration:0.001s !important; transition-duration:0.001s !important; }
+    .card.reveal { opacity:1; transform:none; }
+  }
+
+  /* back-to-top */
+  #back-top { position:fixed; bottom:calc(20px + env(safe-area-inset-bottom)); left:20px; z-index:60;
+    width:44px; height:44px; border-radius:50%; border:1px solid rgba(201,169,106,0.4); cursor:pointer;
+    background:linear-gradient(160deg,#2A2622,#1B1815); color:#E4C687; font-size:18px; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 14px 30px -14px rgba(0,0,0,0.8); opacity:0; pointer-events:none; transform:translateY(10px);
+    transition:opacity .3s ease, transform .3s ease; }
+  #back-top.show { opacity:1; pointer-events:auto; transform:none; }
+  #back-top:hover { border-color:#C9A96A; color:#F0DCA8; }
+
   .eyebrow { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#C9A96A; }
   .en { font-family:'Cormorant Garamond',serif; font-style:italic; }
 
@@ -893,6 +918,8 @@
   </div>
   <div class="ii-close" id="ios-install-close">×</div>
 </div>
+
+<button id="back-top" aria-label="العودة إلى الأعلى" title="العودة إلى الأعلى">↑</button>
 
 <script>
 (function () {
@@ -2265,6 +2292,49 @@
     document.getElementById("ios-install-close").addEventListener("click", function () {
       el.style.display = "none";
       try { localStorage.setItem(IOS_HINT_KEY, "1"); } catch (e) {}
+    });
+  })();
+
+  // ===== Offline support (service worker) =====
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+
+  // ===== Card reveal on scroll =====
+  (function () {
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || !("IntersectionObserver" in window)) return;
+    var cards = document.querySelectorAll(".card");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          var el = en.target;
+          el.classList.add("reveal-in");
+          io.unobserve(el);
+          setTimeout(function () { el.classList.remove("reveal", "reveal-in"); }, 700);
+        }
+      });
+    }, { threshold: 0.05 });
+    cards.forEach(function (c) { c.classList.add("reveal"); io.observe(c); });
+  })();
+
+  // ===== Back to top =====
+  (function () {
+    var btn = document.getElementById("back-top");
+    if (!btn) return;
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        btn.classList.toggle("show", window.scrollY > 600);
+        ticking = false;
+      });
+    }, { passive: true });
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   })();
 })();
