@@ -719,152 +719,89 @@
     color:#9A9488; font-size:17px; cursor:pointer; background:rgba(237,233,224,0.05); }
   #ios-install .ii-close:hover { color:#E0796F; }
 
-  /* ============================================================
-     LIGHT THEME — عصري فاتح (default; toggle saves preference)
-     ============================================================ */
-  #theme-toggle { position:fixed; bottom:calc(74px + env(safe-area-inset-bottom)); left:20px; z-index:60;
-    width:44px; height:44px; border-radius:50%; border:1px solid rgba(201,169,106,0.45); cursor:pointer;
-    background:linear-gradient(160deg,#2A2622,#1B1815); color:#E4C687; font-size:17px;
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 14px 30px -14px rgba(0,0,0,0.7); transition:transform .2s ease, background .3s ease; }
-  #theme-toggle:hover { transform:scale(1.08); }
-  body.light #theme-toggle { background:linear-gradient(160deg,#FFFFFF,#F1EBDD); color:#8A6B34; border-color:rgba(160,125,60,0.4); }
-
-  body.light { background:#EDE9E0; }
-  body.light .page { background:radial-gradient(1200px 600px at 80% -10%,rgba(201,169,106,0.14),transparent 60%),linear-gradient(180deg,#F1EDE4,#E9E4D8); }
-  body.light .shell { background:#FBF9F4; box-shadow:0 40px 90px -55px rgba(90,70,35,0.5), 0 0 0 1px rgba(160,125,60,0.12); }
-  body.light ::selection { background:rgba(201,169,106,0.4); color:#2B2620; }
-  body.light ::-webkit-scrollbar-track { background:#E9E4D8; }
-  body.light ::-webkit-scrollbar-thumb { border-color:#E9E4D8; }
-  body.light .card:hover { box-shadow:0 18px 42px -22px rgba(90,70,35,0.35), 0 0 0 1px rgba(160,125,60,0.25); }
-  body.light .eyebrow { color:#8A6B34; }
-
-  /* neutral cards → clean white */
-  body.light #time, body.light #about, body.light #quran, body.light #live, body.light #gallery {
-    background:#FFFFFF; border:1px solid #E8E1D0; box-shadow:0 16px 40px -28px rgba(90,70,35,0.4); }
-  body.light #gallery .title, body.light #live .head .title, body.light #quran .head .title { color:#2B2620; }
-  body.light #live .head .sub, body.light #quran .head .sub, body.light #gallery .label-en { color:#8C8474; }
-
-  /* about */
-  body.light #about .body-text { color:#4A4335; }
-  body.light #about .about-quote { color:rgba(160,125,60,0.14); }
-  body.light #about .about-sign .name { color:#8A6B34; }
-  body.light #about .about-sign { border-top-color:rgba(160,125,60,0.25); }
-
-  /* quran controls */
-  body.light .quran-search-input, body.light #quran .surah-select {
-    background:#F6F2E9; border-color:rgba(160,125,60,0.35); color:#2B2620; }
-  body.light .quran-search-input::placeholder { color:#9A8F79; }
-  body.light #quran .icon-btn { background:rgba(160,125,60,0.1); color:#8A6B34; border-color:rgba(160,125,60,0.3); }
-
-  /* ===== planner: cream paper ===== */
-  body.light #planner {
+  /* ===== Planner light skin (المخطط فقط بورق فاتح — بقية الموقع داكن) ===== */
+  #planner {
     background:
       radial-gradient(130% 90% at 50% -25%,rgba(201,169,106,0.18),transparent 55%),
       repeating-linear-gradient(96deg,rgba(160,125,60,0.035) 0 2px,transparent 2px 8px),
       linear-gradient(160deg,#FBF5E8,#F4EBD7 55%,#EDE1C6);
     border-color:rgba(160,125,60,0.45);
     box-shadow:inset 0 1px 0 rgba(255,255,255,0.8), 0 30px 60px -38px rgba(90,70,35,0.55); }
-  body.light .pl-crest { background:linear-gradient(180deg,rgba(201,169,106,0.14),transparent); border-bottom-color:rgba(160,125,60,0.3); }
-  body.light .pl-title { color:#2B2620; text-shadow:none; }
-  body.light .pl-title .en { color:#8A6B34; }
-  body.light .pl-sign { color:#8A7A57; }
-  body.light .pl-sign b { color:#8A6B34; text-shadow:none; }
-  body.light .pl-orn { color:rgba(138,107,52,0.8); }
-  body.light .pl-tabs { background:rgba(160,125,60,0.1); border-color:rgba(160,125,60,0.25); box-shadow:inset 0 2px 6px rgba(90,70,35,0.12); }
-  body.light .pl-tab { color:#8A7A57; }
-  body.light .pl-tab:hover { color:#6B5426; }
-  body.light .pl-tab.active { color:#241a0c; }
-
-  body.light .ws-nav { background:rgba(160,125,60,0.1); color:#8A6B34; border-color:rgba(160,125,60,0.3); }
-  body.light .ws-day .wd { color:#8A7A57; }
-  body.light .ws-day .dn { color:#4A4335; }
-  body.light .ws-day .hj { color:#A08040; }
-  body.light .ws-day:hover { background:rgba(160,125,60,0.08); }
-  body.light .ws-day.today { background:rgba(201,169,106,0.16); }
-  body.light .ws-day.today .dn { color:#6B5426; }
-  body.light .ws-day.sel .dn { color:#241a0c; }
-
-  body.light #tasks .t-head .title { color:#2B2620; }
-  body.light .t-ring .bg { stroke:rgba(90,70,35,0.12); }
-  body.light .t-ring .pct { color:#8A6B34; }
-  body.light .sec-h .s-name { color:#8A6B34; }
-  body.light .sec-h .s-line { background:linear-gradient(90deg,rgba(160,125,60,0.35),transparent); }
-  body.light .task-composer { background:#FFFFFF; border-color:rgba(160,125,60,0.3); box-shadow:inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 26px -18px rgba(90,70,35,0.4); }
-  body.light .composer-input, body.light .composer-time { background:#F6F2E9; border-color:rgba(160,125,60,0.25); color:#2B2620; }
-  body.light .composer-input::placeholder { color:#9A8F79; }
-  body.light .composer-input:focus { background:#FDFBF6; border-color:rgba(160,125,60,0.55); box-shadow:0 0 0 3px rgba(201,169,106,0.18); }
-  body.light .composer-hint { color:#6B5426; background:rgba(201,169,106,0.12); border-color:rgba(160,125,60,0.4); }
-  body.light .composer-hint b { color:#4A3A18; }
-  body.light .task-row:hover { background:rgba(160,125,60,0.06); }
-  body.light .task-text { color:#2B2620; }
-  body.light .task-row.done .task-text { color:#9A8F79; }
-  body.light .task-check { border-color:rgba(90,70,35,0.3); }
-  body.light .task-time-badge { color:#8A6B34; }
-  body.light .task-edit-input { background:#FFFFFF; color:#2B2620; }
-  body.light .task-empty { color:#9A8F79; }
-  body.light .drag-handle { color:#B7AD98; }
-  body.light .overdue-box { background:linear-gradient(160deg,rgba(216,84,60,0.09),rgba(216,84,60,0.02)); border-color:rgba(216,84,60,0.35); }
-  body.light .overdue-box .ov-h .t { color:#C24A38; }
-  body.light .overdue-box .ov-move { color:#6B5426; background:rgba(201,169,106,0.16); border-color:rgba(160,125,60,0.4); }
-  body.light .ov-date { color:#C24A38; }
-  body.light .task-celebrate { color:#8A6B34; }
-
-  body.light .wk-head .wk-label { color:#2B2620; }
-  body.light .wk-head .nav-btn2 { background:rgba(160,125,60,0.1); color:#8A6B34; border-color:rgba(160,125,60,0.3); }
-  body.light .wk-col { background:rgba(255,255,255,0.65); border-color:rgba(160,125,60,0.2); }
-  body.light .wk-col.today { background:rgba(201,169,106,0.14); border-color:rgba(160,125,60,0.45); }
-  body.light .wk-col .wc-h { border-bottom-color:rgba(160,125,60,0.2); }
-  body.light .wk-col .wc-h .wd { color:#8A7A57; }
-  body.light .wk-col .wc-h .dn, body.light .wk-col.today .wc-h .dn { color:#4A4335; }
-  body.light .wk-chip { background:rgba(160,125,60,0.07); color:#3A342A; }
-  body.light .wk-chip:hover { background:rgba(201,169,106,0.2); }
-  body.light .wk-chip.done { color:#9A8F79; }
-  body.light .wk-more, body.light .wk-empty-col { color:#A08040; }
-
-  body.light #cal .title, body.light #cal .month-label { color:#2B2620; }
-  body.light #cal .hijri { color:#8A6B34; }
-  body.light #cal .today-btn, body.light #cal .nav-btn { background:rgba(160,125,60,0.1); color:#8A6B34; border-color:rgba(160,125,60,0.3); }
-  body.light .weekday-row div { color:#8A6B34; }
-  body.light .day-cell .greg { color:#4A4335; }
-  body.light .day-cell .hij { color:#A08040; }
-  body.light .day-cell:not(.blank):hover { background:rgba(160,125,60,0.1); }
-  body.light .day-cell.today { background:rgba(201,169,106,0.18); border-color:rgba(160,125,60,0.5); }
-  body.light .day-cell.today .greg { color:#6B5426; }
-  body.light .day-cell .day-ring .bg { stroke:rgba(90,70,35,0.12); }
-  body.light .cal-summary { color:#8A6B34; border-top-color:rgba(160,125,60,0.25); }
-  body.light .cal-summary b { color:#2B2620; }
-  body.light #cal .cal-tip { color:#A08040; }
-
-  /* gallery slots */
-  body.light image-slot, body.light .g-slot { --slot-bg:#F6F2E9; }
-
-  /* footer */
-  body.light #social-row {
-    background:radial-gradient(120% 160% at 50% 120%,rgba(201,169,106,0.28),transparent 62%),linear-gradient(165deg,#FFFFFF,#F4EDDC 55%,#EDE2C8);
-    border-color:rgba(160,125,60,0.4);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.9), 0 20px 46px -32px rgba(90,70,35,0.5); }
-  body.light .social-badge { color:#3A342A; background:linear-gradient(160deg,rgba(201,169,106,0.18),rgba(201,169,106,0.06)); border-color:rgba(160,125,60,0.4); box-shadow:inset 0 1px 0 rgba(255,255,255,0.7); }
-  body.light .social-badge b, body.light .social-badge .mail { color:#8A6B34; }
-  body.light #ver-chip { color:#6B5426; background:linear-gradient(160deg,rgba(201,169,106,0.16),rgba(201,169,106,0.05)); border-color:rgba(160,125,60,0.4); }
-
-  /* modals + toast + floaters */
-  body.light #whatsnew-box { background:linear-gradient(165deg,#FFFFFF,#F6F0E2); border-color:rgba(160,125,60,0.5); }
-  body.light #whatsnew-box .wn-title { color:#2B2620; }
-  body.light #whatsnew-box .wn-sub { color:#8C8474; }
-  body.light #whatsnew-box .wn-head { border-bottom-color:rgba(160,125,60,0.22); }
-  body.light .wn-ver { color:#8A6B34; }
-  body.light .wn-item { color:#4A4335; }
-  body.light .wn-rel { border-bottom-color:rgba(160,125,60,0.2); }
-  body.light .tafsir-content { background:#FDFBF6; border-color:#A98243; }
-  body.light .tafsir-content h3 { color:#8A6B34; }
-  body.light .tafsir-text { color:#4A4335; }
-  body.light #update-toast { background:linear-gradient(160deg,#FFFFFF,#F4EDDC); border-color:rgba(160,125,60,0.5); color:#4A3A18; }
-  body.light #back-top { background:linear-gradient(160deg,#FFFFFF,#F1EBDD); color:#8A6B34; border-color:rgba(160,125,60,0.4); box-shadow:0 14px 30px -14px rgba(90,70,35,0.5); }
-  body.light #ios-install { background:linear-gradient(165deg,#FFFFFF,#F4EDDC); border-color:rgba(160,125,60,0.45); }
-  body.light #ios-install .ii-title { color:#2B2620; }
-  body.light #ios-install .ii-sub { color:#6E675B; }
-  body.light #ios-install .ii-sub b { color:#8A6B34; }
+  .pl-crest { background:linear-gradient(180deg,rgba(201,169,106,0.14),transparent); border-bottom-color:rgba(160,125,60,0.3); }
+  .pl-title { color:#2B2620; text-shadow:none; }
+  .pl-title .en { color:#8A6B34; }
+  .pl-sign { color:#8A7A57; }
+  .pl-sign b { color:#8A6B34; text-shadow:none; }
+  .pl-orn { color:rgba(138,107,52,0.8); }
+  .pl-tabs { background:rgba(160,125,60,0.1); border-color:rgba(160,125,60,0.25); box-shadow:inset 0 2px 6px rgba(90,70,35,0.12); }
+  .pl-tab { color:#8A7A57; }
+  .pl-tab:hover { color:#6B5426; }
+  .pl-tab.active { color:#241a0c; }
+  .ws-nav { background:rgba(160,125,60,0.1); color:#8A6B34; border-color:rgba(160,125,60,0.3); }
+  .ws-day .wd { color:#8A7A57; }
+  .ws-day .dn { color:#4A4335; }
+  .ws-day .hj { color:#A08040; }
+  .ws-day:hover { background:rgba(160,125,60,0.08); }
+  .ws-day.today { background:rgba(201,169,106,0.16); }
+  .ws-day.today .dn { color:#6B5426; }
+  .ws-day.sel .dn { color:#241a0c; }
+  #tasks .t-head .title { color:#2B2620; }
+  .t-ring .bg { stroke:rgba(90,70,35,0.12); }
+  .t-ring .pct { color:#8A6B34; }
+  .sec-h .s-name { color:#8A6B34; }
+  .sec-h .s-line { background:linear-gradient(90deg,rgba(160,125,60,0.35),transparent); }
+  .task-composer { background:#FFFFFF; border-color:rgba(160,125,60,0.3); box-shadow:inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 26px -18px rgba(90,70,35,0.4); }
+  .composer-input, .composer-time { background:#F6F2E9; border-color:rgba(160,125,60,0.25); color:#2B2620; }
+  .composer-input::placeholder { color:#9A8F79; }
+  .composer-input:focus { background:#FDFBF6; border-color:rgba(160,125,60,0.55); box-shadow:0 0 0 3px rgba(201,169,106,0.18); }
+  .composer-hint { color:#6B5426; background:rgba(201,169,106,0.12); border-color:rgba(160,125,60,0.4); }
+  .composer-hint b { color:#4A3A18; }
+  .task-row:hover { background:rgba(160,125,60,0.06); }
+  .task-text { color:#2B2620; }
+  .task-row.done .task-text { color:#9A8F79; }
+  .task-check { border-color:rgba(90,70,35,0.3); }
+  .task-time-badge { color:#8A6B34; }
+  .task-edit-input { background:#FFFFFF; color:#2B2620; }
+  .task-empty { color:#9A8F79; }
+  .drag-handle { color:#B7AD98; }
+  .overdue-box { background:linear-gradient(160deg,rgba(216,84,60,0.09),rgba(216,84,60,0.02)); border-color:rgba(216,84,60,0.35); }
+  .overdue-box .ov-h .t { color:#C24A38; }
+  .overdue-box .ov-move { color:#6B5426; background:rgba(201,169,106,0.16); border-color:rgba(160,125,60,0.4); }
+  .ov-date { color:#C24A38; }
+  .task-celebrate { color:#8A6B34; }
+  .wk-head .wk-label { color:#2B2620; }
+  .wk-head .nav-btn2 { background:rgba(160,125,60,0.1); color:#8A6B34; border-color:rgba(160,125,60,0.3); }
+  .wk-col { background:rgba(255,255,255,0.65); border-color:rgba(160,125,60,0.2); }
+  .wk-col.today { background:rgba(201,169,106,0.14); border-color:rgba(160,125,60,0.45); }
+  .wk-col .wc-h { border-bottom-color:rgba(160,125,60,0.2); }
+  .wk-col .wc-h .wd { color:#8A7A57; }
+  .wk-col .wc-h .dn, .wk-col.today .wc-h .dn { color:#4A4335; }
+  .wk-chip { background:rgba(160,125,60,0.07); color:#3A342A; }
+  .wk-chip:hover { background:rgba(201,169,106,0.2); }
+  .wk-chip.done { color:#9A8F79; }
+  .wk-more, .wk-empty-col { color:#A08040; }
+  #cal .title, #cal .month-label { color:#2B2620; }
+  #cal .hijri { color:#8A6B34; }
+  #cal .today-btn, #cal .nav-btn { background:rgba(160,125,60,0.1); color:#8A6B34; border-color:rgba(160,125,60,0.3); }
+  .weekday-row div { color:#8A6B34; }
+  .day-cell .greg { color:#4A4335; }
+  .day-cell .hij { color:#A08040; }
+  .day-cell:not(.blank):hover { background:rgba(160,125,60,0.1); }
+  .day-cell.today { background:rgba(201,169,106,0.18); border-color:rgba(160,125,60,0.5); }
+  .day-cell.today .greg { color:#6B5426; }
+  .day-cell .day-ring .bg { stroke:rgba(90,70,35,0.12); }
+  .cal-summary { color:#8A6B34; border-top-color:rgba(160,125,60,0.25); }
+  .cal-summary b { color:#2B2620; }
+  #cal .cal-tip { color:#A08040; }
+  .wk-chip .c-time { color:#8A6B34; }
+  .day-cell .day-ring .fg { stroke:#B08B46; }
+  .day-cell.selected .day-ring .fg { stroke:#3a2a12; }
+  #tasks .t-streak { color:#8A6B34; }
+  #tasks .t-head .date-pill { color:#8A6B34; background:rgba(201,169,106,0.14); border-color:rgba(160,125,60,0.35); }
+  .sec-h.done-sec .s-name { color:#8A7A57; }
+  .sec-h.done-sec .s-n { background:rgba(90,70,35,0.12); color:#6B5426; }
+  .sec-h .s-carret { color:#8A7A57; }
+  .task-edit-btn, .task-remove-btn { color:#9A8F79; }
 </style>
 </head>
 <body>
@@ -1282,7 +1219,6 @@
 </div>
 
 <button id="back-top" aria-label="العودة إلى الأعلى" title="العودة إلى الأعلى">↑</button>
-<button id="theme-toggle" aria-label="تبديل المظهر" title="تبديل المظهر الفاتح/الداكن">☾</button>
 
 <!-- What's new modal -->
 <div id="whatsnew-modal">
@@ -1302,25 +1238,6 @@
 <script>
 (function () {
   "use strict";
-
-  // ===== Theme (light default; preference saved) =====
-  var THEME_KEY = "abusaad_theme";
-  var themeMeta = document.querySelector('meta[name="theme-color"]');
-  function applyTheme(t) {
-    document.body.classList.toggle("light", t === "light");
-    if (themeMeta) themeMeta.setAttribute("content", t === "light" ? "#F1EDE4" : "#141312");
-    var btn = document.getElementById("theme-toggle");
-    if (btn) btn.textContent = t === "light" ? "☾" : "☀";
-  }
-  var savedTheme = null;
-  try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
-  var theme = savedTheme === "dark" ? "dark" : "light";
-  applyTheme(theme);
-  document.getElementById("theme-toggle").addEventListener("click", function () {
-    theme = theme === "light" ? "dark" : "light";
-    applyTheme(theme);
-    try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
-  });
 
   var TASKS_KEY = "abusaad_tasks_v1";
   var GALLERY_KEY = "abusaad_gallery_v1";
@@ -2984,12 +2901,11 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "3.1.0";
+  var APP_VERSION = "3.1.1";
   var RELEASES = [
-    { v: "3.1.0", date: "١١ يوليو ٢٠٢٦", items: [
-      ["new", "ثيم فاتح عصري جديد أصبح المظهر الافتراضي للموقع"],
-      ["new", "زر تبديل المظهر (فاتح/داكن) — اختيارك يُحفظ تلقائيًا"],
-      ["imp", "البطاقات الملوّنة (الترحيب، الأذكار، المسبحة، المصحف) تتألق فوق الخلفية الفاتحة"]
+    { v: "3.1.1", date: "١١ يوليو ٢٠٢٦", items: [
+      ["imp", "«المُخطَّط» وحده بخلفية ورق كريمي فاتح يبرز وسط التصميم الداكن"],
+      ["fix", "استعادة المظهر الداكن الفاخر لبقية الموقع كما كان"]
     ]},
     { v: "3.0.0", date: "١١ يوليو ٢٠٢٦", items: [
       ["new", "هيكلة جديدة كليًا للمخطط: ثلاثة عروض — اليوم والأسبوع والشهر"],
