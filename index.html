@@ -38,10 +38,10 @@
   .shell { max-width:1180px; margin:0 auto; background:#1A1917; padding:24px; border-radius:30px; box-shadow:0 40px 90px -50px rgba(0,0,0,0.8); }
 
   #app { display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
-    grid-template-areas:'hero hero time time' 'hero hero adhkar adhkar' 'tasks tasks tasks tasks' 'cal cal cal cal' 'quran quran quran quran' 'live live live live' 'tasbih tasbih tasbih tasbih' 'about about gallery gallery' 'social social social social'; }
+    grid-template-areas:'hero hero time time' 'hero hero adhkar adhkar' 'planner planner planner planner' 'quran quran quran quran' 'live live live live' 'tasbih tasbih tasbih tasbih' 'about about gallery gallery' 'social social social social'; }
   @media (max-width:820px){
     #app { grid-template-columns:repeat(2,1fr);
-      grid-template-areas:'hero hero' 'time time' 'adhkar adhkar' 'tasks tasks' 'cal cal' 'quran quran' 'live live' 'tasbih tasbih' 'about about' 'gallery gallery' 'social social'; }
+      grid-template-areas:'hero hero' 'time time' 'adhkar adhkar' 'planner planner' 'quran quran' 'live live' 'tasbih tasbih' 'about about' 'gallery gallery' 'social social'; }
     #hero-name { font-size:40px !important; }
     .shell { padding:16px !important; border-radius:22px !important; }
     .quran-book { flex-direction:column; max-width:100%; }
@@ -49,7 +49,7 @@
   }
   @media (max-width:520px){
     #app { grid-template-columns:1fr;
-      grid-template-areas:'hero' 'time' 'adhkar' 'tasks' 'cal' 'quran' 'live' 'tasbih' 'about' 'gallery' 'social'; }
+      grid-template-areas:'hero' 'time' 'adhkar' 'planner' 'quran' 'live' 'tasbih' 'about' 'gallery' 'social'; }
     #hero-name { font-size:36px !important; }
     #social-row { flex-direction:column; align-items:center; }
     .clock-wrap { max-width:280px; }
@@ -210,7 +210,45 @@
   #about .about-sign .dot { width:6px; height:6px; border-radius:50%; background:#C9A96A; box-shadow:0 0 8px rgba(201,169,106,0.6); }
 
   /* ===== TASKS (upgraded) ===== */
-  #tasks { grid-area:tasks; background:radial-gradient(120% 120% at 0% -20%,rgba(201,169,106,0.07),transparent 45%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#282420,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.14); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; display:flex; flex-direction:column; gap:14px; }
+  /* ===== THE PLANNER — المخطط (signature unified tasks + calendar) ===== */
+  #planner { grid-area:planner; position:relative; overflow:hidden; padding:0;
+    background:
+      radial-gradient(130% 90% at 50% -25%,rgba(201,169,106,0.13),transparent 55%),
+      repeating-linear-gradient(96deg,rgba(0,0,0,0.14) 0 2px,transparent 2px 8px),
+      linear-gradient(160deg,#43301B,#2B1D0E 55%,#1B1207);
+    border:1px solid rgba(201,169,106,0.4);
+    box-shadow:inset 0 1px 0 rgba(255,224,170,0.12), inset 0 0 60px rgba(0,0,0,0.35), 0 30px 60px -34px rgba(0,0,0,0.85); }
+  #planner .pl-corner { position:absolute; width:38px; height:38px; pointer-events:none; opacity:0.75; }
+  #planner .pl-corner svg { width:100%; height:100%; }
+  #planner .pl-corner.tl { top:9px; left:9px; }
+  #planner .pl-corner.tr { top:9px; right:9px; transform:scaleX(-1); }
+  #planner .pl-corner.bl { bottom:9px; left:9px; transform:scaleY(-1); }
+  #planner .pl-corner.br { bottom:9px; right:9px; transform:scale(-1,-1); }
+  .pl-crest { position:relative; text-align:center; padding:24px 60px 18px;
+    background:linear-gradient(180deg,rgba(201,169,106,0.09),transparent);
+    border-bottom:1px solid rgba(201,169,106,0.25); }
+  .pl-crest::after { content:""; position:absolute; bottom:-1px; left:22%; right:22%; height:1px;
+    background:linear-gradient(90deg,transparent,rgba(240,220,168,0.75),transparent); }
+  .pl-orn { display:flex; align-items:center; justify-content:center; gap:12px; color:rgba(228,198,135,0.8); font-size:12px; }
+  .pl-orn::before, .pl-orn::after { content:""; height:1px; width:min(120px,22vw);
+    background:linear-gradient(90deg,transparent,rgba(201,169,106,0.55)); }
+  .pl-orn::after { background:linear-gradient(90deg,rgba(201,169,106,0.55),transparent); }
+  .pl-title { margin-top:6px; font-size:23px; font-weight:700; color:#F5EEDD; letter-spacing:0.01em; text-shadow:0 2px 10px rgba(0,0,0,0.5); }
+  .pl-title .en { font-size:15px; color:#C9A96A; font-weight:500; }
+  .pl-sign { margin-top:3px; font-size:12px; color:#B99B62; }
+  .pl-sign b { font-family:'Aref Ruqaa',serif; font-size:15px; color:#F0DCA8; font-weight:400;
+    text-shadow:0 0 14px rgba(228,198,135,0.35); }
+  .pl-body { display:flex; align-items:stretch; }
+  .pl-divider { width:1px; flex-shrink:0; margin:20px 0;
+    background:linear-gradient(180deg,transparent,rgba(201,169,106,0.4) 18%,rgba(201,169,106,0.4) 82%,transparent); }
+  @media (max-width:900px){
+    .pl-body { flex-direction:column; }
+    .pl-divider { width:auto; height:1px; margin:0 22px;
+      background:linear-gradient(90deg,transparent,rgba(201,169,106,0.4) 18%,rgba(201,169,106,0.4) 82%,transparent); }
+    .pl-crest { padding:20px 46px 15px; }
+  }
+
+  #tasks { flex:1.18; min-width:0; background:transparent; padding:24px 26px 26px; display:flex; flex-direction:column; gap:14px; }
   #tasks .t-head { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
   #tasks .t-head .t-title { display:flex; align-items:baseline; gap:10px; }
   #tasks .t-head .title { font-size:19px; font-weight:700; color:#F1EEE6; }
@@ -257,6 +295,14 @@
   .task-add-btn:hover { filter:brightness(1.08); }
   .task-add-btn:active { transform:scale(0.93); }
 
+  /* smart Arabic input — live parse hint */
+  .composer-hint { display:none; align-items:center; gap:8px; margin-top:-4px; padding:8px 13px; border-radius:11px;
+    font-size:12.5px; color:#E4C687; background:rgba(201,169,106,0.08); border:1px dashed rgba(201,169,106,0.4); }
+  .composer-hint.show { display:flex; animation:hintIn .25s ease; }
+  .composer-hint .h-ico { flex-shrink:0; }
+  .composer-hint b { color:#F0DCA8; font-weight:700; }
+  @keyframes hintIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
+
   .task-list { display:flex; flex-direction:column; }
   .task-row { display:flex; align-items:center; gap:11px; padding:12px 10px; border-radius:12px; position:relative; background:transparent; transition:background .18s ease, opacity .25s ease, transform .25s ease; }
   .task-row:hover { background:rgba(237,233,224,0.03); }
@@ -298,8 +344,8 @@
     #tasks .t-head { align-items:flex-start; }
   }
 
-  /* ===== CALENDAR (upgraded) ===== */
-  #cal { grid-area:cal; background:repeating-linear-gradient(100deg,rgba(0,0,0,0.12) 0px,rgba(0,0,0,0.12) 2px,transparent 2px,transparent 7px),radial-gradient(circle at 14% -6%,rgba(201,169,106,0.14),transparent 45%),linear-gradient(155deg,#5E3B20,#3E2513 60%,#2D1A0D); border:1px solid rgba(201,169,106,0.22); padding:26px; display:flex; flex-direction:column; box-shadow:inset 0 1px 0 rgba(255,215,160,0.08), 0 18px 38px -22px rgba(0,0,0,0.7); }
+  /* ===== CALENDAR pane (inside the planner) ===== */
+  #cal { flex:1; min-width:0; background:rgba(0,0,0,0.16); padding:24px 26px 26px; display:flex; flex-direction:column; }
   #cal .cal-inner { max-width:760px; width:100%; margin:0 auto; }
   #cal .head { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
   #cal .title { font-size:18px; font-weight:700; color:#F5EEDD; }
@@ -729,7 +775,20 @@
       </div>
 
       <!-- TASKS -->
-      <div id="tasks" class="card">
+      <div id="planner" class="card">
+        <div class="pl-corner tl"><svg viewBox="0 0 40 40" fill="none"><path d="M2 38V12Q2 2 12 2H38" stroke="#C9A96A" stroke-width="1.4"/><path d="M7 38V15Q7 7 15 7H38" stroke="#C9A96A" stroke-width="0.7" opacity="0.55"/><circle cx="12" cy="12" r="2.2" fill="#C9A96A"/></svg></div>
+        <div class="pl-corner tr"><svg viewBox="0 0 40 40" fill="none"><path d="M2 38V12Q2 2 12 2H38" stroke="#C9A96A" stroke-width="1.4"/><path d="M7 38V15Q7 7 15 7H38" stroke="#C9A96A" stroke-width="0.7" opacity="0.55"/><circle cx="12" cy="12" r="2.2" fill="#C9A96A"/></svg></div>
+        <div class="pl-corner bl"><svg viewBox="0 0 40 40" fill="none"><path d="M2 38V12Q2 2 12 2H38" stroke="#C9A96A" stroke-width="1.4"/><path d="M7 38V15Q7 7 15 7H38" stroke="#C9A96A" stroke-width="0.7" opacity="0.55"/><circle cx="12" cy="12" r="2.2" fill="#C9A96A"/></svg></div>
+        <div class="pl-corner br"><svg viewBox="0 0 40 40" fill="none"><path d="M2 38V12Q2 2 12 2H38" stroke="#C9A96A" stroke-width="1.4"/><path d="M7 38V15Q7 7 15 7H38" stroke="#C9A96A" stroke-width="0.7" opacity="0.55"/><circle cx="12" cy="12" r="2.2" fill="#C9A96A"/></svg></div>
+
+        <div class="pl-crest">
+          <div class="pl-orn">✦ ❁ ✦</div>
+          <div class="pl-title">المُخطَّط <span class="en">· The Planner</span></div>
+          <div class="pl-sign">تصميم وبرمجة <b>أبو سعد</b></div>
+        </div>
+
+        <div class="pl-body">
+      <div id="tasks">
         <svg width="0" height="0" style="position:absolute"><defs>
           <linearGradient id="taskGrad" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stop-color="#E4C687"/><stop offset="1" stop-color="#A98243"/>
@@ -761,16 +820,19 @@
             <div class="prio-dot p-med sel" data-p="med" title="متوسطة"></div>
             <div class="prio-dot p-low" data-p="low" title="منخفضة"></div>
           </div>
-          <input class="composer-input" id="new-task-input" placeholder="أضف مهمة جديدة…">
+          <input class="composer-input" id="new-task-input" placeholder="أضف مهمة… جرّب: اجتماع غدًا الساعة ٥ مساءً">
           <input type="time" class="composer-time" id="new-task-time" title="وقت (اختياري)">
           <div class="task-add-btn" id="add-task-btn">+</div>
         </div>
+        <div class="composer-hint" id="composer-hint"></div>
 
         <div class="task-list" id="task-list"></div>
       </div>
 
-      <!-- CALENDAR -->
-      <div id="cal" class="card">
+      <div class="pl-divider"></div>
+
+      <!-- CALENDAR pane -->
+      <div id="cal">
         <div class="cal-inner">
           <div class="head">
             <div>
@@ -793,6 +855,8 @@
           <div class="cal-summary" id="cal-summary"></div>
         </div>
       </div>
+        </div><!-- /pl-body -->
+      </div><!-- /planner -->
 
       <!-- QURAN -->
       <div id="quran" class="card">
@@ -1288,16 +1352,105 @@
     });
   });
 
+  // ===== Smart Arabic input: understands day words and times inside the text =====
+  // e.g. "اجتماع غدًا الساعة ٥ مساءً" → task "اجتماع" on tomorrow at 17:00
+  var AR_DIGITS = { "٠":"0","١":"1","٢":"2","٣":"3","٤":"4","٥":"5","٦":"6","٧":"7","٨":"8","٩":"9" };
+  function digitsToEn(s) { return s.replace(/[٠-٩]/g, function (d) { return AR_DIGITS[d]; }); }
+  var WEEKDAYS_AR = { "الأحد":0, "الاحد":0, "الإثنين":1, "الاثنين":1, "الثلاثاء":2, "الأربعاء":3, "الاربعاء":3, "الخميس":4, "الجمعة":5, "السبت":6 };
+
+  function parseSmartInput(raw) {
+    var text = raw;
+    var date = null, time = null;
+    var norm = digitsToEn(text);
+
+    // -- day words --
+    var m;
+    if ((m = norm.match(/بعد\s+(غد|بكرة|بكره)[ً-ْ]*/))) {
+      var d2 = new Date(); d2.setDate(d2.getDate() + 2); date = fmt(d2);
+      text = text.replace(/بعد\s+(غد|بكرة|بكره)[ً-ْ]*/, " ");
+    } else if ((m = norm.match(/(غدا|غدً?ا|غد|بكرة|بكره)(\s|$)/))) {
+      var d1 = new Date(); d1.setDate(d1.getDate() + 1); date = fmt(d1);
+      text = text.replace(/(غدا|غدً?ا|غد|بكرة|بكره)(?=\s|$)/, " ");
+    } else if (/(^|\s)اليوم(\s|$)/.test(norm)) {
+      date = fmt(new Date());
+      text = text.replace(/(^|\s)اليوم(?=\s|$)/, " ");
+    } else {
+      for (var wd in WEEKDAYS_AR) {
+        var re = new RegExp("(يوم\\s+)?" + wd + "(\\s|$)");
+        if (re.test(text)) {
+          var target = WEEKDAYS_AR[wd];
+          var dd = new Date();
+          var diff = (target - dd.getDay() + 7) % 7; if (diff === 0) diff = 7; // next occurrence
+          dd.setDate(dd.getDate() + diff); date = fmt(dd);
+          text = text.replace(re, " ");
+          break;
+        }
+      }
+    }
+
+    // -- time: "الساعة ٥", "٥:٣٠ مساء", "٥ م", "5pm-like Arabic suffixes" --
+    var tm = digitsToEn(text).match(/(?:الساعة\s*)?(\d{1,2})(?:[:.](\d{2}))?\s*(صباحا|صباحًا|ص|مساء|مساءً|م|ظهرا|ظهرًا|عصرا|عصرًا|فجرا|فجرًا|ليلا|ليلًا)(?=\s|$)/);
+    var hadSaa = /الساعة/.test(text);
+    if (!tm && hadSaa) tm = digitsToEn(text).match(/الساعة\s*(\d{1,2})(?:[:.](\d{2}))?/);
+    if (tm) {
+      var hh = parseInt(tm[1], 10), mm = tm[2] ? parseInt(tm[2], 10) : 0, suf = tm[3] || "";
+      if (hh >= 0 && hh <= 23 && mm <= 59) {
+        if (/^(مساء|مساءً|م|ليلا|ليلًا)$/.test(suf) && hh < 12) hh += 12;
+        if (/^(ظهرا|ظهرًا)$/.test(suf) && hh < 11) hh += 12;
+        if (/^(عصرا|عصرًا)$/.test(suf) && hh < 12) hh += 12;
+        time = pad(hh) + ":" + pad(mm);
+        // strip the matched phrase from the visible text (work on original string via regexes)
+        text = text.replace(/(الساعة\s*)?[\d٠-٩]{1,2}([:.][\d٠-٩]{2})?\s*(صباحا|صباحًا|ص|مساء|مساءً|م|ظهرا|ظهرًا|عصرا|عصرًا|فجرا|فجرًا|ليلا|ليلًا)(?=\s|$)/, " ");
+        if (time && /الساعة/.test(text)) text = text.replace(/الساعة\s*[\d٠-٩]{1,2}([:.][\d٠-٩]{2})?/, " ");
+      }
+    }
+
+    text = text.replace(/\s+/g, " ").trim();
+    // strip leftover connector words at the edges
+    text = text.replace(/(^| )(في|يوم)( |$)/g, " ").replace(/\s+/g, " ").trim();
+    return { text: text, date: date, time: time };
+  }
+
+  function smartHintLabel(p) {
+    if (!p.date && !p.time) return "";
+    var parts = [];
+    if (p.date) parts.push("<b>" + arDateFull(p.date) + "</b>");
+    if (p.time) {
+      var hm = p.time.split(":"); var h = parseInt(hm[0], 10);
+      var ap = h >= 12 ? "م" : "ص"; var h12 = h % 12; if (h12 === 0) h12 = 12;
+      parts.push("<b>" + toAr(h12 + ":" + hm[1]) + " " + ap + "</b>");
+    }
+    return '<span class="h-ico">✨</span><span>فهمت: ستُضاف في ' + parts.join(" · ") + "</span>";
+  }
+
+  document.getElementById("new-task-input").addEventListener("input", function () {
+    var hint = document.getElementById("composer-hint");
+    var p = parseSmartInput(this.value.trim());
+    var label = this.value.trim() ? smartHintLabel(p) : "";
+    if (label) { hint.innerHTML = label; hint.classList.add("show"); }
+    else hint.classList.remove("show");
+  });
+
   function addTask() {
     var input = document.getElementById("new-task-input");
     var text = input.value.trim();
     if (!text) return;
-    var timeVal = document.getElementById("new-task-time").value || "";
-    var dayList = state.tasks.filter(function (t) { return t.date === state.selectedDate; });
+    var parsed = parseSmartInput(text);
+    var taskText = parsed.text || text;
+    var taskDate = parsed.date || state.selectedDate;
+    var timeVal = document.getElementById("new-task-time").value || parsed.time || "";
+    var dayList = state.tasks.filter(function (t) { return t.date === taskDate; });
     var maxOrder = dayList.reduce(function (m, t) { return Math.max(m, t.order || 0); }, -1);
     var newId = Date.now();
-    state.tasks.push({ id: newId, text: text, done: false, date: state.selectedDate, priority: state.composerPrio, time: timeVal, order: maxOrder + 1 });
+    state.tasks.push({ id: newId, text: taskText, done: false, date: taskDate, priority: state.composerPrio, time: timeVal, order: maxOrder + 1 });
     input.value = ""; document.getElementById("new-task-time").value = "";
+    document.getElementById("composer-hint").classList.remove("show");
+    if (parsed.date && parsed.date !== state.selectedDate) {
+      // jump to the parsed day so the user sees where the task landed
+      state.selectedDate = parsed.date;
+      var pd = new Date(parsed.date + "T00:00:00");
+      state.viewYear = pd.getFullYear(); state.viewMonth = pd.getMonth();
+    }
     saveTasks(); renderTasks(newId); renderCalendar();
     input.focus();
   }
@@ -2353,8 +2506,13 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "2.1.0";
+  var APP_VERSION = "2.2.0";
   var RELEASES = [
+    { v: "2.2.0", date: "١١ يوليو ٢٠٢٦", items: [
+      ["new", "«المُخطَّط»: دمج المهام والتقويم في لوحة واحدة موقّعة بتصميم وبرمجة أبو سعد"],
+      ["new", "إدخال ذكي بالعربية: اكتب «اجتماع غدًا الساعة ٥ مساءً» ويُفهم اليوم والوقت تلقائيًا"],
+      ["imp", "إطار خشبي فاخر بزوايا ذهبية مزخرفة وفاصل ذهبي بين الجناحين"]
+    ]},
     { v: "2.1.0", date: "١١ يوليو ٢٠٢٦", items: [
       ["new", "نظام إصدارات وسجل «ما الجديد» داخل اللوحة"],
       ["new", "إشعار أنيق عند وصول نسخة أحدث من التطبيق"]
