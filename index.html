@@ -592,6 +592,35 @@
   .quran-top-controls { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
   .bookmark-tag { background:rgba(201,169,106,0.15); border:1px solid rgba(201,169,106,0.3); color:#C9A96A; padding:6px 12px; border-radius:12px; font-size:12px; font-weight:500; cursor:pointer; display:flex; align-items:center; gap:8px; transition: all 0.2s ease; }
   .bookmark-tag:hover { background:rgba(201,169,106,0.25); border-color:#C9A96A; }
+
+  /* ===== Quran card light skin (ورق عاجي فاتح — الغلاف الداكن يبرز فوقه) ===== */
+  #quran {
+    background:
+      radial-gradient(130% 90% at 50% -25%,rgba(201,169,106,0.18),transparent 55%),
+      repeating-linear-gradient(96deg,rgba(160,125,60,0.035) 0 2px,transparent 2px 8px),
+      linear-gradient(160deg,#FBF5E8,#F4EBD7 55%,#EDE1C6);
+    border:1px solid rgba(160,125,60,0.45);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.8), 0 30px 60px -38px rgba(90,70,35,0.55); }
+  #quran .eyebrow { color:#8A6B34; }
+  #quran .head .sub { color:#8A7A57; }
+  #quran .surah-select { background:#FDFBF6; border-color:rgba(160,125,60,0.4); color:#2B2620; }
+  #quran .icon-btn { background:rgba(160,125,60,0.1); color:#8A6B34; border-color:rgba(160,125,60,0.35); }
+  #quran .icon-btn:hover { background:rgba(160,125,60,0.2); }
+  #quran .quran-search-input { background:#FDFBF6; border-color:rgba(160,125,60,0.4); color:#2B2620; }
+  #quran .quran-search-input::placeholder { color:#9A8F79; }
+  .quran-bookmark-bar { background:rgba(201,169,106,0.14); border-color:rgba(160,125,60,0.35); }
+  .quran-bookmark-bar .bm-label { color:#6B5426; }
+  .quran-bookmark-bar .bm-label b { color:#8A6B34; }
+  .quran-source-note { color:#A08040; }
+  .quran-nav .nav-btn { background:rgba(160,125,60,0.1); border-color:rgba(160,125,60,0.35); color:#8A6B34; }
+  .quran-nav .nav-btn:hover { background:rgba(160,125,60,0.2); }
+  .quran-nav .loc-label { color:#6B5426; }
+  .bookmark-tag { background:rgba(201,169,106,0.16); border-color:rgba(160,125,60,0.4); color:#6B5426; }
+  .bookmark-tag:hover { background:rgba(201,169,106,0.3); border-color:#A98243; }
+  .quran-book { box-shadow:0 30px 60px -30px rgba(90,60,20,0.55), inset 0 0 0 1px rgba(201,169,106,0.4); }
+  #quran:fullscreen { background:linear-gradient(160deg,#FBF5E8,#EDE1C6); }
+  #quran .audio-controls { background:rgba(201,169,106,0.12); border-color:rgba(160,125,60,0.3); }
+  #quran .audio-info { color:#6B5426; }
   .bookmark-tag .remove-bm { font-weight:bold; font-size:14px; color:#E07A5F; padding: 0 4px; }
   .bookmark-tag .remove-bm:hover { color:#ff4d4d; }
   .ayah-num.bookmarked { background:#C9A96A !important; color:#1A1917 !important; border-color:#C9A96A !important; box-shadow: 0 0 8px rgba(201,169,106,0.5); }
@@ -2901,8 +2930,12 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "3.1.1";
+  var APP_VERSION = "3.2.0";
   var RELEASES = [
+    { v: "3.2.0", date: "١١ يوليو ٢٠٢٦", items: [
+      ["imp", "بطاقة المصحف بخلفية ورق عاجي فاتح واضح — غلاف المصحف الذهبي يبرز فوقها"],
+      ["imp", "حقل البحث وأزرار التنقل وشريط العلامات بألوان فاتحة متناسقة"]
+    ]},
     { v: "3.1.1", date: "١١ يوليو ٢٠٢٦", items: [
       ["imp", "«المُخطَّط» وحده بخلفية ورق كريمي فاتح يبرز وسط التصميم الداكن"],
       ["fix", "استعادة المظهر الداكن الفاخر لبقية الموقع كما كان"]
