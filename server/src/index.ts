@@ -40,7 +40,7 @@ const limiter = rateLimit({
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 20,
   skipSuccessfulRequests: true
 });
 
@@ -75,7 +75,23 @@ app.get('/api/health', (req: Request, res: Response) => {
 import authRouter from './routes/auth.js';
 import Product from './models/Product.js';
 import User from './models/User.js';
+// Register the Review schema — populate('reviews') throws MissingSchemaError
+// on every product query if this model is never imported
+import './models/Review.js';
 import { runSeed } from './utils/seedData.js';
+
+// Quick diagnostics: reports what the database currently contains
+app.get('/api/setup/status', async (req: Request, res: Response) => {
+  try {
+    const [products, users] = await Promise.all([
+      Product.countDocuments(),
+      User.countDocuments()
+    ]);
+    res.json({ success: true, database: 'connected', products, users });
+  } catch (error: any) {
+    res.status(500).json({ success: false, database: 'error', message: error.message });
+  }
+});
 
 // One-time setup: seeds demo data ONLY while the database is still empty.
 // Once any product or user exists it permanently refuses, so it is safe
@@ -149,6 +165,22 @@ const startServer = async () => {
     console.log('🔌 Connecting to database...');
     await connectDB();
     console.log('✅ Database connected');
+
+    // Self-seeding: a fresh deployment with an empty database fills itself
+    // with the demo catalog so the storefront is never blank
+    try {
+      const [productCount, userCount] = await Promise.all([
+        Product.countDocuments(),
+        User.countDocuments()
+      ]);
+      if (productCount === 0 && userCount === 0) {
+        console.log('🌱 Empty database detected — seeding demo data...');
+        const result = await runSeed();
+        console.log(`✅ Seeded ${result.products} products and ${result.users} users`);
+      }
+    } catch (seedError) {
+      console.error('⚠️ Auto-seed failed (continuing anyway):', seedError);
+    }
 
     app.listen(PORT, () => {
       console.log(`🚀 Server is running on port ${PORT}`);
