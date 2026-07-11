@@ -465,6 +465,45 @@
   .tafsir-content h3 { color:#C9A96A; margin-top:0; font-size:18px; border-bottom:1px solid rgba(201,169,106,0.2); padding-bottom:10px; }
   .tafsir-text { color:#C4BFB3; line-height:1.8; font-size:15px; margin-top:16px; max-height:300px; overflow:auto; }
   .close-tafsir { position:absolute; top:16px; left:16px; color:#7C766A; cursor:pointer; font-size:20px; }
+
+  /* ===== version chip + what's-new modal + update toast ===== */
+  #ver-chip { position:relative; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px; cursor:pointer;
+    border:1px solid rgba(201,169,106,0.28); background:linear-gradient(160deg,rgba(201,169,106,0.10),rgba(201,169,106,0.03));
+    color:#E4C687; font-size:12.5px; font-weight:500; transition:border-color .2s ease, background .2s ease; }
+  #ver-chip:hover { border-color:#C9A96A; background:rgba(201,169,106,0.14); }
+  #ver-chip .ver-dot { width:7px; height:7px; border-radius:50%; background:#E0463C; box-shadow:0 0 6px rgba(224,70,60,0.8); display:none; }
+  #ver-chip.has-new .ver-dot { display:block; animation:verpulse 1.6s infinite; }
+  @keyframes verpulse { 50% { opacity:0.35; } }
+
+  #whatsnew-modal { position:fixed; inset:0; background:rgba(0,0,0,0.82); z-index:10000; display:none; align-items:center; justify-content:center; padding:20px; }
+  #whatsnew-box { background:linear-gradient(165deg,#26221F,#1B1815); border:1px solid rgba(201,169,106,0.45); border-radius:22px;
+    max-width:520px; width:100%; max-height:min(78vh,640px); display:flex; flex-direction:column; position:relative;
+    box-shadow:0 40px 80px rgba(0,0,0,0.6); overflow:hidden; }
+  #whatsnew-box .wn-head { padding:22px 26px 16px; border-bottom:1px solid rgba(201,169,106,0.16); }
+  #whatsnew-box .wn-title { color:#F0DCA8; font-size:19px; font-weight:700; }
+  #whatsnew-box .wn-sub { color:#9A9488; font-size:12.5px; margin-top:4px; }
+  #whatsnew-box .wn-close { position:absolute; top:18px; left:18px; color:#7C766A; cursor:pointer; font-size:22px; line-height:1; }
+  #whatsnew-box .wn-close:hover { color:#E0796F; }
+  #whatsnew-list { overflow:auto; padding:18px 26px 24px; scrollbar-width:thin; scrollbar-color:rgba(176,139,70,0.4) transparent; }
+  .wn-rel { padding:14px 0 16px; border-bottom:1px dashed rgba(201,169,106,0.14); }
+  .wn-rel:last-child { border-bottom:none; }
+  .wn-rel-head { display:flex; align-items:baseline; gap:10px; }
+  .wn-ver { font-family:'Space Mono',monospace; color:#C9A96A; font-size:13.5px; font-weight:700; }
+  .wn-date { color:#7C766A; font-size:11.5px; }
+  .wn-latest { font-size:10px; color:#141312; background:linear-gradient(120deg,#E4C687,#C9A96A); border-radius:999px; padding:2px 9px; font-weight:700; }
+  .wn-item { display:flex; gap:9px; align-items:flex-start; margin-top:9px; color:#C4BFB3; font-size:13.5px; line-height:1.7; }
+  .wn-tag { flex-shrink:0; font-size:10.5px; font-weight:700; border-radius:6px; padding:2px 8px; margin-top:3px; }
+  .wn-tag.new { color:#8FC97E; background:rgba(143,201,126,0.12); border:1px solid rgba(143,201,126,0.25); }
+  .wn-tag.imp { color:#E4C687; background:rgba(201,169,106,0.10); border:1px solid rgba(201,169,106,0.25); }
+  .wn-tag.fix { color:#E0796F; background:rgba(224,70,60,0.10); border:1px solid rgba(224,70,60,0.25); }
+
+  #update-toast { position:fixed; bottom:calc(20px + env(safe-area-inset-bottom)); right:50%; transform:translate(50%,80px); z-index:10001;
+    display:flex; align-items:center; gap:10px; padding:13px 20px; border-radius:14px;
+    background:linear-gradient(160deg,#2A2622,#1B1815); border:1px solid rgba(201,169,106,0.5); color:#F0DCA8;
+    font-size:13.5px; font-weight:500; box-shadow:0 18px 44px -14px rgba(0,0,0,0.9); opacity:0; pointer-events:none;
+    transition:transform .45s cubic-bezier(.22,.7,.3,1), opacity .45s ease; }
+  #update-toast.show { opacity:1; transform:translate(50%,0); pointer-events:auto; }
+  #update-toast .ut-icon { color:#8FC97E; font-size:16px; }
   
   /* Audio Player */
   .audio-controls { display:flex; align-items:center; gap:10px; margin-top:10px; background:rgba(201,169,106,0.05); padding:8px 14px; border-radius:12px; border:1px solid rgba(201,169,106,0.15); }
@@ -888,6 +927,7 @@
           <span class="social-badge"><b>in</b> لينكدإن</span>
           <span class="social-badge"><b>◎</b> إنستغرام</span>
           <a href="mailto:msms11111@gmail.com" class="social-badge"><b>@</b> البريد <span dir="ltr" class="mail">msms11111@gmail.com</span></a>
+          <span id="ver-chip" role="button" tabindex="0" title="ما الجديد؟"><span class="ver-dot"></span>✦ <span id="ver-num"></span></span>
         </div>
       </div>
 
@@ -920,6 +960,21 @@
 </div>
 
 <button id="back-top" aria-label="العودة إلى الأعلى" title="العودة إلى الأعلى">↑</button>
+
+<!-- What's new modal -->
+<div id="whatsnew-modal">
+  <div id="whatsnew-box">
+    <span class="wn-close" id="whatsnew-close">×</span>
+    <div class="wn-head">
+      <div class="wn-title">ما الجديد؟</div>
+      <div class="wn-sub">سجل تحديثات وتحسينات اللوحة</div>
+    </div>
+    <div id="whatsnew-list"></div>
+  </div>
+</div>
+
+<!-- Update toast -->
+<div id="update-toast"><span class="ut-icon">✓</span><span>تم تحديث التطبيق إلى أحدث نسخة</span></div>
 
 <script>
 (function () {
@@ -2295,10 +2350,88 @@
     });
   })();
 
-  // ===== Offline support (service worker) =====
+  // ===== App version + what's-new (release notes) =====
+  var APP_VERSION = "2.1.0";
+  var RELEASES = [
+    { v: "2.1.0", date: "١١ يوليو ٢٠٢٦", items: [
+      ["new", "نظام إصدارات وسجل «ما الجديد» داخل اللوحة"],
+      ["new", "إشعار أنيق عند وصول نسخة أحدث من التطبيق"]
+    ]},
+    { v: "2.0.0", date: "١١ يوليو ٢٠٢٦", items: [
+      ["new", "يعمل بدون إنترنت ويفتح فورًا (Service Worker)"],
+      ["new", "زر العودة إلى أعلى الصفحة"],
+      ["imp", "حركة ظهور ناعمة للبطاقات أثناء التمرير"],
+      ["imp", "وصف عربي عند مشاركة الرابط ونتائج البحث"]
+    ]},
+    { v: "1.9.0", date: "٧ يوليو ٢٠٢٦", items: [
+      ["imp", "خلفيات فاخرة متعددة الطبقات لكل البطاقات"],
+      ["imp", "إثراء بطاقة «نبذة عني» بتوقيع ذهبي وزخرفة"]
+    ]},
+    { v: "1.8.0", date: "٧ يوليو ٢٠٢٦", items: [
+      ["new", "تثبيت اللوحة كتطبيق على الآيفون (ملء الشاشة وأيقونة ذهبية)"]
+    ]},
+    { v: "1.6.0", date: "٦ يوليو ٢٠٢٦", items: [
+      ["new", "نظام إنتاجية متقدم: تقويم ميلادي وهجري مع مهام لكل يوم"],
+      ["imp", "إعادة ترتيب أقسام الصفحة في مجموعات منطقية"]
+    ]},
+    { v: "1.5.0", date: "٥ يوليو ٢٠٢٦", items: [
+      ["new", "بطاقة أذكار الصباح والمساء مع عدّاد"],
+      ["fix", "إصلاح انهيار تخطيط الصفحة"]
+    ]}
+  ];
+  var TAG_LABEL = { new: "جديد", imp: "تحسين", fix: "إصلاح" };
+
+  (function () {
+    var chip = document.getElementById("ver-chip");
+    var num = document.getElementById("ver-num");
+    var modal = document.getElementById("whatsnew-modal");
+    var list = document.getElementById("whatsnew-list");
+    if (!chip || !modal) return;
+    num.textContent = "الإصدار " + toAr(APP_VERSION.replace(/\.0$/, ""));
+
+    var SEEN_KEY = "abusaad_seen_version";
+    var seen = null;
+    try { seen = localStorage.getItem(SEEN_KEY); } catch (e) {}
+    if (seen !== APP_VERSION) chip.classList.add("has-new");
+
+    function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+    list.innerHTML = RELEASES.map(function (r, i) {
+      return '<div class="wn-rel"><div class="wn-rel-head">' +
+        '<span class="wn-ver" dir="ltr">v' + r.v + '</span>' +
+        '<span class="wn-date">' + r.date + '</span>' +
+        (i === 0 ? '<span class="wn-latest">الأحدث</span>' : '') +
+        '</div>' +
+        r.items.map(function (it) {
+          return '<div class="wn-item"><span class="wn-tag ' + it[0] + '">' + TAG_LABEL[it[0]] + '</span><span>' + esc(it[1]) + '</span></div>';
+        }).join('') + '</div>';
+    }).join('');
+
+    function open() {
+      modal.style.display = "flex";
+      chip.classList.remove("has-new");
+      try { localStorage.setItem(SEEN_KEY, APP_VERSION); } catch (e) {}
+    }
+    function close() { modal.style.display = "none"; }
+    chip.addEventListener("click", open);
+    chip.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    document.getElementById("whatsnew-close").addEventListener("click", close);
+    modal.addEventListener("click", function (e) { if (e.target === modal) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && modal.style.display === "flex") close(); });
+  })();
+
+  // ===== Offline support (service worker) + update notice =====
   if ("serviceWorker" in navigator && location.protocol === "https:") {
     window.addEventListener("load", function () {
       navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+    // When a new version of the app takes over, let the user know.
+    var hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (!hadController) { hadController = true; return; } // first install, not an update
+      var t = document.getElementById("update-toast");
+      if (!t) return;
+      t.classList.add("show");
+      setTimeout(function () { t.classList.remove("show"); }, 5000);
     });
   }
 

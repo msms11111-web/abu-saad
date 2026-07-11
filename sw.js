@@ -2,7 +2,9 @@
    - HTML: network-first (so new deployments show up right away),
      falling back to the cached copy when offline.
    - Fonts/icons/other assets: stale-while-revalidate. */
-var CACHE = "abusaad-v1";
+/* Bump this with each release (kept in sync with APP_VERSION in index.html)
+   so old caches are cleared and clients pick up the new version. */
+var CACHE = "abusaad-v2.1.0";
 
 self.addEventListener("install", function (e) {
   self.skipWaiting();
