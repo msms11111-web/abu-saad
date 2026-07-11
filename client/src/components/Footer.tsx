@@ -19,8 +19,8 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-gray-400">
               <li><a href="/" className="hover:text-primary transition">الرئيسية</a></li>
               <li><a href="/products" className="hover:text-primary transition">المنتجات</a></li>
-              <li><a href="#" className="hover:text-primary transition">المدونة</a></li>
-              <li><a href="#" className="hover:text-primary transition">الأسئلة الشائعة</a></li>
+              <li><a href="/about" className="hover:text-primary transition">من نحن</a></li>
+              <li><a href="/contact" className="hover:text-primary transition">الأسئلة الشائعة</a></li>
             </ul>
           </div>
 
@@ -28,10 +28,10 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-primary mb-4">الدعم</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-primary transition">اتصل بنا</a></li>
-              <li><a href="#" className="hover:text-primary transition">سياسة الخصوصية</a></li>
-              <li><a href="#" className="hover:text-primary transition">شروط الخدمة</a></li>
-              <li><a href="#" className="hover:text-primary transition">إرجاع المنتجات</a></li>
+              <li><a href="/contact" className="hover:text-primary transition">اتصل بنا</a></li>
+              <li><a href="/privacy" className="hover:text-primary transition">سياسة الخصوصية</a></li>
+              <li><a href="/terms" className="hover:text-primary transition">الشروط والأحكام</a></li>
+              <li><a href="/returns" className="hover:text-primary transition">الاستبدال والاسترجاع</a></li>
             </ul>
           </div>
 

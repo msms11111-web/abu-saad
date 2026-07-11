@@ -12,6 +12,7 @@ import OrderPage from './pages/OrderPage'
 import ProfilePage from './pages/ProfilePage'
 import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
+import { AboutPage, TermsPage, ReturnsPage, PrivacyPage, ContactPage } from './pages/LegalPages'
 import 'react-toastify/dist/ReactToastify.css'
 
 // Protected route component
@@ -40,6 +41,11 @@ function App() {
             <Route path="/products" element={<ProductPage />} />
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/returns" element={<ReturnsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
             {/* Protected routes */}
             <Route
