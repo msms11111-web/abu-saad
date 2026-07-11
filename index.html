@@ -51,7 +51,7 @@
     #app { grid-template-columns:1fr;
       grid-template-areas:'hero' 'time' 'adhkar' 'tasks' 'cal' 'quran' 'live' 'tasbih' 'about' 'gallery' 'social'; }
     #hero-name { font-size:36px !important; }
-    #social-row { flex-direction:column; align-items:flex-start !important; }
+    #social-row { flex-direction:column; align-items:center; }
     .clock-wrap { max-width:280px; }
     #hero { min-height:220px; padding:20px; }
   }
@@ -467,7 +467,7 @@
   .close-tafsir { position:absolute; top:16px; left:16px; color:#7C766A; cursor:pointer; font-size:20px; }
 
   /* ===== version chip + what's-new modal + update toast ===== */
-  #ver-chip { position:relative; display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:999px; cursor:pointer;
+  #ver-chip { position:relative; display:inline-flex; align-items:center; gap:7px; padding:11px 20px; border-radius:999px; cursor:pointer;
     border:1px solid rgba(201,169,106,0.28); background:linear-gradient(160deg,rgba(201,169,106,0.10),rgba(201,169,106,0.03));
     color:#E4C687; font-size:12.5px; font-weight:500; transition:border-color .2s ease, background .2s ease; }
   #ver-chip:hover { border-color:#C9A96A; background:rgba(201,169,106,0.14); }
@@ -510,16 +510,24 @@
   .play-btn { background:#C9A96A; color:#1A1917; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px; }
   .audio-info { font-size:12px; color:#C4BFB3; flex:1; }
 
-  /* SOCIAL */
-  #social-row { grid-area:social; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:22px 26px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
-  #social-row .connect { color:#F1EEE6; font-size:16px; font-weight:500; }
-  #social-row .connect .en { color:#C9A96A; }
-  #social-row .links { display:flex; flex-wrap:wrap; gap:10px; }
-  .social-badge { display:flex; align-items:center; gap:8px; background:rgba(237,233,224,0.05); border:1px solid rgba(237,233,224,0.1); color:#EDE9E0; padding:9px 15px; border-radius:12px; font-size:13px; text-decoration:none; cursor:default; }
-  .social-badge b { color:#C9A96A; }
-  a.social-badge { cursor:pointer; transition:background .2s ease, border-color .2s ease; }
-  a.social-badge:hover { background:rgba(201,169,106,0.15); border-color:#C9A96A; }
-  .social-badge .mail { color:#C9A96A; font-family:'Space Mono',monospace; font-size:12px; }
+  /* FOOTER (email + version) */
+  #social-row { grid-area:social; position:relative; overflow:hidden;
+    background:radial-gradient(120% 160% at 50% 120%,rgba(201,169,106,0.16),transparent 62%),
+      repeating-linear-gradient(94deg,rgba(255,240,210,0.02) 0 1px,transparent 1px 5px),
+      linear-gradient(165deg,#2C2620,#221D18 55%,#181410);
+    border:1px solid rgba(201,169,106,0.28);
+    box-shadow:inset 0 1px 0 rgba(255,238,200,0.08),inset 0 -22px 44px -30px rgba(201,169,106,0.25),0 20px 46px -30px rgba(0,0,0,0.75);
+    padding:26px; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:14px; }
+  #social-row::before { content:""; position:absolute; top:0; left:12%; right:12%; height:1px;
+    background:linear-gradient(90deg,transparent,rgba(228,198,135,0.55),transparent); }
+  .social-badge { display:flex; align-items:center; gap:9px; color:#EDE9E0; padding:11px 20px; border-radius:999px; font-size:13.5px; text-decoration:none;
+    background:linear-gradient(160deg,rgba(201,169,106,0.16),rgba(201,169,106,0.05));
+    border:1px solid rgba(201,169,106,0.4);
+    box-shadow:inset 0 1px 0 rgba(255,238,200,0.1),0 10px 24px -14px rgba(0,0,0,0.8);
+    cursor:pointer; transition:background .2s ease, border-color .2s ease, transform .2s ease; }
+  .social-badge:hover { background:rgba(201,169,106,0.2); border-color:#C9A96A; transform:translateY(-1px); }
+  .social-badge b { color:#E4C687; }
+  .social-badge .mail { color:#E4C687; font-family:'Space Mono',monospace; font-size:12.5px; }
 
   /* TASBIH */
   #tasbih { grid-area:tasbih; background:radial-gradient(circle at 25% -10%,rgba(201,169,106,0.14),transparent 55%),linear-gradient(160deg,#3B1F4D,#2A1638 60%,#180C1F); border:1px solid rgba(201,169,106,0.22); padding:32px; display:flex; flex-direction:column; align-items:center; gap:20px; }
@@ -921,14 +929,8 @@
 
       <!-- SOCIAL -->
       <div id="social-row" class="card">
-        <div class="connect">تواصل معي · <span dir="ltr" class="en">Let's connect</span></div>
-        <div class="links">
-          <span class="social-badge"><b>X</b> تويتر</span>
-          <span class="social-badge"><b>in</b> لينكدإن</span>
-          <span class="social-badge"><b>◎</b> إنستغرام</span>
-          <a href="mailto:msms11111@gmail.com" class="social-badge"><b>@</b> البريد <span dir="ltr" class="mail">msms11111@gmail.com</span></a>
-          <span id="ver-chip" role="button" tabindex="0" title="ما الجديد؟"><span class="ver-dot"></span>✦ <span id="ver-num"></span></span>
-        </div>
+        <a href="mailto:msms11111@gmail.com" class="social-badge"><b>@</b> البريد <span dir="ltr" class="mail">msms11111@gmail.com</span></a>
+        <span id="ver-chip" role="button" tabindex="0" title="ما الجديد؟"><span class="ver-dot"></span>✦ <span id="ver-num"></span></span>
       </div>
 
     </div>
