@@ -238,17 +238,108 @@
   .pl-sign { margin-top:3px; font-size:12px; color:#B99B62; }
   .pl-sign b { font-family:'Aref Ruqaa',serif; font-size:15px; color:#F0DCA8; font-weight:400;
     text-shadow:0 0 14px rgba(228,198,135,0.35); }
-  .pl-body { display:flex; align-items:stretch; }
-  .pl-divider { width:1px; flex-shrink:0; margin:20px 0;
-    background:linear-gradient(180deg,transparent,rgba(201,169,106,0.4) 18%,rgba(201,169,106,0.4) 82%,transparent); }
-  @media (max-width:900px){
-    .pl-body { flex-direction:column; }
-    .pl-divider { width:auto; height:1px; margin:0 22px;
-      background:linear-gradient(90deg,transparent,rgba(201,169,106,0.4) 18%,rgba(201,169,106,0.4) 82%,transparent); }
-    .pl-crest { padding:20px 46px 15px; }
+  @media (max-width:900px){ .pl-crest { padding:20px 46px 15px; } }
+
+  /* view tabs (اليوم / الأسبوع / الشهر) */
+  .pl-tabs { display:flex; justify-content:center; gap:4px; margin:18px auto 0; padding:5px; width:max-content; max-width:92%;
+    background:rgba(0,0,0,0.32); border:1px solid rgba(201,169,106,0.22); border-radius:999px;
+    box-shadow:inset 0 2px 8px rgba(0,0,0,0.45); }
+  .pl-tab { padding:8px 26px; border-radius:999px; font-size:13.5px; color:#B99B62; cursor:pointer; user-select:none;
+    transition:color .2s ease, background .25s ease, box-shadow .25s ease; white-space:nowrap; }
+  .pl-tab:hover { color:#E4C687; }
+  .pl-tab.active { background:linear-gradient(155deg,#E4C687,#A98243); color:#241a0c; font-weight:700;
+    box-shadow:0 6px 16px -8px rgba(201,169,106,0.7), inset 0 1px 0 rgba(255,255,255,0.35); }
+  @media (max-width:520px){ .pl-tab { padding:8px 18px; } }
+
+  .pl-view { padding:20px 26px 26px; }
+  @media (max-width:520px){ .pl-view { padding:16px 16px 20px; } }
+
+  /* week strip (شريط الأيام) */
+  .week-strip { display:flex; align-items:stretch; gap:8px; margin-bottom:16px; }
+  .ws-nav { flex-shrink:0; width:30px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    background:rgba(255,215,160,0.07); border:1px solid rgba(201,169,106,0.25); color:#E4C687; cursor:pointer; font-size:15px; user-select:none; }
+  .ws-nav:hover { background:rgba(201,169,106,0.18); }
+  .ws-days { flex:1; display:grid; grid-template-columns:repeat(7,1fr); gap:6px; min-width:0; }
+  .ws-day { position:relative; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 2px 8px;
+    border-radius:14px; border:1px solid transparent; cursor:pointer; user-select:none;
+    transition:background .18s ease, border-color .18s ease, transform .12s ease; }
+  .ws-day:hover { background:rgba(255,235,190,0.07); }
+  .ws-day .wd { font-size:10.5px; color:#B99B62; line-height:1; }
+  .ws-day .dn { font-size:16.5px; font-weight:700; color:#D8CBB2; line-height:1.15; }
+  .ws-day .hj { font-size:9px; color:#9A7B4A; line-height:1; }
+  .ws-day .wdots { display:flex; gap:2.5px; height:4px; margin-top:2px; }
+  .ws-day .wdots i { width:4px; height:4px; border-radius:50%; }
+  .ws-day.today { border-color:rgba(201,169,106,0.5); background:rgba(201,169,106,0.1); }
+  .ws-day.today .dn { color:#F0DCA8; }
+  .ws-day.sel { background:linear-gradient(155deg,#E4C687,#A98243); border-color:transparent;
+    box-shadow:0 8px 18px -8px rgba(201,169,106,0.7); }
+  .ws-day.sel .wd, .ws-day.sel .hj { color:rgba(36,26,12,0.7); }
+  .ws-day.sel .dn { color:#241a0c; }
+  .ws-day.sel .wdots i { background:#241a0c !important; }
+  .ws-day .comp { position:absolute; top:5px; left:7px; font-size:8.5px; color:#8FC97E; }
+  .ws-day.sel .comp { color:#1c4d12; }
+
+  /* time-of-day sections */
+  .sec-h { display:flex; align-items:center; gap:10px; margin:16px 0 4px; }
+  .sec-h:first-child { margin-top:4px; }
+  .sec-h .s-ico { font-size:13px; }
+  .sec-h .s-name { font-size:12.5px; font-weight:700; color:#C9A96A; letter-spacing:0.02em; }
+  .sec-h .s-n { font-family:'Space Mono',monospace; font-size:10px; color:#241a0c; background:linear-gradient(155deg,#E4C687,#B08B46);
+    min-width:18px; height:17px; padding:0 5px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; font-weight:700; }
+  .sec-h .s-line { flex:1; height:1px; background:linear-gradient(90deg,rgba(201,169,106,0.3),transparent); }
+  .sec-h.done-sec { cursor:pointer; }
+  .sec-h.done-sec .s-name { color:#8f8672; }
+  .sec-h.done-sec .s-n { background:rgba(237,233,224,0.14); color:#C4BFB3; }
+  .sec-h .s-carret { font-size:10px; color:#8f8672; transition:transform .2s ease; }
+  .sec-h.open .s-carret { transform:rotate(180deg); }
+
+  /* overdue rollup */
+  .overdue-box { margin:4px 0 8px; border-radius:14px; overflow:hidden;
+    background:linear-gradient(160deg,rgba(224,70,60,0.10),rgba(224,70,60,0.03));
+    border:1px solid rgba(224,101,90,0.35); }
+  .overdue-box .ov-h { display:flex; align-items:center; gap:9px; padding:10px 14px; }
+  .overdue-box .ov-h .t { font-size:12.5px; font-weight:700; color:#E0796F; flex:1; }
+  .overdue-box .ov-move { font-size:11.5px; color:#F0DCA8; background:rgba(201,169,106,0.14); border:1px solid rgba(201,169,106,0.4);
+    padding:5px 12px; border-radius:999px; cursor:pointer; white-space:nowrap; transition:background .2s ease; }
+  .overdue-box .ov-move:hover { background:rgba(201,169,106,0.26); }
+  .overdue-box .task-row { padding:8px 10px; }
+  .overdue-box .ov-date { font-size:10px; color:#E0796F; font-family:'Space Mono',monospace; flex-shrink:0; }
+
+  /* week board */
+  .wk-head { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px; }
+  .wk-head .wk-label { font-size:14px; font-weight:700; color:#F5EEDD; min-width:170px; text-align:center; }
+  .wk-head .nav-btn2 { width:30px; height:30px; border-radius:10px; background:rgba(255,215,160,0.07); border:1px solid rgba(201,169,106,0.25);
+    display:flex; align-items:center; justify-content:center; color:#E4C687; cursor:pointer; user-select:none; }
+  .wk-head .nav-btn2:hover { background:rgba(201,169,106,0.18); }
+  .wk-board { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; align-items:start; }
+  .wk-col { border-radius:14px; background:rgba(0,0,0,0.18); border:1px solid rgba(201,169,106,0.14); padding:9px 7px; min-height:130px; }
+  .wk-col.today { border-color:rgba(201,169,106,0.5); background:rgba(201,169,106,0.07); }
+  .wk-col .wc-h { text-align:center; cursor:pointer; padding-bottom:7px; margin-bottom:7px; border-bottom:1px solid rgba(201,169,106,0.16); }
+  .wk-col .wc-h .wd { font-size:10.5px; color:#B99B62; }
+  .wk-col .wc-h .dn { font-size:15px; font-weight:700; color:#E8DCC2; line-height:1.2; }
+  .wk-col.today .wc-h .dn { color:#F0DCA8; }
+  .wk-col .wc-h:hover .dn { color:#E4C687; }
+  .wk-chip { display:block; width:100%; text-align:right; font-size:11px; line-height:1.45; color:#E3DCCB; margin-bottom:5px;
+    background:rgba(255,240,210,0.05); border-radius:8px; padding:5px 8px; cursor:pointer;
+    border-right:2.5px solid transparent; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    transition:background .15s ease; }
+  .wk-chip:hover { background:rgba(201,169,106,0.14); }
+  .wk-chip.p-high { border-right-color:#E0655A; }
+  .wk-chip.p-med { border-right-color:#E4C687; }
+  .wk-chip.p-low { border-right-color:#7FB5C9; }
+  .wk-chip.done { color:#7C766A; text-decoration:line-through; opacity:0.75; }
+  .wk-chip .c-time { font-family:'Space Mono',monospace; font-size:9px; color:#C9A96A; margin-left:4px; }
+  .wk-more { display:block; text-align:center; font-size:10px; color:#B99B62; padding:2px 0; cursor:pointer; }
+  .wk-empty-col { text-align:center; font-size:16px; color:rgba(201,169,106,0.25); padding:14px 0; }
+  @media (max-width:820px){
+    .wk-board { grid-template-columns:1fr; }
+    .wk-col { min-height:0; display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+    .wk-col .wc-h { display:flex; gap:7px; align-items:baseline; border-bottom:none; padding:0 0 0 8px; margin:0; border-left:1px solid rgba(201,169,106,0.2); }
+    .wk-chip { width:auto; max-width:100%; margin-bottom:0; }
+    .wk-empty-col { padding:0; font-size:12px; }
   }
 
-  #tasks { flex:1.18; min-width:0; background:transparent; padding:24px 26px 26px; display:flex; flex-direction:column; gap:14px; }
+  #tasks { min-width:0; background:transparent; display:flex; flex-direction:column; gap:12px; }
   #tasks .t-head { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
   #tasks .t-head .t-title { display:flex; align-items:baseline; gap:10px; }
   #tasks .t-head .title { font-size:19px; font-weight:700; color:#F1EEE6; }
@@ -344,9 +435,10 @@
     #tasks .t-head { align-items:flex-start; }
   }
 
-  /* ===== CALENDAR pane (inside the planner) ===== */
-  #cal { flex:1; min-width:0; background:rgba(0,0,0,0.16); padding:24px 26px 26px; display:flex; flex-direction:column; }
+  /* ===== CALENDAR (month view inside the planner) ===== */
+  #cal { min-width:0; background:transparent; display:flex; flex-direction:column; }
   #cal .cal-inner { max-width:760px; width:100%; margin:0 auto; }
+  #cal .cal-tip { text-align:center; font-size:11.5px; color:#B99B62; margin-top:10px; }
   #cal .head { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
   #cal .title { font-size:18px; font-weight:700; color:#F5EEDD; }
   #cal .title .en { color:#E4C687; font-weight:500; }
@@ -787,7 +879,19 @@
           <div class="pl-sign">تصميم وبرمجة <b>أبو سعد</b></div>
         </div>
 
-        <div class="pl-body">
+        <div class="pl-tabs" id="pl-tabs">
+          <div class="pl-tab active" data-v="day">اليوم</div>
+          <div class="pl-tab" data-v="week">الأسبوع</div>
+          <div class="pl-tab" data-v="month">الشهر</div>
+        </div>
+
+        <!-- ===== DAY VIEW ===== -->
+        <div class="pl-view" id="view-day">
+        <div class="week-strip">
+          <div class="ws-nav" id="ws-prev">›</div>
+          <div class="ws-days" id="ws-days"></div>
+          <div class="ws-nav" id="ws-next">‹</div>
+        </div>
       <div id="tasks">
         <svg width="0" height="0" style="position:absolute"><defs>
           <linearGradient id="taskGrad" x1="0" y1="0" x2="1" y2="1">
@@ -808,12 +912,6 @@
           </div>
         </div>
 
-        <div class="t-filters" id="tasks-filters">
-          <div class="t-filter active" data-f="all">الكل <span class="n" id="f-all">0</span></div>
-          <div class="t-filter" data-f="active">النشطة <span class="n" id="f-active">0</span></div>
-          <div class="t-filter" data-f="done">المنجزة <span class="n" id="f-done">0</span></div>
-        </div>
-
         <div class="task-composer">
           <div class="composer-prio" id="composer-prio">
             <div class="prio-dot p-high" data-p="high" title="عالية"></div>
@@ -828,10 +926,20 @@
 
         <div class="task-list" id="task-list"></div>
       </div>
+        </div><!-- /view-day -->
 
-      <div class="pl-divider"></div>
+        <!-- ===== WEEK VIEW ===== -->
+        <div class="pl-view" id="view-week" style="display:none">
+          <div class="wk-head">
+            <div class="nav-btn2" id="wk-prev">›</div>
+            <div class="wk-label" id="wk-label"></div>
+            <div class="nav-btn2" id="wk-next">‹</div>
+          </div>
+          <div class="wk-board" id="wk-board"></div>
+        </div>
 
-      <!-- CALENDAR pane -->
+        <!-- ===== MONTH VIEW ===== -->
+        <div class="pl-view" id="view-month" style="display:none">
       <div id="cal">
         <div class="cal-inner">
           <div class="head">
@@ -853,9 +961,10 @@
             <div class="cells-row" id="cal-cells"></div>
           </div>
           <div class="cal-summary" id="cal-summary"></div>
+          <div class="cal-tip">اضغط على أي يوم لفتح مهامه في عرض «اليوم»</div>
         </div>
       </div>
-        </div><!-- /pl-body -->
+        </div><!-- /view-month -->
       </div><!-- /planner -->
 
       <!-- QURAN -->
@@ -1140,7 +1249,8 @@
     tasks: loadTasks(),
     editingId: null,
     editText: "",
-    filter: "all",
+    view: "day",
+    doneOpen: false,
     composerPrio: "med"
   };
 
@@ -1305,7 +1415,7 @@
         cell.appendChild(dots);
       }
 
-      (function (ds) { cell.addEventListener("click", function () { selectDate(ds); }); })(dateStr);
+      (function (ds) { cell.addEventListener("click", function () { selectDate(ds); setView("day"); }); })(dateStr);
       frag.appendChild(cell);
     }
     cellsEl.appendChild(frag);
@@ -1342,15 +1452,148 @@
     });
   });
 
-  Array.prototype.forEach.call(document.querySelectorAll("#tasks-filters .t-filter"), function (f) {
-    f.addEventListener("click", function () {
-      state.filter = f.getAttribute("data-f");
-      Array.prototype.forEach.call(document.querySelectorAll("#tasks-filters .t-filter"), function (x) {
-        x.classList.toggle("active", x === f);
-      });
-      renderTasks();
+  // ---------- Views (اليوم / الأسبوع / الشهر) ----------
+  function setView(v) {
+    state.view = v;
+    document.getElementById("view-day").style.display = v === "day" ? "" : "none";
+    document.getElementById("view-week").style.display = v === "week" ? "" : "none";
+    document.getElementById("view-month").style.display = v === "month" ? "" : "none";
+    Array.prototype.forEach.call(document.querySelectorAll("#pl-tabs .pl-tab"), function (t) {
+      t.classList.toggle("active", t.getAttribute("data-v") === v);
     });
+    if (v === "week") renderWeekBoard();
+    if (v === "month") renderCalendar();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("#pl-tabs .pl-tab"), function (t) {
+    t.addEventListener("click", function () { setView(t.getAttribute("data-v")); });
   });
+
+  function weekStartOf(dateStr) {
+    var p = dateStr.split("-").map(Number);
+    var d = new Date(p[0], p[1] - 1, p[2]);
+    d.setDate(d.getDate() - d.getDay()); // back to Sunday
+    return d;
+  }
+  var WD_SHORT = ["أحد", "إثن", "ثلا", "أرب", "خمي", "جمع", "سبت"];
+
+  function shiftSelected(days) {
+    var p = state.selectedDate.split("-").map(Number);
+    var d = new Date(p[0], p[1] - 1, p[2]);
+    d.setDate(d.getDate() + days);
+    state.selectedDate = fmt(d);
+    state.viewYear = d.getFullYear(); state.viewMonth = d.getMonth();
+    renderTasks(); renderCalendar();
+  }
+  document.getElementById("ws-prev").addEventListener("click", function () { shiftSelected(-7); });
+  document.getElementById("ws-next").addEventListener("click", function () { shiftSelected(7); });
+  document.getElementById("wk-prev").addEventListener("click", function () { shiftSelected(-7); });
+  document.getElementById("wk-next").addEventListener("click", function () { shiftSelected(7); });
+
+  function renderWeekStrip() {
+    var host = document.getElementById("ws-days");
+    host.innerHTML = "";
+    var start = weekStartOf(state.selectedDate);
+    var todayStr = fmt(new Date());
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+      var ds = fmt(d);
+      var s = statsFor(ds);
+      var el = document.createElement("div");
+      el.className = "ws-day" + (ds === todayStr ? " today" : "") + (ds === state.selectedDate ? " sel" : "");
+      var hj = "";
+      if (hijriDayFmt) { try { hj = toAr(hijriDayFmt.format(d).replace(/[^0-9]/g, "")); } catch (e) {} }
+      var dotsHtml = "";
+      if (s.total > 0) {
+        ["high", "med", "low"].forEach(function (p) {
+          if (s.prios[p]) dotsHtml += '<i style="background:' + (p === "high" ? "#E0655A" : p === "med" ? "#E4C687" : "#7FB5C9") + '"></i>';
+        });
+      }
+      el.innerHTML = (s.total > 0 && s.done === s.total ? '<span class="comp">✓</span>' : "") +
+        '<span class="wd">' + WD_SHORT[d.getDay()] + '</span>' +
+        '<span class="dn">' + toAr(d.getDate()) + '</span>' +
+        '<span class="hj">' + hj + '</span>' +
+        '<span class="wdots">' + dotsHtml + '</span>';
+      (function (dds, dd) {
+        el.addEventListener("click", function () {
+          state.selectedDate = dds;
+          state.viewYear = dd.getFullYear(); state.viewMonth = dd.getMonth();
+          renderTasks(); renderCalendar();
+        });
+      })(ds, d);
+      host.appendChild(el);
+    }
+  }
+
+  function renderWeekBoard() {
+    var board = document.getElementById("wk-board");
+    board.innerHTML = "";
+    var start = weekStartOf(state.selectedDate);
+    var end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
+    var todayStr = fmt(new Date());
+    var lbl = "";
+    try {
+      lbl = toAr(start.toLocaleDateString("ar", { day: "numeric", month: "long" })) + " — " +
+            toAr(end.toLocaleDateString("ar", { day: "numeric", month: "long" }));
+    } catch (e) {}
+    document.getElementById("wk-label").textContent = lbl;
+
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+      var ds = fmt(d);
+      var col = document.createElement("div");
+      col.className = "wk-col" + (ds === todayStr ? " today" : "");
+      var head = document.createElement("div");
+      head.className = "wc-h";
+      head.innerHTML = '<div class="wd">' + WD_SHORT[d.getDay()] + '</div><div class="dn">' + toAr(d.getDate()) + '</div>';
+      (function (dds, dd) {
+        head.addEventListener("click", function () {
+          state.selectedDate = dds;
+          state.viewYear = dd.getFullYear(); state.viewMonth = dd.getMonth();
+          renderTasks(); renderCalendar(); setView("day");
+        });
+      })(ds, d);
+      col.appendChild(head);
+
+      var dayList = state.tasks.filter(function (t) { return t.date === ds; });
+      dayList.sort(function (a, b) {
+        if (a.done !== b.done) return a.done ? 1 : -1;
+        if (a.time !== b.time) return (a.time || "99") < (b.time || "99") ? -1 : 1;
+        return (a.order || 0) - (b.order || 0);
+      });
+      if (dayList.length === 0) {
+        var em = document.createElement("div");
+        em.className = "wk-empty-col"; em.textContent = "·";
+        col.appendChild(em);
+      } else {
+        var MAXC = 5;
+        dayList.slice(0, MAXC).forEach(function (t) {
+          var chip = document.createElement("div");
+          chip.className = "wk-chip p-" + t.priority + (t.done ? " done" : "");
+          chip.textContent = t.text;
+          if (t.time) {
+            var tm = document.createElement("span");
+            tm.className = "c-time"; tm.textContent = toAr(t.time);
+            chip.appendChild(tm);
+          }
+          chip.addEventListener("click", function () { toggleTask(t.id); renderWeekBoard(); });
+          col.appendChild(chip);
+        });
+        if (dayList.length > MAXC) {
+          var more = document.createElement("div");
+          more.className = "wk-more"; more.textContent = "+" + toAr(dayList.length - MAXC) + " أخرى…";
+          (function (dds, dd) {
+            more.addEventListener("click", function () {
+              state.selectedDate = dds;
+              state.viewYear = dd.getFullYear(); state.viewMonth = dd.getMonth();
+              renderTasks(); renderCalendar(); setView("day");
+            });
+          })(ds, d);
+          col.appendChild(more);
+        }
+      }
+      board.appendChild(col);
+    }
+  }
 
   // ===== Smart Arabic input: understands day words and times inside the text =====
   // e.g. "اجتماع غدًا الساعة ٥ مساءً" → task "اجتماع" on tomorrow at 17:00
@@ -1524,18 +1767,97 @@
 
   function nowHM() { var n = new Date(); return pad(n.getHours()) + ":" + pad(n.getMinutes()); }
 
+  function buildRow(t, animateNewId, extraBadge) {
+    var listEl = document.getElementById("task-list");
+    var todayStr = fmt(new Date());
+    var row = document.createElement("div");
+    row.className = "task-row" + (t.done ? " done" : "") + (animateNewId === t.id ? " adding" : "");
+    row.setAttribute("data-id", t.id);
+    row.draggable = true;
+
+    row.addEventListener("dragstart", function (e) { dragId = t.id; row.classList.add("dragging"); if (e.dataTransfer) e.dataTransfer.effectAllowed = "move"; });
+    row.addEventListener("dragend", function () { row.classList.remove("dragging"); Array.prototype.forEach.call(listEl.querySelectorAll(".drag-over"), function (x) { x.classList.remove("drag-over"); }); });
+    row.addEventListener("dragover", function (e) { e.preventDefault(); if (dragId !== t.id) row.classList.add("drag-over"); });
+    row.addEventListener("dragleave", function () { row.classList.remove("drag-over"); });
+    row.addEventListener("drop", function (e) { e.preventDefault(); row.classList.remove("drag-over"); if (dragId != null) reorderTask(dragId, t.id); dragId = null; });
+
+    var bar = document.createElement("div");
+    bar.className = "task-prio-bar p-" + t.priority;
+    bar.title = "أولوية — اضغط للتغيير";
+    bar.style.cursor = "pointer";
+    bar.addEventListener("click", function (e) { e.stopPropagation(); cyclePriority(t.id); });
+    row.appendChild(bar);
+
+    var handle = document.createElement("div");
+    handle.className = "drag-handle"; handle.textContent = "⠿"; handle.title = "اسحب لإعادة الترتيب";
+    row.appendChild(handle);
+
+    var check = document.createElement("div");
+    check.className = "task-check" + (t.done ? " on" : "");
+    check.textContent = t.done ? "✓" : "";
+    check.addEventListener("click", function (e) { e.stopPropagation(); toggleTask(t.id); });
+    row.appendChild(check);
+
+    if (state.editingId === t.id) {
+      var editInput = document.createElement("input");
+      editInput.className = "task-edit-input";
+      editInput.value = state.editText;
+      editInput.addEventListener("input", function (e) { state.editText = e.target.value; });
+      editInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") commitEdit(t.id);
+        if (e.key === "Escape") { state.editingId = null; renderTasks(); }
+      });
+      editInput.addEventListener("blur", function () { commitEdit(t.id); });
+      row.appendChild(editInput);
+      setTimeout(function () { editInput.focus(); editInput.select(); }, 0);
+    } else {
+      var main = document.createElement("div");
+      main.className = "task-main";
+      main.addEventListener("click", function () { toggleTask(t.id); });
+      var span = document.createElement("div");
+      span.className = "task-text";
+      span.textContent = t.text;
+      main.appendChild(span);
+      if (t.time) {
+        var overdue = !t.done && t.date === todayStr && t.time < nowHM();
+        var tb = document.createElement("div");
+        tb.className = "task-time-badge" + (overdue ? " overdue" : "");
+        tb.textContent = (overdue ? "⚠ " : "🕐 ") + toAr(t.time);
+        main.appendChild(tb);
+      }
+      row.appendChild(main);
+    }
+
+    if (extraBadge) row.appendChild(extraBadge);
+
+    var editBtn = document.createElement("div");
+    editBtn.className = "task-edit-btn"; editBtn.textContent = "✎";
+    editBtn.addEventListener("click", function (e) { e.stopPropagation(); startEdit(t.id, t.text); });
+    row.appendChild(editBtn);
+
+    var removeBtn = document.createElement("div");
+    removeBtn.className = "task-remove-btn"; removeBtn.textContent = "×";
+    removeBtn.addEventListener("click", function (e) { e.stopPropagation(); removeTask(t.id); });
+    row.appendChild(removeBtn);
+
+    return row;
+  }
+
+  function sectionHeader(ico, name, count) {
+    var h = document.createElement("div");
+    h.className = "sec-h";
+    h.innerHTML = '<span class="s-ico">' + ico + '</span><span class="s-name">' + name + '</span>' +
+      '<span class="s-n">' + toAr(count) + '</span><span class="s-line"></span>';
+    return h;
+  }
+
   function renderTasks(animateNewId) {
     document.getElementById("tasks-selected-label").textContent = arDateLabel(state.selectedDate);
     document.getElementById("tasks-date-pill").textContent = arDateFull(state.selectedDate);
 
     var all = dayTasksSorted();
-    var doneN = all.filter(function (t) { return t.done; }).length;
-    var activeN = all.length - doneN;
-    var total = all.length;
-
-    document.getElementById("f-all").textContent = toAr(total);
-    document.getElementById("f-active").textContent = toAr(activeN);
-    document.getElementById("f-done").textContent = toAr(doneN);
+    var doneList = all.filter(function (t) { return t.done; });
+    var doneN = doneList.length, total = all.length;
 
     var pct = total ? Math.round((doneN / total) * 100) : 0;
     document.getElementById("tasks-pct").textContent = toAr(pct) + "٪";
@@ -1549,103 +1871,92 @@
     if (streak >= 2) { streakEl.style.display = "flex"; document.getElementById("tasks-streak-n").textContent = toAr(streak) + " يوم"; }
     else { streakEl.style.display = "none"; }
 
-    var list = all.filter(function (t) {
-      if (state.filter === "active") return !t.done;
-      if (state.filter === "done") return t.done;
-      return true;
-    });
-
     var listEl = document.getElementById("task-list");
     listEl.innerHTML = "";
 
-    if (total > 0 && doneN === total && state.filter !== "active") {
+    var todayStr = fmt(new Date());
+
+    // --- المتأخرات: مهام أيام سابقة لم تُنجز (تظهر فقط عند عرض اليوم الحالي) ---
+    if (state.selectedDate === todayStr) {
+      var overdue = state.tasks.filter(function (t) { return !t.done && t.date < todayStr; });
+      overdue.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+      if (overdue.length > 0) {
+        var box = document.createElement("div");
+        box.className = "overdue-box";
+        var h = document.createElement("div");
+        h.className = "ov-h";
+        h.innerHTML = '<span>⚠</span><span class="t">متأخرة (' + toAr(overdue.length) + ')</span>';
+        var mv = document.createElement("div");
+        mv.className = "ov-move"; mv.textContent = "نقلها إلى اليوم ←";
+        mv.addEventListener("click", function () {
+          state.tasks = state.tasks.map(function (t) {
+            return (!t.done && t.date < todayStr) ? Object.assign({}, t, { date: todayStr }) : t;
+          });
+          saveTasks(); renderTasks(); renderCalendar();
+        });
+        h.appendChild(mv);
+        box.appendChild(h);
+        overdue.slice(0, 5).forEach(function (t) {
+          var badge = document.createElement("span");
+          badge.className = "ov-date"; badge.textContent = toAr(t.date.slice(5).split("-").reverse().join("/"));
+          box.appendChild(buildRow(t, null, badge));
+        });
+        listEl.appendChild(box);
+      }
+    }
+
+    if (total > 0 && doneN === total) {
       var cel = document.createElement("div");
       cel.className = "task-celebrate";
       cel.textContent = "أحسنت! أنجزت كل مهام هذا اليوم ✦";
       listEl.appendChild(cel);
     }
 
-    if (list.length === 0) {
+    if (total === 0) {
       var empty = document.createElement("div");
       empty.className = "task-empty";
-      var msg = state.filter === "done" ? "لا مهام منجزة بعد" : (state.filter === "active" ? "لا مهام نشطة — كل شيء منجز ✓" : "لا مهام في هذا اليوم — أضف واحدة");
-      empty.innerHTML = "<span class='em-ico'>✦</span>" + msg;
+      empty.innerHTML = "<span class='em-ico'>✦</span>لا مهام في هذا اليوم — أضف واحدة";
       listEl.appendChild(empty);
+      renderWeekStrip();
+      if (state.view === "week") renderWeekBoard();
       return;
     }
 
-    var todayStr = fmt(new Date());
-    list.forEach(function (t) {
-      var row = document.createElement("div");
-      row.className = "task-row" + (t.done ? " done" : "") + (animateNewId === t.id ? " adding" : "");
-      row.setAttribute("data-id", t.id);
-      row.draggable = true;
-
-      row.addEventListener("dragstart", function (e) { dragId = t.id; row.classList.add("dragging"); if (e.dataTransfer) e.dataTransfer.effectAllowed = "move"; });
-      row.addEventListener("dragend", function () { row.classList.remove("dragging"); Array.prototype.forEach.call(listEl.querySelectorAll(".drag-over"), function (x) { x.classList.remove("drag-over"); }); });
-      row.addEventListener("dragover", function (e) { e.preventDefault(); if (dragId !== t.id) row.classList.add("drag-over"); });
-      row.addEventListener("dragleave", function () { row.classList.remove("drag-over"); });
-      row.addEventListener("drop", function (e) { e.preventDefault(); row.classList.remove("drag-over"); if (dragId != null) reorderTask(dragId, t.id); dragId = null; });
-
-      var bar = document.createElement("div");
-      bar.className = "task-prio-bar p-" + t.priority;
-      bar.title = "أولوية — اضغط للتغيير";
-      bar.style.cursor = "pointer";
-      bar.addEventListener("click", function (e) { e.stopPropagation(); cyclePriority(t.id); });
-      row.appendChild(bar);
-
-      var handle = document.createElement("div");
-      handle.className = "drag-handle"; handle.textContent = "⠿"; handle.title = "اسحب لإعادة الترتيب";
-      row.appendChild(handle);
-
-      var check = document.createElement("div");
-      check.className = "task-check" + (t.done ? " on" : "");
-      check.textContent = t.done ? "✓" : "";
-      check.addEventListener("click", function (e) { e.stopPropagation(); toggleTask(t.id); });
-      row.appendChild(check);
-
-      if (state.editingId === t.id) {
-        var editInput = document.createElement("input");
-        editInput.className = "task-edit-input";
-        editInput.value = state.editText;
-        editInput.addEventListener("input", function (e) { state.editText = e.target.value; });
-        editInput.addEventListener("keydown", function (e) {
-          if (e.key === "Enter") commitEdit(t.id);
-          if (e.key === "Escape") { state.editingId = null; renderTasks(); }
-        });
-        editInput.addEventListener("blur", function () { commitEdit(t.id); });
-        row.appendChild(editInput);
-        setTimeout(function () { editInput.focus(); editInput.select(); }, 0);
-      } else {
-        var main = document.createElement("div");
-        main.className = "task-main";
-        main.addEventListener("click", function () { toggleTask(t.id); });
-        var span = document.createElement("div");
-        span.className = "task-text";
-        span.textContent = t.text;
-        main.appendChild(span);
-        if (t.time) {
-          var overdue = !t.done && t.date === todayStr && t.time < nowHM();
-          var tb = document.createElement("div");
-          tb.className = "task-time-badge" + (overdue ? " overdue" : "");
-          tb.textContent = (overdue ? "⚠ " : "🕐 ") + toAr(t.time);
-          main.appendChild(tb);
-        }
-        row.appendChild(main);
-      }
-
-      var editBtn = document.createElement("div");
-      editBtn.className = "task-edit-btn"; editBtn.textContent = "✎";
-      editBtn.addEventListener("click", function (e) { e.stopPropagation(); startEdit(t.id, t.text); });
-      row.appendChild(editBtn);
-
-      var removeBtn = document.createElement("div");
-      removeBtn.className = "task-remove-btn"; removeBtn.textContent = "×";
-      removeBtn.addEventListener("click", function (e) { e.stopPropagation(); removeTask(t.id); });
-      row.appendChild(removeBtn);
-
-      listEl.appendChild(row);
+    // --- الأقسام الزمنية (كما في تطبيقات المخططات الحديثة) ---
+    var active = all.filter(function (t) { return !t.done; });
+    var secs = [
+      { ico: "🌅", name: "الصباح", test: function (t) { return t.time && t.time < "12:00"; } },
+      { ico: "☀️", name: "الظهيرة والعصر", test: function (t) { return t.time && t.time >= "12:00" && t.time < "17:00"; } },
+      { ico: "🌙", name: "المساء", test: function (t) { return t.time && t.time >= "17:00"; } },
+      { ico: "◈", name: "بدون وقت", test: function (t) { return !t.time; } }
+    ];
+    secs.forEach(function (sec) {
+      var items = active.filter(sec.test);
+      if (items.length === 0) return;
+      items.sort(function (a, b) {
+        if (a.time !== b.time) return (a.time || "99") < (b.time || "99") ? -1 : 1;
+        return (a.order || 0) - (b.order || 0);
+      });
+      listEl.appendChild(sectionHeader(sec.ico, sec.name, items.length));
+      items.forEach(function (t) { listEl.appendChild(buildRow(t, animateNewId)); });
     });
+
+    // --- المنجزة (قابلة للطي) ---
+    if (doneN > 0) {
+      var dh = sectionHeader("✓", "المنجزة", doneN);
+      dh.className = "sec-h done-sec" + (state.doneOpen ? " open" : "");
+      var car = document.createElement("span");
+      car.className = "s-carret"; car.textContent = "▼";
+      dh.appendChild(car);
+      dh.addEventListener("click", function () { state.doneOpen = !state.doneOpen; renderTasks(); });
+      listEl.appendChild(dh);
+      if (state.doneOpen) {
+        doneList.forEach(function (t) { listEl.appendChild(buildRow(t, animateNewId)); });
+      }
+    }
+
+    renderWeekStrip();
+    if (state.view === "week") renderWeekBoard();
   }
 
   // ---------- Gallery ----------
@@ -2506,8 +2817,16 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "2.2.0";
+  var APP_VERSION = "3.0.0";
   var RELEASES = [
+    { v: "3.0.0", date: "١١ يوليو ٢٠٢٦", items: [
+      ["new", "هيكلة جديدة كليًا للمخطط: ثلاثة عروض — اليوم والأسبوع والشهر"],
+      ["new", "شريط أيام أسبوعي أنيق أعلى عرض اليوم مع نقاط المهام وعلامة الإنجاز"],
+      ["new", "تجميع مهام اليوم في أقسام زمنية: الصباح، الظهيرة والعصر، المساء، بدون وقت"],
+      ["new", "قسم «متأخرة» يجمع ما فات مع زر نقلها إلى اليوم بضغطة واحدة"],
+      ["new", "لوح أسبوعي بسبعة أعمدة يعرض مهام كل يوم — اضغط أي مهمة لإنجازها"],
+      ["imp", "المهام المنجزة في قسم قابل للطي لتبقى القائمة نظيفة"]
+    ]},
     { v: "2.2.0", date: "١١ يوليو ٢٠٢٦", items: [
       ["new", "«المُخطَّط»: دمج المهام والتقويم في لوحة واحدة موقّعة بتصميم وبرمجة أبو سعد"],
       ["new", "إدخال ذكي بالعربية: اكتب «اجتماع غدًا الساعة ٥ مساءً» ويُفهم اليوم والوقت تلقائيًا"],
