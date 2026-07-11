@@ -494,13 +494,18 @@
   .live-channel .ch-name { position:relative; font-size:13px; font-weight:700; color:#F1EEE6; text-align:center; padding:0 6px; line-height:1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
   /* QURAN */
-  #quran { grid-area:quran; background:radial-gradient(circle at 85% -10%,rgba(201,169,106,0.14),transparent 55%),linear-gradient(160deg,#0E3B24,#0A2B1A 60%,#081F13); border:1px solid rgba(201,169,106,0.18); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; display:flex; flex-direction:column; gap:16px; }
+  #quran { grid-area:quran; position:relative; background:radial-gradient(circle at 85% -10%,rgba(201,169,106,0.14),transparent 55%),linear-gradient(160deg,#0E3B24,#0A2B1A 60%,#081F13); border:1px solid rgba(201,169,106,0.18); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; display:flex; flex-direction:column; gap:16px; }
   #quran .head { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:10px; }
   #quran .head .sub { font-size:12px; color:#7C766A; margin-top:4px; }
   #quran .controls { display:flex; align-items:center; gap:8px; }
   #quran .surah-select { background:#1A1917; border:1.5px solid rgba(201,169,106,0.3); color:#F1EEE6; border-radius:10px; padding:7px 10px; font-family:'Tajawal',sans-serif; font-size:12.5px; max-width:150px; }
   #quran .icon-btn { width:34px; height:34px; border-radius:10px; background:rgba(255,215,160,0.08); border:1px solid rgba(201,169,106,0.25); display:flex; align-items:center; justify-content:center; color:#E4C687; cursor:pointer; user-select:none; font-size:15px; flex-shrink:0; }
   #quran .icon-btn:hover { background:rgba(201,169,106,0.16); }
+  .quran-toggle-btn { width:34px; height:34px; border-radius:10px; background:rgba(255,215,160,0.08); border:1px solid rgba(201,169,106,0.3); color:#E4C687; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; font-size:16px; flex-shrink:0; transition:transform .25s ease, background .2s ease; }
+  .quran-toggle-btn:hover { background:rgba(201,169,106,0.18); }
+  .quran-toggle-btn.open { transform:rotate(90deg); }
+  .quran-controls-wrap { display:flex; flex-direction:column; gap:16px; overflow:hidden; max-height:0; opacity:0; transition:max-height .3s ease, opacity .2s ease; }
+  .quran-controls-wrap.open { max-height:800px; opacity:1; }
 
   .quran-bookmark-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; background:rgba(201,169,106,0.08); border:1px solid rgba(201,169,106,0.22); border-radius:12px; padding:10px 16px; flex-wrap:wrap; }
   .quran-bookmark-bar .bm-label { font-size:12.5px; color:#C4BFB3; }
@@ -970,14 +975,17 @@
             <div class="eyebrow">المصحف الشريف · Holy Quran</div>
             <div class="sub" id="quran-surah-info"></div>
           </div>
-          <div class="controls">
+          <div class="quran-toggle-btn" id="quran-toggle-btn" title="إظهار/إخفاء الأوامر">›</div>
+        </div>
+
+        <div class="quran-controls-wrap" id="quran-controls-wrap">
+        <div class="controls">
             <div class="font-controls" style="display:flex; gap:5px; margin-left:10px;">
               <div class="icon-btn" id="quran-font-plus" title="تكبير الخط">A+</div>
               <div class="icon-btn" id="quran-font-minus" title="تصغير الخط">A-</div>
             </div>
             <select class="surah-select" id="surah-select"></select>
             <div class="icon-btn" id="quran-fullscreen-btn" title="تكبير الصفحة">⤢</div>
-          </div>
         </div>
 
         <div class="quran-top-controls">
@@ -1000,6 +1008,7 @@
           <div class="eyebrow" style="margin-bottom:8px;">العلامات المرجعية المحفوظة</div>
           <div id="bookmarks-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
         </div>
+        </div><!-- /quran-controls-wrap -->
 
         <div class="book-stage">
           <div class="book-cover" id="quran-cover">
@@ -2410,6 +2419,12 @@
       openBook();
       goToSurah(bm.surah, { targetAyah: bm.ayah });
     }
+  });
+  document.getElementById("quran-toggle-btn").addEventListener("click", function () {
+    var wrap = document.getElementById("quran-controls-wrap");
+    var btn = document.getElementById("quran-toggle-btn");
+    var open = wrap.classList.toggle("open");
+    btn.classList.toggle("open", open);
   });
   document.getElementById("quran-fullscreen-btn").addEventListener("click", function () {
     var el = document.getElementById("quran");
