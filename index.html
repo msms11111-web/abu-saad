@@ -504,8 +504,8 @@
   .quran-toggle-btn { width:34px; height:34px; border-radius:10px; background:rgba(255,215,160,0.08); border:1px solid rgba(201,169,106,0.3); color:#E4C687; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; font-size:16px; flex-shrink:0; transition:transform .25s ease, background .2s ease; }
   .quran-toggle-btn:hover { background:rgba(201,169,106,0.18); }
   .quran-toggle-btn.open { transform:rotate(90deg); }
-  .quran-controls-wrap { display:flex; flex-direction:column; gap:16px; overflow:hidden; max-height:0; opacity:0; transition:max-height .3s ease, opacity .2s ease; }
-  .quran-controls-wrap.open { max-height:800px; opacity:1; }
+  .quran-controls-wrap { display:flex; flex-direction:column; gap:16px; overflow:hidden; max-height:0; opacity:0; margin:-16px 0; transition:max-height .3s ease, opacity .2s ease, margin .3s ease; }
+  .quran-controls-wrap.open { max-height:800px; opacity:1; margin:0; }
 
   .quran-bookmark-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; background:rgba(201,169,106,0.08); border:1px solid rgba(201,169,106,0.22); border-radius:12px; padding:10px 16px; flex-wrap:wrap; }
   .quran-bookmark-bar .bm-label { font-size:12.5px; color:#C4BFB3; }
