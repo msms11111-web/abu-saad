@@ -119,6 +119,26 @@ app.get('/api/setup/seed', async (req: Request, res: Response) => {
   }
 });
 
+// Wipes products and users, then reseeds fresh demo data (new credentials
+// from utils/seedData.ts). Requires ?key=<SETUP_RESET_KEY> so a random
+// visitor who finds this URL cannot wipe the store's data.
+app.get('/api/setup/reset', async (req: Request, res: Response) => {
+  try {
+    if (!process.env.SETUP_RESET_KEY || req.query.key !== process.env.SETUP_RESET_KEY) {
+      return res.status(403).json({ success: false, message: 'Invalid or missing key' });
+    }
+    await Promise.all([Product.deleteMany({}), User.deleteMany({})]);
+    const result = await runSeed();
+    res.json({
+      success: true,
+      message: 'Database reset and reseeded successfully',
+      created: result
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/products', cacheMiddleware(3600), productsRouter);

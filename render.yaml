@@ -20,6 +20,8 @@ services:
         value: 7d
       - key: CLIENT_URL
         value: https://saudi-essence-shop.onrender.com,http://localhost:5173
+      - key: SETUP_RESET_KEY
+        value: reset-saudi-essence-2026
 
   - type: web
     name: saudi-essence-shop

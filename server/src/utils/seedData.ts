@@ -11,9 +11,9 @@ export interface SeedResult {
 export const runSeed = async (): Promise<SeedResult> => {
   const adminUser = new User({
     name: 'Admin User',
-    email: 'admin@saudi-essence.com',
+    email: 'admin@saudiessence.sa',
     phone: '+966501234567',
-    password: 'Admin@123456',
+    password: 'SaEssence#Admin26',
     role: 'admin'
   })
   await adminUser.save()
@@ -175,9 +175,9 @@ export const runSeed = async (): Promise<SeedResult> => {
 
   const customerUser = new User({
     name: 'Test Customer',
-    email: 'customer@example.com',
+    email: 'customer@saudiessence.sa',
     phone: '+966501234568',
-    password: 'Customer@123456',
+    password: 'SaEssence#Cust26',
     role: 'customer',
     loyaltyPoints: 500
   })
