@@ -114,7 +114,7 @@ const productSchema = new Schema<IProduct>(
     fragrance: {
       type: {
         type: String,
-        enum: ['Eau de Parfum', 'Eau de Toilette', 'Eau de Cologne', 'Pure Perfume', 'Attar']
+        enum: ['Eau de Parfum', 'Eau de Toilette', 'Eau de Cologne', 'Pure Perfume', 'Attar', 'Bakhoor', 'Pure Oil']
       },
       family: {
         type: String,
