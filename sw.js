@@ -4,7 +4,7 @@
    - Fonts/icons/other assets: stale-while-revalidate. */
 /* Bump this with each release (kept in sync with APP_VERSION in index.html)
    so old caches are cleared and clients pick up the new version. */
-var CACHE = "abusaad-v3.3.1";
+var CACHE = "abusaad-v3.3.2";
 
 self.addEventListener("install", function (e) {
   self.skipWaiting();
