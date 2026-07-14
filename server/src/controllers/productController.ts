@@ -6,7 +6,7 @@ import searchService from '../services/searchService.js'
 export class ProductController {
   // Get all products
   getAllProducts = asyncHandler(async (req: Request, res: Response) => {
-    const { page = 1, limit = 20, category, minPrice, maxPrice, rating, search, sortBy } = req.query
+    const { page = 1, limit = 20, category, minPrice, maxPrice, rating, search, sortBy, inStock } = req.query
 
     const results = await searchService.searchProducts({
       category: category as string,
@@ -16,7 +16,10 @@ export class ProductController {
       search: search as string,
       page: Number(page),
       limit: Number(limit),
-      sortBy: (sortBy as any) || 'newest'
+      sortBy: (sortBy as any) || 'newest',
+      // Defaults to true (hide sold-out items on the storefront); pass
+      // inStock=false so the admin panel can still see/manage them
+      inStock: inStock === undefined ? true : inStock === 'true'
     })
 
     res.status(200).json({

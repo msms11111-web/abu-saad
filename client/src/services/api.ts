@@ -55,8 +55,8 @@ export const ordersAPI = {
 export const usersAPI = {
   register: (data: any) => api.post('/auth/register', data),
   login: (data: any) => api.post('/auth/login', data),
-  getProfile: () => api.get('/users/profile'),
-  updateProfile: (data: any) => api.put('/users/profile', data),
+  getCurrentUser: () => api.get('/auth/me'),
+  updateProfile: (data: any) => api.put('/auth/profile', data),
 }
 
 // Reviews API

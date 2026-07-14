@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { Provider, useDispatch } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import store, { RootState } from './store'
+import { setUser } from './store/slices/userSlice'
+import { usersAPI } from './services/api'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
@@ -30,9 +33,43 @@ const ProtectedRoute = ({ children, requiredRole }: any) => {
   return children
 }
 
+// Restores the logged-in session from the saved token on page load/refresh —
+// without this, Redux state resets on every reload and the user appears
+// logged out even though their token is still valid.
+function SessionBootstrap({ children }: { children: React.ReactNode }) {
+  const dispatch = useDispatch()
+  const [checked, setChecked] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      setChecked(true)
+      return
+    }
+    usersAPI
+      .getCurrentUser()
+      .then((res) => {
+        if (res.data.success) dispatch(setUser(res.data.data))
+      })
+      .catch(() => localStorage.removeItem('token'))
+      .finally(() => setChecked(true))
+  }, [dispatch])
+
+  if (!checked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-400">
+        جاري التحميل...
+      </div>
+    )
+  }
+
+  return <>{children}</>
+}
+
 function App() {
   return (
     <Provider store={store}>
+      <SessionBootstrap>
       <Router>
         <Routes>
           {/* Public routes */}
@@ -100,6 +137,7 @@ function App() {
         hideProgressBar={false}
         newestOnTop={true}
       />
+      </SessionBootstrap>
     </Provider>
   )
 }
