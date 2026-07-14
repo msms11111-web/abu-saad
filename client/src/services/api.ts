@@ -59,6 +59,22 @@ export const usersAPI = {
   updateProfile: (data: any) => api.put('/auth/profile', data),
 }
 
+// Uploads API
+export const uploadsAPI = {
+  // Returns an absolute URL: the server responds with a path like
+  // "/api/uploads/<id>", which — left relative — the browser would resolve
+  // against the storefront's own origin instead of the API's, since the
+  // two are separate Render services
+  uploadImage: async (file: File): Promise<string> => {
+    const formData = new FormData()
+    formData.append('image', file)
+    const res = await api.post('/uploads', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    return new URL(res.data.url, API_URL).href
+  },
+}
+
 // Reviews API
 export const reviewsAPI = {
   getByProduct: (productId: string) => api.get(`/reviews/product/${productId}`),

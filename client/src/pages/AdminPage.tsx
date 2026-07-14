@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { productsAPI } from '../services/api'
+import { productsAPI, uploadsAPI } from '../services/api'
 
 interface Product {
   _id: string
@@ -42,6 +42,23 @@ export default function AdminPage() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    setUploadError('')
+    try {
+      const url = await uploadsAPI.uploadImage(file)
+      setForm((f) => ({ ...f, image: url }))
+    } catch (err: any) {
+      setUploadError(err.response?.data?.message || 'تعذر رفع الصورة — جرّب صورة أصغر أو بصيغة JPEG/PNG')
+    } finally {
+      setUploading(false)
+    }
+  }
 
   const loadProducts = () => {
     setLoading(true)
@@ -78,6 +95,10 @@ export default function AdminPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!form.image) {
+      setError('يرجى رفع صورة للمنتج قبل الحفظ')
+      return
+    }
     setSaving(true)
     setError('')
 
@@ -222,16 +243,31 @@ export default function AdminPage() {
                         onChange={(e) => setForm({ ...form, stock: e.target.value })}
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-1">رابط الصورة</label>
-                      <input
-                        required
-                        type="url"
-                        placeholder="https://..."
-                        className="w-full border rounded px-3 py-2"
-                        value={form.image}
-                        onChange={(e) => setForm({ ...form, image: e.target.value })}
-                      />
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-semibold mb-1">صورة المنتج</label>
+                      <div className="flex items-center gap-4">
+                        {form.image && (
+                          <img
+                            src={form.image}
+                            alt="معاينة"
+                            className="w-20 h-20 object-cover rounded border"
+                          />
+                        )}
+                        <div className="flex-1">
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={handleImageSelect}
+                            className="block w-full text-sm"
+                            disabled={uploading}
+                          />
+                          {uploading && <p className="text-sm text-gray-500 mt-1">جاري رفع الصورة...</p>}
+                          {uploadError && <p className="text-sm text-red-600 mt-1">{uploadError}</p>}
+                        </div>
+                      </div>
+                      {!form.image && (
+                        <p className="text-xs text-gray-500 mt-1">اختر صورة من جهازك (JPEG/PNG/WebP، أقل من 5MB)</p>
+                      )}
                     </div>
                   </div>
                   <div>

@@ -18,7 +18,10 @@ const PORT = process.env.PORT || 5000;
 app.set('trust proxy', 1);
 
 // Security Middleware
-app.use(helmet());
+// crossOriginResourcePolicy defaults to 'same-origin', which blocks the
+// storefront (a different Render service/origin) from loading images
+// served at /api/uploads/:id — relax it so <img> tags there work
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 // CLIENT_URL accepts a comma-separated list, e.g. "https://app.vercel.app,http://localhost:5173"
 const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
   .split(',')
@@ -73,6 +76,7 @@ app.get('/api/health', (req: Request, res: Response) => {
 
 // Import routes
 import authRouter from './routes/auth.js';
+import uploadsRouter from './routes/uploads.js';
 import Product from './models/Product.js';
 import User from './models/User.js';
 // Register the Review schema — populate('reviews') throws MissingSchemaError
@@ -142,6 +146,7 @@ app.get('/api/setup/reset', async (req: Request, res: Response) => {
 // API Routes
 app.use('/api/auth', authRouter);
 app.use('/api/products', cacheMiddleware(3600), productsRouter);
+app.use('/api/uploads', uploadsRouter);
 // app.use('/api/orders', ordersRouter);
 // app.use('/api/users', usersRouter);
 // app.use('/api/reviews', reviewsRouter);
