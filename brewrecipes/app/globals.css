@@ -1,0 +1,293 @@
+@import "tailwindcss";
+
+:root {
+  /* Coffee Luxury Theme - Light Mode */
+  --color-brown: #5A3E2B;
+  --color-beige: #E9D8C3;
+  --color-cream: #F8F4EE;
+  --color-black: #1C1C1C;
+  --color-gold: #C5A46E;
+  
+  --background: #F8F4EE;
+  --foreground: #1C1C1C;
+  --card: #FFFFFF;
+  --card-foreground: #1C1C1C;
+  --primary: #5A3E2B;
+  --primary-foreground: #F8F4EE;
+  --secondary: #E9D8C3;
+  --accent: #C5A46E;
+  --muted: #E9D8C3;
+  --border: #D4C4B0;
+  --input: #FFFFFF;
+  --ring: #5A3E2B;
+
+  --radius: 16px;
+  --font-arabic: 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+}
+
+.dark {
+  /* Coffee Luxury Theme - Dark Mode */
+  --background: #1C1C1C;
+  --foreground: #F8F4EE;
+  --card: #2A2520;
+  --card-foreground: #F8F4EE;
+  --primary: #C5A46E;
+  --primary-foreground: #1C1C1C;
+  --secondary: #3D2F25;
+  --accent: #E9D8C3;
+  --muted: #3D2F25;
+  --border: #4A3F35;
+  --input: #2A2520;
+  --ring: #C5A46E;
+}
+
+/* Premium Typography & RTL Support */
+body {
+  font-family: var(--font-arabic);
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+@layer components {
+  /* Elegant Card Styles */
+  .card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
+                border-color 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    border-color: var(--accent);
+  }
+
+  /* Button Styles - Apple-like */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: 1px solid var(--primary);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--accent);
+    color: var(--background);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--foreground);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--secondary);
+    border-color: var(--accent);
+  }
+
+  .btn-gold {
+    background: linear-gradient(135deg, var(--accent), #D4B88A);
+    color: var(--background);
+    border: none;
+  }
+
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgb(197 164 110 / 0.4);
+  }
+
+  /* Form Inputs */
+  .input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background-color: var(--input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--foreground);
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--ring);
+    box-shadow: 0 0 0 4px rgba(90, 62, 43, 0.1);
+  }
+
+  .dark .input:focus {
+    box-shadow: 0 0 0 4px rgba(197, 164, 110, 0.15);
+  }
+
+  /* Recipe Card Special */
+  .recipe-card {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .recipe-card img {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .recipe-card:hover img {
+    transform: scale(1.08);
+  }
+
+  /* Calculator Styles */
+  .calculator {
+    background: linear-gradient(145deg, var(--card), var(--secondary));
+    border: 1px solid var(--border);
+  }
+
+  /* Navigation */
+  .nav-link {
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    transition: color 0.2s ease;
+  }
+
+  .nav-link:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-link:hover:after,
+  .nav-link.active:after {
+    width: 100%;
+  }
+
+  /* Modal */
+  .modal {
+    animation: modalEnter 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  @keyframes modalEnter {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Arabic RTL Enhancements */
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  /* Loading Skeleton */
+  .skeleton {
+    background: linear-gradient(90deg, var(--muted) 25%, var(--border) 50%, var(--muted) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Toast customization for Sonner */
+  [data-sonner-toast] {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--foreground) !important;
+    border-radius: 12px !important;
+  }
+
+  /* Admin Dashboard */
+  .admin-card {
+    transition: all 0.2s ease;
+  }
+
+  .admin-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  }
+
+  /* Filter Chips */
+  .filter-chip {
+    padding: 0.4rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--card);
+  }
+
+  .filter-chip.active,
+  .filter-chip:hover {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-color: var(--primary);
+  }
+
+  /* Stepper for Recipe */
+  .step {
+    position: relative;
+    padding-left: 2.5rem;
+  }
+
+  .step:before {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    top: 0;
+    bottom: -1.5rem;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .step:last-child:before {
+    display: none;
+  }
+
+  .step-number {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+}
