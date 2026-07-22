@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>لعبة أبو سعد · Word Puzzle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== أساسيات مستخرجة من لوحة أبو سعد — عدّلها لتناسب الموقع الجديد ===== */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Tajawal',sans-serif; background:#141312; min-height:100vh; padding:24px 16px; display:flex; align-items:flex-start; justify-content:center; }
+  .eyebrow { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#C9A96A; }
+  #game { width:100%; max-width:760px; border-radius:22px; }
+
+  /* ===== GAME: أبو سعد (letter-connect + same-letter trivia) — light paper theme ===== */
+  #game { position:relative; overflow:hidden; background:radial-gradient(circle at 30% 0%,#FFFDF7,#FAF4E4 55%,#F1E6CB); border:1px solid rgba(160,120,55,0.35); box-shadow:inset 0 0 26px rgba(120,90,40,0.10),0 20px 46px -30px rgba(0,0,0,0.55); padding:28px; display:flex; flex-direction:column; gap:18px; }
+  #game .eyebrow { color:#8A6A2F; }
+  #game .head { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  #game .head .sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:#7C6A47; margin-top:4px; }
+  .game-score-chip { flex-shrink:0; background:linear-gradient(155deg,#C9A96A,#A98243); color:#2A1F0D; font-weight:700; font-size:13px; padding:8px 16px; border-radius:20px; white-space:nowrap; box-shadow:0 4px 10px -4px rgba(120,90,40,0.5); }
+
+  .game-level-bar { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .game-level-label { font-size:15px; font-weight:700; color:#6B4F1D; }
+  .game-btn-row { display:flex; gap:8px; }
+  .game-btn { background:rgba(255,252,244,0.7); border:1px solid rgba(160,120,55,0.45); color:#6B4F1D; padding:7px 14px; border-radius:10px; font-size:12.5px; cursor:pointer; user-select:none; transition:background .2s ease, border-color .2s ease; }
+  .game-btn:hover { border-color:#A98243; background:#FFF9EC; }
+
+  .game-body { display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap; }
+  .game-words { flex:0 0 170px; display:flex; flex-direction:column; gap:8px; }
+  .game-word-item { font-family:'Space Mono',monospace; font-size:15px; letter-spacing:0.12em; color:#9A855C; padding:7px 10px; border-radius:9px; background:rgba(160,120,55,0.08); border:1px solid rgba(160,120,55,0.22); text-align:center; transition:color .3s ease, background .3s ease, border-color .3s ease; }
+  .game-word-item.found { color:#1E6B3C; background:rgba(60,170,100,0.14); border-color:rgba(40,140,80,0.45); font-weight:700; }
+
+  .game-board-area { flex:1 1 320px; min-width:0; }
+  .game-current-word { min-height:26px; text-align:center; font-family:'Aref Ruqaa',serif; font-size:22px; font-weight:700; color:#8A6A2F; letter-spacing:0.08em; margin-bottom:6px; }
+  .game-board-wrap { position:relative; margin:0 auto; }
+  #game-path-svg { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
+  .hex-cell { position:absolute; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; -webkit-user-select:none;
+    clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background:linear-gradient(160deg,#F6ECD4,#E7D6AE); color:#5A4520; font-family:'Aref Ruqaa',serif; font-weight:700;
+    transition:background .18s ease, color .18s ease, transform .12s ease; }
+  .hex-cell:hover { background:linear-gradient(160deg,#F1E3C2,#E0CB9C); }
+  .hex-cell:active { transform:scale(0.94); }
+  .hex-cell.selected { background:linear-gradient(160deg,#C9A96A,#A98243); color:#FFFDF6; transform:scale(1.06); z-index:2; }
+  .hex-cell.found { background:linear-gradient(160deg,#3CBE72,#238C4E); color:#FFFFFF; }
+  .hex-cell.wrong { background:linear-gradient(160deg,#D9695A,#A8382B); color:#FFF3EF; }
+
+  .game-trivia { position:relative; background:rgba(255,252,244,0.75); border:1px solid rgba(160,120,55,0.4); border-radius:16px; padding:20px; display:none; flex-direction:column; gap:12px; }
+  .game-trivia .tv-eyebrow { color:#8A6A2F; }
+  .game-trivia .tv-question { font-size:17px; color:#4A3A1C; line-height:1.7; }
+  .game-trivia .tv-question b { color:#A9762B; font-size:1.2em; }
+  .game-trivia .tv-row { display:flex; gap:10px; flex-wrap:wrap; }
+  .game-trivia input[type="text"] { flex:1; min-width:160px; background:#FFFDF7; border:1px solid rgba(160,120,55,0.45); color:#4A3A1C; padding:10px 14px; border-radius:10px; font-family:'Tajawal',sans-serif; font-size:15px; }
+  .game-trivia input[type="text"]:focus { outline:none; border-color:#A98243; }
+  .game-trivia .tv-submit { background:linear-gradient(155deg,#C9A96A,#A98243); color:#2A1F0D; font-weight:700; border:none; padding:10px 22px; border-radius:10px; cursor:pointer; font-size:14px; }
+  .game-trivia .tv-feedback { font-size:14px; line-height:1.8; padding:10px 14px; border-radius:10px; }
+  .game-trivia .tv-feedback.ok { background:rgba(60,170,100,0.14); color:#1E6B3C; border:1px solid rgba(40,140,80,0.4); }
+  .game-trivia .tv-feedback.maybe { background:rgba(201,169,106,0.18); color:#7A5A17; border:1px solid rgba(160,120,55,0.4); }
+  .game-trivia .tv-feedback.no { background:rgba(200,80,60,0.10); color:#A83A2B; border:1px solid rgba(200,80,60,0.35); }
+
+  .game-complete { text-align:center; padding:26px; display:none; flex-direction:column; align-items:center; gap:12px; }
+  .game-complete .gc-title { font-family:'Aref Ruqaa',serif; font-size:26px; font-weight:700; color:#8A6A2F; }
+  .game-complete .gc-score { font-size:16px; color:#4A3A1C; }
+
+  @media (max-width:560px){
+    .game-body { flex-direction:column; align-items:stretch; }
+    .game-words { flex-direction:row; flex-wrap:wrap; flex-basis:auto; }
+    .game-word-item { flex:1 1 auto; }
+  }
+</style>
+</head>
+<body>
+
+      <!-- GAME -->
+      <div id="game" class="card">
+        <div class="head">
+          <div>
+            <div class="eyebrow">لعبة أبو سعد · Word Puzzle</div>
+            <div class="sub">اضغط على الحروف المتجاورة حرفًا حرفًا لتكوّن الكلمة، وبعد كل جولة أجب عن سؤال يبدأ بنفس الحرف</div>
+          </div>
+          <div class="game-score-chip">النقاط: <span id="game-score">٠</span></div>
+        </div>
+
+        <div id="game-play">
+          <div class="game-level-bar">
+            <div class="game-level-label" id="game-level-label"></div>
+            <div class="game-btn-row">
+              <div class="game-btn" id="game-shuffle-btn">↻ حروف جديدة</div>
+              <div class="game-btn" id="game-restart-btn">↺ إعادة اللعبة</div>
+            </div>
+          </div>
+
+          <div class="game-body">
+            <div class="game-words" id="game-words"></div>
+            <div class="game-board-area">
+              <div class="game-current-word" id="game-current-word"></div>
+              <div class="game-board-wrap" id="game-board-wrap">
+                <svg id="game-path-svg"></svg>
+                <div class="game-board" id="game-board"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-trivia" id="game-trivia" hidden>
+          <div class="eyebrow tv-eyebrow">سؤال بنفس الحرف</div>
+          <div class="tv-question" id="game-trivia-question"></div>
+          <div class="tv-row">
+            <input type="text" id="game-trivia-input" placeholder="اكتب إجابتك هنا...">
+            <button class="tv-submit" id="game-trivia-submit">تحقّق</button>
+          </div>
+          <div class="tv-feedback" id="game-trivia-feedback" hidden></div>
+        </div>
+
+        <div class="game-complete" id="game-complete" hidden>
+          <div class="gc-title">أحسنت يا أبو سعد! 🎉 أنهيت كل الجولات</div>
+          <div class="gc-score">مجموع نقاطك: <span id="game-final-score"></span></div>
+          <div class="game-btn" id="game-play-again-btn">العب من جديد</div>
+        </div>
+      </div>
+
+
+<script>
+(function () {
+  "use strict";
+
+  var toAr = function (v) { return String(v).replace(/[0-9]/g, function (d) { return "٠١٢٣٤٥٦٧٨٩"[d]; }); };
+
+  // ---------- Game: أبو سعد (توصيل الحروف + سؤال بنفس الحرف) ----------
+  var GAME_KEY = "abusaad_game_v2";
+  var GAME_HEX_SIZE = 26;
+  var GAME_HEX_DIRS = [[1, 0], [1, -1], [0, -1], [-1, 0], [-1, 1], [0, 1]];
+  var GAME_FILLER_POOL = "ا ا ا ل ل ل م م م ن ن ن ر ر ت ت ي ي ب ب س س ك ك ع ع د د ه ه و و ح ج ص ط ق ف ش ز غ خ ث ض ظ ذ".split(" ");
+
+  var GAME_LEVELS = [
+    {
+      theme: "خضروات",
+      words: ["جزر", "بصل", "خيار", "فلفل", "كوسا"],
+      trivia: { letter: "ج", category: "اسم دولة عربية", accepted: ["جيبوتي", "جزر القمر"] }
+    },
+    {
+      theme: "طيور",
+      words: ["صقر", "نسر", "بلبل", "هدهد", "حمامة"],
+      trivia: { letter: "ص", category: "اسم مهنة", accepted: ["صياد", "صحفي", "صيدلي", "صراف"] }
+    },
+    {
+      theme: "مدن سعودية",
+      words: ["جدة", "مكة", "أبها", "تبوك", "حائل"],
+      trivia: { letter: "ت", category: "اسم فاكهة", accepted: ["تفاح", "تين", "توت", "تمر"] }
+    },
+    {
+      theme: "أدوات المطبخ",
+      words: ["كوب", "صحن", "سكين", "ملعقة", "إبريق"],
+      trivia: { letter: "م", category: "اسم دولة عربية", accepted: ["مصر", "موريتانيا"] }
+    },
+    {
+      theme: "رياضات",
+      words: ["جري", "كرة", "تنس", "جودو", "سباحة"],
+      trivia: { letter: "س", category: "اسم حيوان", accepted: ["سنجاب", "سلحفاة", "سمكة", "سبع"] }
+    },
+    {
+      theme: "كواكب ونجوم",
+      words: ["زحل", "شمس", "زهرة", "مريخ", "عطارد"],
+      trivia: { letter: "ز", category: "اسم فاكهة أو خضار", accepted: ["زيتون", "زنجبيل"] }
+    }
+  ];
+
+  var gameState = {
+    levelIndex: 0,
+    score: 0,
+    board: null,
+    foundWords: [],
+    foundPaths: {},
+    selection: [],
+    triviaDone: false,
+    ended: false,
+    cellDiv: {},
+    cellPixel: {}
+  };
+
+  function gameNormalize(s) {
+    return String(s || "")
+      .replace(/[ً-ْٰ]/g, "")
+      .replace(/[إأآا]/g, "ا")
+      .replace(/ى/g, "ي")
+      .replace(/ؤ/g, "و")
+      .replace(/ئ/g, "ي")
+      .replace(/ة/g, "ه")
+      .replace(/\s+/g, "")
+      .trim();
+  }
+
+  function gameMaskWord(len) {
+    var s = "";
+    for (var i = 0; i < len; i++) s += (i ? " " : "") + "ـ";
+    return s;
+  }
+
+  function gameHexKey(q, r) { return q + "," + r; }
+
+  function gameCellsInRadius(R) {
+    var cells = [];
+    for (var q = -R; q <= R; q++) {
+      var r1 = Math.max(-R, -q - R), r2 = Math.min(R, -q + R);
+      for (var r = r1; r <= r2; r++) cells.push([q, r]);
+    }
+    return cells;
+  }
+
+  function gameNeighbors(q, r) {
+    return GAME_HEX_DIRS.map(function (d) { return [q + d[0], r + d[1]]; });
+  }
+
+  function gameBuildBoard(level) {
+    var R = 3;
+    var allCells = gameCellsInRadius(R);
+    var cellSet = {};
+    allCells.forEach(function (c) { cellSet[gameHexKey(c[0], c[1])] = true; });
+    var letters = {};
+    var words = level.words.slice().sort(function (a, b) { return b.length - a.length; });
+
+    function tryPlaceWord(word) {
+      var attempts = 400;
+      for (var attempt = 0; attempt < attempts; attempt++) {
+        var start = allCells[Math.floor(Math.random() * allCells.length)];
+        var path = [];
+        var used = {};
+        if (dfs(start, 0)) {
+          path.forEach(function (c, i) { letters[gameHexKey(c[0], c[1])] = word[i]; });
+          return true;
+        }
+      }
+      return false;
+
+      function dfs(cell, idx) {
+        var key = gameHexKey(cell[0], cell[1]);
+        if (!cellSet[key] || used[key]) return false;
+        var existing = letters[key];
+        if (existing !== undefined && existing !== word[idx]) return false;
+        used[key] = true;
+        path.push(cell);
+        if (idx === word.length - 1) return true;
+        var neighbors = gameNeighbors(cell[0], cell[1]);
+        for (var i = neighbors.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = neighbors[i]; neighbors[i] = neighbors[j]; neighbors[j] = tmp;
+        }
+        for (var n = 0; n < neighbors.length; n++) {
+          if (dfs(neighbors[n], idx + 1)) return true;
+        }
+        used[key] = false;
+        path.pop();
+        return false;
+      }
+    }
+
+    words.forEach(function (w) { tryPlaceWord(w); });
+    allCells.forEach(function (c) {
+      var key = gameHexKey(c[0], c[1]);
+      if (!letters[key]) letters[key] = GAME_FILLER_POOL[Math.floor(Math.random() * GAME_FILLER_POOL.length)];
+    });
+    return { R: R, cells: allCells, letters: letters };
+  }
+
+  function gameSaveState() {
+    try {
+      localStorage.setItem(GAME_KEY, JSON.stringify({
+        levelIndex: gameState.levelIndex,
+        score: gameState.score,
+        foundWords: gameState.foundWords,
+        foundPaths: gameState.foundPaths,
+        board: gameState.board,
+        triviaDone: gameState.triviaDone,
+        ended: gameState.ended
+      }));
+    } catch (e) {}
+  }
+
+  function gameLoadState() {
+    try {
+      var raw = localStorage.getItem(GAME_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+
+  function gameRenderLevelLabel() {
+    var lvl = GAME_LEVELS[gameState.levelIndex];
+    document.getElementById("game-level-label").textContent =
+      "الجولة " + toAr(gameState.levelIndex + 1) + " من " + toAr(GAME_LEVELS.length) + " · " + lvl.theme;
+  }
+
+  function gameRenderWords() {
+    var lvl = GAME_LEVELS[gameState.levelIndex];
+    var el = document.getElementById("game-words");
+    el.innerHTML = "";
+    lvl.words.forEach(function (w) {
+      var found = gameState.foundWords.indexOf(w) !== -1;
+      var div = document.createElement("div");
+      div.className = "game-word-item" + (found ? " found" : "");
+      div.textContent = found ? w : gameMaskWord(w.length);
+      el.appendChild(div);
+    });
+  }
+
+  function gameUpdateCurrentWord() {
+    var word = gameState.selection.map(function (c) {
+      return gameState.board.letters[gameHexKey(c[0], c[1])];
+    }).join("");
+    document.getElementById("game-current-word").textContent = word;
+  }
+
+  function gameRenderSelectionLine() {
+    var svg = document.getElementById("game-path-svg");
+    svg.innerHTML = "";
+    if (gameState.selection.length < 2) return;
+    var pointsStr = gameState.selection.map(function (c) {
+      var p = gameState.cellPixel[gameHexKey(c[0], c[1])];
+      return p.x + "," + p.y;
+    }).join(" ");
+    var poly = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    poly.setAttribute("points", pointsStr);
+    poly.setAttribute("fill", "none");
+    poly.setAttribute("stroke", "#A98243");
+    poly.setAttribute("stroke-width", "4");
+    poly.setAttribute("stroke-linecap", "round");
+    poly.setAttribute("stroke-linejoin", "round");
+    poly.setAttribute("opacity", "0.85");
+    svg.appendChild(poly);
+  }
+
+  function gameApplyFoundHighlight() {
+    gameState.foundWords.forEach(function (w) {
+      var path = gameState.foundPaths[w];
+      if (!path) return;
+      path.forEach(function (c) {
+        var div = gameState.cellDiv[gameHexKey(c[0], c[1])];
+        if (div) div.classList.add("found");
+      });
+    });
+  }
+
+  function gameRenderBoard() {
+    var wrap = document.getElementById("game-board-wrap");
+    var board = document.getElementById("game-board");
+    var svg = document.getElementById("game-path-svg");
+    board.innerHTML = "";
+    gameState.cellDiv = {};
+    gameState.cellPixel = {};
+    var size = GAME_HEX_SIZE;
+    var hexW = Math.sqrt(3) * size;
+    var hexH = 2 * size;
+    var pts = gameState.board.cells.map(function (c) {
+      return { q: c[0], r: c[1], x: size * Math.sqrt(3) * (c[0] + c[1] / 2), y: size * 1.5 * c[1] };
+    });
+    var xs = pts.map(function (p) { return p.x; });
+    var ys = pts.map(function (p) { return p.y; });
+    var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+    var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+    var width = (maxX - minX) + hexW;
+    var height = (maxY - minY) + hexH;
+    wrap.style.width = width + "px";
+    wrap.style.height = height + "px";
+    svg.setAttribute("viewBox", "0 0 " + width + " " + height);
+
+    pts.forEach(function (p) {
+      var key = gameHexKey(p.q, p.r);
+      var cx = (p.x - minX) + hexW / 2;
+      var cy = (p.y - minY) + hexH / 2;
+      gameState.cellPixel[key] = { x: cx, y: cy };
+      var div = document.createElement("div");
+      div.className = "hex-cell";
+      div.style.width = (hexW + 2) + "px";
+      div.style.height = (hexH + 2) + "px";
+      div.style.left = cx + "px";
+      div.style.top = cy + "px";
+      div.style.transform = "translate(-50%,-50%)";
+      div.style.fontSize = Math.round(size * 0.75) + "px";
+      div.textContent = gameState.board.letters[key];
+      div.dataset.q = p.q;
+      div.dataset.r = p.r;
+      if (gameState.selection.some(function (s) { return s[0] === p.q && s[1] === p.r; })) div.classList.add("selected");
+      gameState.cellDiv[key] = div;
+      board.appendChild(div);
+    });
+
+    gameApplyFoundHighlight();
+    gameRenderSelectionLine();
+  }
+
+  function gameIsAdjacent(a, b) {
+    return GAME_HEX_DIRS.some(function (d) { return a[0] + d[0] === b[0] && a[1] + d[1] === b[1]; });
+  }
+
+  function gameRefreshSelectionVisuals() {
+    Object.keys(gameState.cellDiv).forEach(function (k) { gameState.cellDiv[k].classList.remove("selected"); });
+    gameState.selection.forEach(function (c) {
+      var div = gameState.cellDiv[gameHexKey(c[0], c[1])];
+      if (div) div.classList.add("selected");
+    });
+    gameUpdateCurrentWord();
+    gameRenderSelectionLine();
+  }
+
+  function gameClearSelection() {
+    gameState.selection = [];
+    gameRefreshSelectionVisuals();
+  }
+
+  // Selection is tap-only: a cell reacts to a direct press, never to a
+  // finger merely passing over it (so page scrolling stays natural on touch).
+  function gameTapCell(c) {
+    var sel = gameState.selection;
+    var idx = -1;
+    for (var i = 0; i < sel.length; i++) {
+      if (sel[i][0] === c[0] && sel[i][1] === c[1]) { idx = i; break; }
+    }
+    if (idx !== -1) {
+      if (idx === sel.length - 1) sel.pop();          // tap last letter = undo it
+      else gameState.selection = [];                   // tap earlier letter = clear all
+      gameRefreshSelectionVisuals();
+      return;
+    }
+    if (sel.length === 0 || gameIsAdjacent(sel[sel.length - 1], c)) {
+      sel.push(c);
+    } else {
+      gameState.selection = [c];                       // far cell = start a new word from it
+    }
+    gameRefreshSelectionVisuals();
+    gameCheckSelection();
+  }
+
+  // Auto-check after every tap: exact match => word found; a sequence that
+  // can no longer become any remaining word flashes red and clears itself.
+  function gameCheckSelection() {
+    var word = gameState.selection.map(function (c) { return gameState.board.letters[gameHexKey(c[0], c[1])]; }).join("");
+    var lvl = GAME_LEVELS[gameState.levelIndex];
+    var remaining = lvl.words.filter(function (w) { return gameState.foundWords.indexOf(w) === -1; });
+    if (remaining.indexOf(word) !== -1) {
+      gameState.foundWords.push(word);
+      gameState.foundPaths[word] = gameState.selection.slice();
+      gameState.score += 10;
+      document.getElementById("game-score").textContent = toAr(gameState.score);
+      gameState.selection = [];
+      gameRenderWords();
+      gameRenderBoard();
+      gameSaveState();
+      if (gameState.foundWords.length === lvl.words.length) setTimeout(gameShowTrivia, 500);
+      return;
+    }
+    var isPrefix = remaining.some(function (w) { return w.indexOf(word) === 0; });
+    if (isPrefix) return;
+    var cells = gameState.selection.slice();
+    cells.forEach(function (c) {
+      var div = gameState.cellDiv[gameHexKey(c[0], c[1])];
+      if (div) div.classList.add("wrong");
+    });
+    setTimeout(function () {
+      cells.forEach(function (c) {
+        var div = gameState.cellDiv[gameHexKey(c[0], c[1])];
+        if (div) div.classList.remove("wrong");
+      });
+    }, 400);
+    gameClearSelection();
+  }
+
+  function gameAttachEvents() {
+    var boardEl = document.getElementById("game-board");
+    boardEl.addEventListener("click", function (e) {
+      var el = e.target;
+      while (el && el !== boardEl && !el.classList.contains("hex-cell")) el = el.parentElement;
+      if (!el || el === boardEl || !el.classList.contains("hex-cell")) return;
+      gameTapCell([parseInt(el.dataset.q, 10), parseInt(el.dataset.r, 10)]);
+    });
+  }
+
+  function gameShowTrivia() {
+    var lvl = GAME_LEVELS[gameState.levelIndex];
+    document.getElementById("game-play").hidden = true;
+    var panel = document.getElementById("game-trivia");
+    panel.hidden = false;
+    panel.style.display = "flex";
+    var existingNext = document.getElementById("game-trivia-next");
+    if (existingNext) existingNext.remove();
+    document.getElementById("game-trivia-question").innerHTML =
+      "اذكر " + lvl.trivia.category + " يبدأ بحرف <b>" + lvl.trivia.letter + "</b>";
+    var input = document.getElementById("game-trivia-input");
+    input.value = "";
+    input.disabled = false;
+    document.getElementById("game-trivia-submit").disabled = false;
+    var fb = document.getElementById("game-trivia-feedback");
+    fb.hidden = true;
+    fb.className = "tv-feedback";
+    fb.textContent = "";
+    gameSaveState();
+  }
+
+  function gameShowNextControl() {
+    var panel = document.getElementById("game-trivia");
+    if (document.getElementById("game-trivia-next")) return;
+    var btn = document.createElement("div");
+    btn.className = "game-btn";
+    btn.id = "game-trivia-next";
+    btn.style.alignSelf = "flex-end";
+    btn.textContent = (gameState.levelIndex === GAME_LEVELS.length - 1) ? "إنهاء اللعبة 🏁" : "الجولة التالية ←";
+    btn.addEventListener("click", gameGoNext);
+    panel.appendChild(btn);
+  }
+
+  function gameSubmitTrivia() {
+    var lvl = GAME_LEVELS[gameState.levelIndex];
+    var input = document.getElementById("game-trivia-input");
+    var normAnswer = gameNormalize(input.value);
+    var fb = document.getElementById("game-trivia-feedback");
+    if (!normAnswer) { input.focus(); return; }
+
+    var normLetter = gameNormalize(lvl.trivia.letter);
+    var acceptedNorm = lvl.trivia.accepted.map(gameNormalize);
+    var exact = acceptedNorm.indexOf(normAnswer) !== -1;
+    var letterOk = normAnswer.charAt(0) === normLetter.charAt(0);
+
+    fb.hidden = false;
+    if (exact) {
+      gameState.score += 20;
+      fb.className = "tv-feedback ok";
+      fb.textContent = "إجابة صحيحة! ✅ (+٢٠ نقطة)";
+    } else if (letterOk) {
+      gameState.score += 5;
+      fb.className = "tv-feedback maybe";
+      fb.textContent = "الحرف صحيح 👍 (+٥ نقاط). من الإجابات المقترحة: " + lvl.trivia.accepted.join("، ");
+    } else {
+      fb.className = "tv-feedback no";
+      fb.textContent = "❌ الإجابة يجب أن تبدأ بحرف «" + lvl.trivia.letter + "». من الأمثلة: " + lvl.trivia.accepted.join("، ");
+    }
+    document.getElementById("game-score").textContent = toAr(gameState.score);
+    gameState.triviaDone = true;
+    input.disabled = true;
+    document.getElementById("game-trivia-submit").disabled = true;
+    gameSaveState();
+    gameShowNextControl();
+  }
+
+  function gameGoNext() {
+    if (gameState.levelIndex === GAME_LEVELS.length - 1) gameComplete();
+    else gameStartLevel(gameState.levelIndex + 1, false);
+  }
+
+  function gameComplete() {
+    gameState.ended = true;
+    document.getElementById("game-trivia").hidden = true;
+    document.getElementById("game-trivia").style.display = "none";
+    document.getElementById("game-play").hidden = true;
+    document.getElementById("game-complete").hidden = false;
+    document.getElementById("game-complete").style.display = "flex";
+    document.getElementById("game-final-score").textContent = toAr(gameState.score);
+    gameSaveState();
+  }
+
+  function gameStartLevel(levelIndex, keepBoard) {
+    gameState.levelIndex = levelIndex;
+    gameState.foundWords = [];
+    gameState.foundPaths = {};
+    gameState.selection = [];
+    gameState.triviaDone = false;
+    gameState.ended = false;
+    if (!keepBoard) gameState.board = gameBuildBoard(GAME_LEVELS[levelIndex]);
+    document.getElementById("game-trivia").hidden = true;
+    document.getElementById("game-trivia").style.display = "none";
+    document.getElementById("game-complete").hidden = true;
+    document.getElementById("game-complete").style.display = "none";
+    document.getElementById("game-play").hidden = false;
+    gameRenderBoard();
+    gameRenderWords();
+    gameRenderLevelLabel();
+    gameSaveState();
+  }
+
+  function gameShuffleBoard() {
+    gameState.board = gameBuildBoard(GAME_LEVELS[gameState.levelIndex]);
+    gameState.foundWords = [];
+    gameState.foundPaths = {};
+    gameState.selection = [];
+    gameRenderBoard();
+    gameRenderWords();
+    gameSaveState();
+  }
+
+  function gameFullRestart() {
+    gameState.score = 0;
+    document.getElementById("game-score").textContent = toAr(0);
+    gameStartLevel(0, false);
+  }
+
+  function initGame() {
+    gameAttachEvents();
+    document.getElementById("game-shuffle-btn").addEventListener("click", gameShuffleBoard);
+    document.getElementById("game-restart-btn").addEventListener("click", gameFullRestart);
+    document.getElementById("game-trivia-submit").addEventListener("click", gameSubmitTrivia);
+    document.getElementById("game-trivia-input").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") gameSubmitTrivia();
+    });
+    document.getElementById("game-play-again-btn").addEventListener("click", gameFullRestart);
+
+    var saved = gameLoadState();
+    if (saved && saved.board && GAME_LEVELS[saved.levelIndex]) {
+      gameState.levelIndex = saved.levelIndex;
+      gameState.score = saved.score || 0;
+      gameState.foundWords = saved.foundWords || [];
+      gameState.foundPaths = saved.foundPaths || {};
+      gameState.board = saved.board;
+      gameState.triviaDone = !!saved.triviaDone;
+      gameState.ended = !!saved.ended;
+      gameState.selection = [];
+      document.getElementById("game-score").textContent = toAr(gameState.score);
+      if (gameState.ended) {
+        gameComplete();
+      } else {
+        document.getElementById("game-play").hidden = false;
+        document.getElementById("game-trivia").hidden = true;
+        document.getElementById("game-trivia").style.display = "none";
+        document.getElementById("game-complete").hidden = true;
+        document.getElementById("game-complete").style.display = "none";
+        gameRenderBoard();
+        gameRenderWords();
+        gameRenderLevelLabel();
+        var lvl = GAME_LEVELS[gameState.levelIndex];
+        if (gameState.foundWords.length === lvl.words.length && !gameState.triviaDone) gameShowTrivia();
+      }
+    } else {
+      gameStartLevel(0, false);
+    }
+  }
+
+  initGame();
+})();
+</script>
+</body>
+</html>
