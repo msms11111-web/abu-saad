@@ -268,21 +268,40 @@
   .p2-cal-close:active { background:rgba(0,0,0,0.35); }
   .p2-cal-sub { display:flex; justify-content:center; padding:10px; background:#F3EADC; border-bottom:1px solid #E7DBC8; }
   .p2-cal-today-btn { min-height:40px; padding:9px 22px; border-radius:10px; background:linear-gradient(160deg,#B87A44,#8A5222); color:#FFFFFF; font-size:14px; font-weight:700; cursor:pointer; user-select:none; }
-  .p2-cal-weekdays { display:grid; grid-template-columns:repeat(7,1fr); background:#EFE4D2; color:#6E4A1E; font-size:12px; font-weight:700; }
-  .p2-cal-weekdays > div { padding:8px 0; text-align:center; }
-  .p2-cal-grid { flex:1; display:grid; grid-template-columns:repeat(7,1fr); grid-auto-rows:1fr; overflow-y:auto; background:#E7DBC8; gap:1px; padding:1px; }
-  .p2-cal-cell { background:#FFFFFF; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:52px; gap:1px; }
-  .p2-cal-cell.blank { background:#F7F1E7; }
-  .p2-cal-cell .g { font-size:16px; font-weight:800; color:#2E2418; line-height:1; }
-  .p2-cal-cell .h { font-size:10.5px; color:#A6763A; line-height:1; }
+  .p2-cal-weekdays { display:grid; grid-template-columns:repeat(7,1fr); background:#EFE4D2; color:#6E4A1E; font-size:10px; font-weight:700; }
+  .p2-cal-weekdays > div { padding:7px 1px; text-align:center; line-height:1.15; }
+  .p2-cal-grid { flex:1; display:grid; grid-template-columns:repeat(7,1fr); grid-auto-rows:minmax(58px,1fr); overflow-y:auto; background:#E7DBC8; gap:1px; padding:1px; }
+  .p2-cal-cell { background:#FFFFFF; position:relative; display:flex; flex-direction:column; align-items:stretch; padding:4px 2px 3px; gap:2px; cursor:pointer; }
+  .p2-cal-cell.blank { background:#F7F1E7; cursor:default; }
+  .p2-cal-cell .nums { display:flex; align-items:baseline; justify-content:center; gap:4px; flex-shrink:0; }
+  .p2-cal-cell .g { font-size:15px; font-weight:800; color:#2E2418; line-height:1; }
+  .p2-cal-cell .h { font-size:9.5px; color:#A6763A; line-height:1; }
   .p2-cal-cell.fri .g { color:#8A5222; }
-  .p2-cal-cell.today { background:linear-gradient(160deg,#B87A44,#8A5222); }
-  .p2-cal-cell.today .g { color:#FFFFFF; }
-  .p2-cal-cell.today .h { color:#F3E0C2; }
-  .p2-cal-cell .task-dot { position:absolute; bottom:5px; width:5px; height:5px; border-radius:50%; background:#B03A34; }
-  .p2-cal-cell.today .task-dot { background:#FFFFFF; }
-  .p2-cal-legend { padding:9px 12px; font-size:11px; color:#7A5A32; background:#F3EADC; border-top:1px solid #E7DBC8; text-align:center; line-height:1.7; }
-  .p2-cal-legend .lg-today { display:inline-block; width:11px; height:11px; border-radius:3px; background:#8A5222; vertical-align:-1px; }
+  .p2-cal-cell.today .nums { border-radius:8px; }
+  .p2-cal-cell.today { box-shadow:inset 0 0 0 2px #8A5222; }
+  .p2-cal-cell.today .g { color:#8A5222; }
+  .p2-cal-cell.sel { background:#FBEFDD; }
+  .p2-cal-chips { display:flex; flex-direction:column; gap:1.5px; overflow:hidden; }
+  .p2-cal-chip { display:flex; align-items:center; gap:2px; font-size:8.5px; line-height:1.25; color:#33291B; background:#F3ECDF; border-radius:3px; padding:1px 3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .p2-cal-chip .cc { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+  .p2-cal-chip.done { text-decoration:line-through; color:#9AA5AF; }
+  .p2-cal-chip .ct { overflow:hidden; text-overflow:ellipsis; }
+  .p2-cal-more { font-size:8px; color:#8A5222; font-weight:700; text-align:center; }
+  .p2-cal-daypanel { flex-shrink:0; max-height:42%; overflow-y:auto; background:#FBF7F0; border-top:2px solid #C9A06A; display:none; }
+  .p2-cal-daypanel.open { display:block; }
+  .p2-cal-dp-head { position:sticky; top:0; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#F0E4D2; border-bottom:1px solid #E2D3BC; }
+  .p2-cal-dp-title { font-size:14px; font-weight:800; color:#4A2E12; }
+  .p2-cal-dp-close { font-size:14px; color:#8A5222; cursor:pointer; padding:4px 8px; }
+  .p2-cal-dp-row { display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid #EEE4D4; }
+  .p2-cal-dp-chk { width:24px; height:24px; border-radius:50%; border:2px solid #A5632F; flex-shrink:0; position:relative; cursor:pointer; }
+  .p2-cal-dp-row.done .p2-cal-dp-chk { background:#A5632F; }
+  .p2-cal-dp-row.done .p2-cal-dp-chk::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#FFF; font-size:13px; }
+  .p2-cal-dp-cc { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .p2-cal-dp-txt { flex:1; font-size:15px; color:#22303C; }
+  .p2-cal-dp-row.done .p2-cal-dp-txt { text-decoration:line-through; color:#9AA5AF; }
+  .p2-cal-dp-empty { padding:18px 14px; text-align:center; color:#93826A; font-size:13.5px; }
+  .p2-cal-legend { padding:8px 12px; font-size:10.5px; color:#7A5A32; background:#F3EADC; border-top:1px solid #E7DBC8; text-align:center; line-height:1.7; flex-shrink:0; }
+  .p2-cal-legend .lg-today { display:inline-block; width:11px; height:11px; border-radius:3px; box-shadow:inset 0 0 0 2px #8A5222; vertical-align:-1px; }
   .p2-cal-legend .lg-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#B03A34; vertical-align:-1px; }
   .p2-sortbar { background:#E9EBEC; color:#3E4B57; font-size:13px; padding:10px 14px; display:flex; align-items:center; gap:6px; border-bottom:1px solid #D8DBDE; flex-shrink:0; }
   .p2-tasks { flex:1; overflow-y:auto; padding-bottom:96px; scrollbar-width:thin; }
@@ -813,10 +832,17 @@
             <div class="p2-cal-today-btn" id="p2-cal-today">اليوم</div>
           </div>
           <div class="p2-cal-weekdays">
-            <div>أحد</div><div>إثن</div><div>ثلا</div><div>أرب</div><div>خمي</div><div>جمع</div><div>سبت</div>
+            <div>السبت</div><div>الأحد</div><div>الاثنين</div><div>الثلاثاء</div><div>الأربعاء</div><div>الخميس</div><div>الجمعة</div>
           </div>
           <div class="p2-cal-grid" id="p2-cal-grid"></div>
-          <div class="p2-cal-legend"><span class="lg-today"></span> اليوم · <span class="lg-dot"></span> يوجد مهام · الرقم الكبير ميلادي والصغير هجري</div>
+          <div class="p2-cal-daypanel" id="p2-cal-daypanel">
+            <div class="p2-cal-dp-head">
+              <div class="p2-cal-dp-title" id="p2-cal-dp-title"></div>
+              <div class="p2-cal-dp-close" id="p2-cal-dp-close">✕ إغلاق</div>
+            </div>
+            <div id="p2-cal-dp-list"></div>
+          </div>
+          <div class="p2-cal-legend"><span class="lg-today"></span> اليوم · <span class="lg-dot"></span> يوجد مهام · الرقم الكبير ميلادي والصغير هجري · اضغط أي يوم لعرض مهامه</div>
         </div>
       </div><!-- /planner -->
 
@@ -1447,6 +1473,11 @@
     P2_HIJRI_MY = new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", { month: "long", year: "numeric" });
   } catch (e) {}
 
+  var p2CalSel = null; // اليوم المحدد لعرض مهامه
+  function p2CalTasksOn(ds) {
+    return p2.tasks.filter(function (t) { return t.due === ds; })
+      .sort(function (a, b) { return (a.done === b.done) ? 0 : (a.done ? 1 : -1); });
+  }
   function p2RenderCal() {
     var greg = new Date(p2CalY, p2CalM, 1);
     document.getElementById("p2-cal-greg").textContent = toAr(greg.toLocaleDateString("ar", { month: "long", year: "numeric" }));
@@ -1461,42 +1492,104 @@
 
     var grid = document.getElementById("p2-cal-grid");
     grid.innerHTML = "";
-    var firstDow = greg.getDay(); // 0 = الأحد
+    var firstCol = (greg.getDay() + 1) % 7; // الأسبوع يبدأ بالسبت (السبت=0)
     var daysInMonth = new Date(p2CalY, p2CalM + 1, 0).getDate();
     var todayStr = fmt(new Date());
-    var dueSet = {};
-    p2.tasks.forEach(function (t) { if (t.due && !t.done) dueSet[t.due] = 1; });
 
-    for (var b = 0; b < firstDow; b++) {
+    for (var b = 0; b < firstCol; b++) {
       var bl = document.createElement("div");
       bl.className = "p2-cal-cell blank";
       grid.appendChild(bl);
     }
     for (var d = 1; d <= daysInMonth; d++) {
-      var cellDate = new Date(p2CalY, p2CalM, d);
-      var ds = fmt(cellDate);
-      var cell = document.createElement("div");
-      cell.className = "p2-cal-cell" + (cellDate.getDay() === 5 ? " fri" : "") + (ds === todayStr ? " today" : "");
-      var g = document.createElement("div");
-      g.className = "g"; g.textContent = toAr(d);
-      cell.appendChild(g);
-      if (P2_HIJRI_DAY) {
-        var h = document.createElement("div");
-        h.className = "h";
-        try { h.textContent = P2_HIJRI_DAY.format(cellDate); } catch (e) { h.textContent = ""; }
-        cell.appendChild(h);
-      }
-      if (dueSet[ds]) {
-        var dot = document.createElement("span");
-        dot.className = "task-dot";
-        cell.appendChild(dot);
-      }
-      grid.appendChild(cell);
+      (function (d) {
+        var cellDate = new Date(p2CalY, p2CalM, d);
+        var ds = fmt(cellDate);
+        var dayTasks = p2CalTasksOn(ds);
+        var cell = document.createElement("div");
+        cell.className = "p2-cal-cell" + (cellDate.getDay() === 5 ? " fri" : "") +
+          (ds === todayStr ? " today" : "") + (ds === p2CalSel ? " sel" : "");
+        var nums = document.createElement("div");
+        nums.className = "nums";
+        var g = document.createElement("div");
+        g.className = "g"; g.textContent = toAr(d);
+        nums.appendChild(g);
+        if (P2_HIJRI_DAY) {
+          var h = document.createElement("div");
+          h.className = "h";
+          try { h.textContent = P2_HIJRI_DAY.format(cellDate); } catch (e) { h.textContent = ""; }
+          nums.appendChild(h);
+        }
+        cell.appendChild(nums);
+        if (dayTasks.length) {
+          var chips = document.createElement("div");
+          chips.className = "p2-cal-chips";
+          dayTasks.slice(0, 2).forEach(function (t) {
+            var L = p2ListById(t.list);
+            var chip = document.createElement("div");
+            chip.className = "p2-cal-chip" + (t.done ? " done" : "");
+            var cc = document.createElement("span");
+            cc.className = "cc"; cc.style.background = L ? L.color : "#8A5222";
+            var ct = document.createElement("span");
+            ct.className = "ct"; ct.textContent = t.text;
+            chip.appendChild(cc); chip.appendChild(ct);
+            chips.appendChild(chip);
+          });
+          if (dayTasks.length > 2) {
+            var more = document.createElement("div");
+            more.className = "p2-cal-more";
+            more.textContent = "+" + toAr(dayTasks.length - 2);
+            chips.appendChild(more);
+          }
+          cell.appendChild(chips);
+        }
+        cell.addEventListener("click", function () { p2CalSelectDay(ds); });
+        grid.appendChild(cell);
+      })(d);
     }
+  }
+  function p2CalSelectDay(ds) {
+    p2CalSel = ds;
+    var panel = document.getElementById("p2-cal-daypanel");
+    var titleEl = document.getElementById("p2-cal-dp-title");
+    var listEl = document.getElementById("p2-cal-dp-list");
+    var parts = ds.split("-").map(Number);
+    var dObj = new Date(parts[0], parts[1] - 1, parts[2]);
+    var greg = toAr(dObj.toLocaleDateString("ar", { weekday: "long", day: "numeric", month: "long" }));
+    var hij = "";
+    if (P2_HIJRI_MY && P2_HIJRI_DAY) { try { hij = " — " + P2_HIJRI_DAY.format(dObj) + " " + P2_HIJRI_MY.format(dObj); } catch (e) {} }
+    titleEl.textContent = greg + hij;
+    listEl.innerHTML = "";
+    var dayTasks = p2CalTasksOn(ds);
+    if (!dayTasks.length) {
+      var em = document.createElement("div");
+      em.className = "p2-cal-dp-empty";
+      em.textContent = "لا مهام في هذا اليوم";
+      listEl.appendChild(em);
+    } else {
+      dayTasks.forEach(function (t) {
+        var L = p2ListById(t.list);
+        var row = document.createElement("div");
+        row.className = "p2-cal-dp-row" + (t.done ? " done" : "");
+        var chk = document.createElement("div");
+        chk.className = "p2-cal-dp-chk";
+        chk.addEventListener("click", function () { t.done = !t.done; p2Save(); p2RenderCal(); p2CalSelectDay(ds); p2RenderAll(); });
+        var cc = document.createElement("span");
+        cc.className = "p2-cal-dp-cc"; cc.style.background = L ? L.color : "#8A5222"; cc.title = L ? L.name : "";
+        var txt = document.createElement("div");
+        txt.className = "p2-cal-dp-txt"; txt.textContent = t.text;
+        row.appendChild(chk); row.appendChild(cc); row.appendChild(txt);
+        listEl.appendChild(row);
+      });
+    }
+    panel.classList.add("open");
+    p2RenderCal();
   }
   function p2OpenCal() {
     var now = new Date();
     p2CalY = now.getFullYear(); p2CalM = now.getMonth();
+    p2CalSel = null;
+    document.getElementById("p2-cal-daypanel").classList.remove("open");
     p2RenderCal();
     document.getElementById("p2-cal-modal").classList.add("open");
   }
@@ -1505,6 +1598,8 @@
     p2CalM += delta;
     if (p2CalM < 0) { p2CalM = 11; p2CalY--; }
     else if (p2CalM > 11) { p2CalM = 0; p2CalY++; }
+    p2CalSel = null;
+    document.getElementById("p2-cal-daypanel").classList.remove("open");
     p2RenderCal();
   }
 
@@ -1541,7 +1636,13 @@
     document.getElementById("p2-cal-prev").addEventListener("click", function () { p2CalShift(-1); });
     document.getElementById("p2-cal-next").addEventListener("click", function () { p2CalShift(1); });
     document.getElementById("p2-cal-today").addEventListener("click", function () {
-      var now = new Date(); p2CalY = now.getFullYear(); p2CalM = now.getMonth(); p2RenderCal();
+      var now = new Date(); p2CalY = now.getFullYear(); p2CalM = now.getMonth();
+      p2CalSel = null; document.getElementById("p2-cal-daypanel").classList.remove("open"); p2RenderCal();
+    });
+    document.getElementById("p2-cal-dp-close").addEventListener("click", function () {
+      p2CalSel = null;
+      document.getElementById("p2-cal-daypanel").classList.remove("open");
+      p2RenderCal();
     });
     document.getElementById("p2-d-cancel").addEventListener("click", p2CloseDialog);
     document.getElementById("p2-overlay").addEventListener("click", function (e) { if (e.target === this) p2CloseDialog(); });
@@ -2406,8 +2507,12 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "4.4.0";
+  var APP_VERSION = "4.5.0";
   var RELEASES = [
+    { v: "4.5.0", date: "٢٣ يوليو ٢٠٢٦", items: [
+      ["imp", "أسماء الأيام كاملة في التقويم (السبت، الأحد، الاثنين…) والأسبوع يبدأ بالسبت"],
+      ["new", "المهام تظهر داخل التقويم: عنوان المهمة يظهر في خانة يومها بنقطة بلون قائمتها، والضغط على أي يوم يعرض كل مهامه ويمكن إنجازها من هناك"]
+    ]},
     { v: "4.4.0", date: "٢٣ يوليو ٢٠٢٦", items: [
       ["new", "تقويم شهري داخل المخطط: زر «📅 التقويم» بالشريط الجانبي يفتح تقويمًا منظمًا يعرض التاريخين الهجري والميلادي معًا في كل يوم، مع تنقّل بين الأشهر، تمييز اليوم، ونقاط على الأيام التي بها مهام"]
     ]},
