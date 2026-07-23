@@ -248,7 +248,9 @@
   .p2-l.on { background:var(--lc); font-weight:700; }
   .p2-l .nm { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .p2-l .ed { flex-shrink:0; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; color:rgba(255,255,255,0.85); background:rgba(0,0,0,0.18); }
-  .p2-l.smart::before { background:#8A64A8; }
+  .p2-l.smart { --lc:#8A64A8; }
+  .p2-l.smart.star { --lc:#E8A21C; }
+  .p2-l.smart::before { background:var(--lc); }
   .p2-add-list { margin:12px auto 0; width:46px; height:46px; border-radius:12px; color:#FFFFFF; font-size:26px; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; }
   .p2-add-list:active { background:rgba(255,255,255,0.15); }
   .p2-sortbar { background:#E9EBEC; color:#3E4B57; font-size:13px; padding:10px 14px; display:flex; align-items:center; gap:6px; border-bottom:1px solid #D8DBDE; flex-shrink:0; }
@@ -261,15 +263,22 @@
   .p2-chk::before { content:''; position:absolute; inset:-9px; }
   .p2-row.done .p2-chk { background:#5E86AC; }
   .p2-row.done .p2-chk::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:15px; font-weight:700; }
-  .p2-txt { flex:1; min-width:0; font-size:16px; color:#22303C; line-height:1.5; word-break:break-word; cursor:pointer; padding:6px 0; }
-  .p2-row.done .p2-txt { color:#9AA5AF; text-decoration:line-through; }
-  .p2-sub { font-size:11.5px; color:#B03A34; margin-top:2px; }
-  .p2-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-  .p2-car { width:36px; height:46px; display:flex; align-items:center; justify-content:center; color:#B9C2CA; cursor:pointer; font-size:12px; flex-shrink:0; transition:transform .2s ease; user-select:none; }
+  .p2-txt { flex:1; min-width:0; cursor:pointer; padding:6px 0; }
+  .p2-listlabel { font-size:11.5px; font-weight:800; margin-bottom:1px; letter-spacing:0.02em; }
+  .p2-ttl { font-size:16px; color:#22303C; line-height:1.45; word-break:break-word; }
+  .p2-row.done .p2-ttl { color:#9AA5AF; text-decoration:line-through; }
+  .p2-note { font-size:12.5px; color:#93A1AD; margin-top:2px; line-height:1.45; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; }
+  .p2-sub { font-size:11.5px; color:#B03A34; margin-top:2px; font-weight:600; }
+  .p2-star-btn { width:34px; height:44px; display:flex; align-items:center; justify-content:center; color:#D3DAE0; cursor:pointer; font-size:19px; flex-shrink:0; user-select:none; }
+  .p2-star-btn.on { color:#E8A21C; }
+  .p2-car { width:32px; height:46px; display:flex; align-items:center; justify-content:center; color:#B9C2CA; cursor:pointer; font-size:12px; flex-shrink:0; transition:transform .2s ease; user-select:none; }
   .p2-row.open .p2-car { transform:rotate(180deg); }
-  .p2-detail { background:#F5F7F8; border-bottom:1px solid #E7E8EA; padding:12px 16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .p2-detail { background:#F5F7F8; border-bottom:1px solid #E7E8EA; padding:12px 16px; display:flex; flex-direction:column; gap:10px; }
+  .p2-drow { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .p2-detail label { font-size:13px; color:#5A6B7C; }
-  .p2-detail input[type="date"] { font-family:'Tajawal',sans-serif; font-size:16px; padding:8px 10px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; min-height:44px; }
+  .p2-dnote { flex:1; min-width:160px; font-family:'Tajawal',sans-serif; font-size:16px; padding:10px 12px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; outline:none; }
+  .p2-dnote:focus { border-color:#6E89A0; }
+  .p2-detail input[type="date"], .p2-date { font-family:'Tajawal',sans-serif; font-size:16px; padding:8px 10px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; min-height:44px; }
   .p2-btn { border:none; border-radius:10px; padding:11px 18px; font-size:14px; cursor:pointer; min-height:44px; font-family:'Tajawal',sans-serif; font-weight:700; }
   .p2-btn.blue { background:#6E89A0; color:#FFFFFF; }
   .p2-btn.gray { background:#E4E8EB; color:#3E4B57; }
@@ -283,6 +292,9 @@
   .p2-composer input[type="text"]:focus { border-color:#6E89A0; }
   .p2-composer .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
   .p2-composer select { font-family:'Tajawal',sans-serif; font-size:14.5px; padding:10px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; min-height:44px; max-width:150px; }
+  .p2-datechip { display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:10px 15px; border-radius:10px; border:1px dashed #A9B6C2; background:#F4F7F9; color:#5A6B7C; font-size:14px; font-weight:600; cursor:pointer; user-select:none; }
+  .p2-datechip.has { border-style:solid; border-color:#6E89A0; background:#EAF0F4; color:#2E4456; }
+  .p2-datechip .x { margin-inline-start:4px; font-size:12px; color:#8496A6; padding:0 3px; }
   .p2-menu { position:absolute; top:60px; right:12px; background:#FFFFFF; border-radius:12px; box-shadow:0 16px 34px -12px rgba(0,0,0,0.45); z-index:6; display:none; min-width:200px; overflow:hidden; }
   .p2-menu.open { display:block; }
   .p2-mi { padding:13px 16px; font-size:14.5px; color:#22303C; cursor:pointer; border-bottom:1px solid #EEF0F2; min-height:47px; display:flex; align-items:center; user-select:none; }
@@ -717,9 +729,13 @@
             <div class="p2-fab" id="p2-fab" title="إضافة مهمة">＋</div>
             <div class="p2-composer" id="p2-composer">
               <input type="text" id="p2-c-text" placeholder="اكتب المهمة...">
+              <input type="text" id="p2-c-note" placeholder="ملاحظة (اختياري)...">
               <div class="row">
-                <input type="date" id="p2-c-date" title="تاريخ الاستحقاق (اختياري)" style="font-family:'Tajawal',sans-serif; font-size:14.5px; padding:9px 10px; border:1px solid #C9D2DA; border-radius:10px; color:#22303C; min-height:44px;">
+                <div class="p2-datechip" id="p2-c-datechip">📅 أضف تاريخًا (اختياري)</div>
+                <input type="date" id="p2-c-date" title="تاريخ الاستحقاق" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
                 <select id="p2-c-list" style="display:none;"></select>
+              </div>
+              <div class="row">
                 <div style="flex:1"></div>
                 <button class="p2-btn gray" id="p2-c-cancel">إلغاء</button>
                 <button class="p2-btn blue" id="p2-c-save">إضافة</button>
@@ -730,7 +746,8 @@
             <div class="p2-side-label">القوائم</div>
             <div class="p2-lists" id="p2-lists"></div>
             <div class="p2-side-label">القوائم الذكية</div>
-            <div class="p2-l smart" id="p2-all"><span class="nm">كل المهام</span></div>
+            <div class="p2-l smart" id="p2-all"><span class="nm">▦ كل المهام</span></div>
+            <div class="p2-l smart star" id="p2-star"><span class="nm">★ المهم</span></div>
             <div class="p2-add-list" id="p2-add-list" title="إضافة قائمة">＋</div>
           </aside>
         </div>
@@ -1011,7 +1028,17 @@
 
   // ---------- Planner v2 (قوائم المهام على النمط الاحترافي) ----------
   var P2_KEY = "abusaad_planner_v2";
+  var P2_GEN = 3; // علامة تنظيف لمرة واحدة: عند رفعها تُفرَّغ المهام مع الإبقاء على القوائم
   var P2_COLORS = ["#2A46C8", "#3E8E2E", "#B03A34", "#1F2429", "#E8862C", "#8A64A8", "#0E8FA3", "#E3C929", "#6B7280"];
+  var P2_SEED = [["المنزل", "#2A46C8"], ["العمل", "#3E8E2E"], ["خاص", "#B03A34"], ["السيارة", "#1F2429"],
+    ["عاجل اليوم", "#B03A34"], ["النادي", "#3E8E2E"], ["مصاريف النقل", "#B03A34"], ["الرجيم", "#3E8E2E"],
+    ["الاسنان", "#4A5560"], ["رمضان", "#B03A34"], ["الجميح", "#3E8E2E"], ["اسطنبول", "#E3C929"]];
+
+  function p2FreshLists() {
+    var nid = 1, lists = [];
+    P2_SEED.forEach(function (s) { lists.push({ id: "l" + (nid++), name: s[0], color: s[1] }); });
+    return { nid: nid, lists: lists };
+  }
 
   function p2Load() {
     var raw = null;
@@ -1019,44 +1046,43 @@
     if (raw) {
       try {
         var saved = JSON.parse(raw);
-        if (saved && saved.lists && saved.tasks) return saved;
+        if (saved && saved.lists && saved.tasks) {
+          if (saved.gen !== P2_GEN) { saved.tasks = []; saved.gen = P2_GEN; } // تنظيف لمرة واحدة
+          saved.tasks.forEach(function (t) {
+            if (typeof t.note !== "string") t.note = "";
+            if (typeof t.star !== "boolean") t.star = false;
+          });
+          var ok = saved.sel === "__all" || saved.sel === "__star" ||
+            saved.lists.some(function (L) { return L.id === saved.sel; });
+          if (!ok) saved.sel = saved.lists.length ? saved.lists[0].id : "__all";
+          return saved;
+        }
       } catch (e) {}
     }
-    var d = { v: 2, nid: 1, lists: [], tasks: [], sel: null };
-    [["المنزل", "#2A46C8"], ["العمل", "#3E8E2E"], ["خاص", "#B03A34"], ["السيارة", "#1F2429"],
-     ["عاجل اليوم", "#B03A34"], ["النادي", "#3E8E2E"], ["مصاريف النقل", "#B03A34"], ["الرجيم", "#3E8E2E"],
-     ["الاسنان", "#4A5560"], ["رمضان", "#B03A34"], ["الجميح", "#3E8E2E"], ["اسطنبول", "#E3C929"]
-    ].forEach(function (s) { d.lists.push({ id: "l" + (d.nid++), name: s[0], color: s[1] }); });
-    var urgent = d.lists[4];
-    d.sel = urgent.id;
-    // ترحيل مهام المخطط القديم (إن وجدت) إلى قائمة «عاجل اليوم»
-    try {
-      var old = JSON.parse(localStorage.getItem("abusaad_tasks_v1") || "null");
-      if (old && old.length) {
-        old.forEach(function (t) {
-          if (!t || !t.text || t.text.indexOf("لإضافة مهمتك الأولى") !== -1) return;
-          d.tasks.push({ id: "t" + (d.nid++), list: urgent.id, text: String(t.text), done: !!t.done, due: (typeof t.date === "string" && t.date) ? t.date : null });
-        });
-      }
-    } catch (e) {}
-    return d;
+    var f = p2FreshLists();
+    return { v: 2, gen: P2_GEN, nid: f.nid, lists: f.lists, tasks: [], sel: f.lists.length ? f.lists[0].id : "__all" };
   }
 
   var p2 = p2Load();
   var p2q = "", p2OpenRow = null, p2DoneOpen = false, p2EditList = null, p2DColor = P2_COLORS[0];
 
   function p2Save() {
-    try { localStorage.setItem(P2_KEY, JSON.stringify({ v: p2.v, nid: p2.nid, lists: p2.lists, tasks: p2.tasks, sel: p2.sel })); } catch (e) {}
+    try { localStorage.setItem(P2_KEY, JSON.stringify({ v: p2.v, gen: P2_GEN, nid: p2.nid, lists: p2.lists, tasks: p2.tasks, sel: p2.sel })); } catch (e) {}
   }
   function p2ListById(id) {
     for (var i = 0; i < p2.lists.length; i++) if (p2.lists[i].id === id) return p2.lists[i];
     return null;
   }
-  function p2CurList() { return p2.sel === "__all" ? null : p2ListById(p2.sel); }
+  function p2IsAggregate() { return p2.sel === "__all" || p2.sel === "__star"; }
+  function p2CurList() { return p2IsAggregate() ? null : p2ListById(p2.sel); }
   function p2Visible() {
     return p2.tasks.filter(function (t) {
-      if (p2.sel !== "__all" && t.list !== p2.sel) return false;
-      if (p2q && String(t.text).indexOf(p2q) === -1) return false;
+      if (p2.sel === "__star") { if (!t.star) return false; }
+      else if (p2.sel !== "__all") { if (t.list !== p2.sel) return false; }
+      if (p2q) {
+        var hay = String(t.text) + " " + String(t.note || "");
+        if (hay.indexOf(p2q) === -1) return false;
+      }
       return true;
     });
   }
@@ -1067,10 +1093,15 @@
     try { return toAr(new Date(p[0], p[1] - 1, p[2]).toLocaleDateString("ar", { weekday: "long", day: "numeric", month: "long" })); }
     catch (e) { return toAr(due); }
   }
+  function p2ShortDate(due) {
+    try { return toAr(new Date(due + "T00:00:00").toLocaleDateString("ar", { day: "numeric", month: "long" })); }
+    catch (e) { return toAr(due); }
+  }
 
   function p2RenderTop() {
     var L = p2CurList();
-    document.getElementById("p2-title").textContent = L ? L.name : "كل المهام";
+    var title = p2.sel === "__all" ? "كل المهام" : (p2.sel === "__star" ? "المهم" : (L ? L.name : ""));
+    document.getElementById("p2-title").textContent = title;
     var pend = p2Visible().filter(function (t) { return !t.done; }).length;
     document.getElementById("p2-count").textContent = toAr(pend);
     document.getElementById("p2-m-rename").style.display = L ? "flex" : "none";
@@ -1099,9 +1130,8 @@
       row.addEventListener("click", function () { p2.sel = L.id; p2OpenRow = null; p2Save(); p2RenderAll(); });
       wrap.appendChild(row);
     });
-    var all = document.getElementById("p2-all");
-    all.classList.toggle("on", p2.sel === "__all");
-    all.style.setProperty("--lc", "#8A64A8");
+    document.getElementById("p2-all").classList.toggle("on", p2.sel === "__all");
+    document.getElementById("p2-star").classList.toggle("on", p2.sel === "__star");
   }
 
   function p2BuildRow(t) {
@@ -1112,63 +1142,136 @@
     chk.className = "p2-chk";
     chk.title = t.done ? "إلغاء الإنجاز" : "إنجاز";
     chk.addEventListener("click", function () { t.done = !t.done; p2Save(); p2RenderAll(); });
+
     var txt = document.createElement("div");
     txt.className = "p2-txt";
-    txt.textContent = t.text;
+    if (p2IsAggregate()) {
+      var L0 = p2ListById(t.list);
+      if (L0) {
+        var lbl = document.createElement("div");
+        lbl.className = "p2-listlabel";
+        lbl.textContent = L0.name;
+        lbl.style.color = L0.color;
+        txt.appendChild(lbl);
+      }
+    }
+    var ttl = document.createElement("div");
+    ttl.className = "p2-ttl";
+    ttl.textContent = t.text;
+    txt.appendChild(ttl);
+    if (t.note) {
+      var note = document.createElement("div");
+      note.className = "p2-note";
+      note.textContent = t.note;
+      txt.appendChild(note);
+    }
     var todayStr = fmt(new Date());
     if (t.due && t.due < todayStr && !t.done) {
       var sub = document.createElement("div");
       sub.className = "p2-sub";
-      try { sub.textContent = toAr(new Date(t.due + "T00:00:00").toLocaleDateString("ar", { day: "numeric", month: "long" })); } catch (e) { sub.textContent = toAr(t.due); }
+      sub.textContent = "متأخرة · " + p2ShortDate(t.due);
       txt.appendChild(sub);
     }
     txt.addEventListener("click", function () { p2OpenRow = p2OpenRow === t.id ? null : t.id; p2RenderTasks(); });
+
+    var star = document.createElement("div");
+    star.className = "p2-star-btn" + (t.star ? " on" : "");
+    star.textContent = "★";
+    star.title = t.star ? "إزالة التمييز" : "تمييز كمهم";
+    star.addEventListener("click", function (e) { e.stopPropagation(); t.star = !t.star; p2Save(); p2RenderAll(); });
+
     var car = document.createElement("div");
     car.className = "p2-car";
     car.textContent = "▼";
     car.addEventListener("click", function () { p2OpenRow = p2OpenRow === t.id ? null : t.id; p2RenderTasks(); });
-    // ترتيب العناصر: النص في أقصى اليمين ثم السهم ثم دائرة الإنجاز في أقصى اليسار (مطابق للتصميم المرجعي)
+
+    // RTL: النص يمينًا ثم النجمة ثم السهم ثم دائرة الإنجاز يسارًا (مطابق للتصميم المرجعي)
     row.appendChild(txt);
-    if (p2.sel === "__all") {
-      var L = p2ListById(t.list);
-      var dot = document.createElement("span");
-      dot.className = "p2-dot";
-      dot.style.background = L ? L.color : "#6B7280";
-      dot.title = L ? L.name : "";
-      row.appendChild(dot);
-    }
+    row.appendChild(star);
     row.appendChild(car);
     row.appendChild(chk);
     frag.appendChild(row);
+
     if (p2OpenRow === t.id) {
       var det = document.createElement("div");
       det.className = "p2-detail";
+
+      var noteWrap = document.createElement("div");
+      noteWrap.className = "p2-drow";
+      var noteInput = document.createElement("input");
+      noteInput.type = "text";
+      noteInput.className = "p2-dnote";
+      noteInput.placeholder = "ملاحظة (اختياري)...";
+      noteInput.value = t.note || "";
+      noteInput.addEventListener("input", function () { t.note = noteInput.value; });
+      noteInput.addEventListener("change", function () { t.note = noteInput.value; p2Save(); p2RenderTasks(); });
+      noteWrap.appendChild(noteInput);
+      det.appendChild(noteWrap);
+
+      var dateWrap = document.createElement("div");
+      dateWrap.className = "p2-drow";
       var lab = document.createElement("label");
-      lab.textContent = "الاستحقاق:";
-      det.appendChild(lab);
-      var di = document.createElement("input");
-      di.type = "date";
-      di.value = t.due || "";
-      di.addEventListener("change", function () { t.due = di.value || null; p2Save(); p2RenderAll(); });
-      det.appendChild(di);
+      lab.textContent = "التاريخ:";
+      dateWrap.appendChild(lab);
+      if (t.due) {
+        var di = document.createElement("input");
+        di.type = "date";
+        di.className = "p2-date";
+        di.value = t.due;
+        di.addEventListener("change", function () { t.due = di.value || null; p2Save(); p2RenderAll(); });
+        dateWrap.appendChild(di);
+        var clr = document.createElement("button");
+        clr.className = "p2-btn gray";
+        clr.textContent = "بدون تاريخ";
+        clr.addEventListener("click", function () { t.due = null; p2Save(); p2RenderAll(); });
+        dateWrap.appendChild(clr);
+      } else {
+        var addD = document.createElement("button");
+        addD.className = "p2-btn blue";
+        addD.innerHTML = "📅 حدّد تاريخًا";
+        addD.addEventListener("click", function () {
+          var di2 = document.createElement("input");
+          di2.type = "date";
+          di2.style.position = "fixed";
+          di2.style.opacity = "0";
+          di2.style.pointerEvents = "none";
+          document.body.appendChild(di2);
+          di2.addEventListener("change", function () {
+            t.due = di2.value || null; p2Save(); p2RenderAll();
+            if (di2.parentNode) di2.parentNode.removeChild(di2);
+          });
+          try { di2.showPicker(); }
+          catch (e2) {
+            t.due = fmt(new Date()); p2Save(); p2RenderAll();
+            if (di2.parentNode) di2.parentNode.removeChild(di2);
+          }
+        });
+        dateWrap.appendChild(addD);
+      }
+      det.appendChild(dateWrap);
+
+      var actWrap = document.createElement("div");
+      actWrap.className = "p2-drow p2-dactions";
+      var starBtn = document.createElement("button");
+      starBtn.className = "p2-btn " + (t.star ? "blue" : "gray");
+      starBtn.textContent = t.star ? "★ مهم" : "☆ تمييز كمهم";
+      starBtn.addEventListener("click", function () { t.star = !t.star; p2Save(); p2RenderAll(); });
+      actWrap.appendChild(starBtn);
       var sp = document.createElement("div");
       sp.style.flex = "1";
-      det.appendChild(sp);
+      actWrap.appendChild(sp);
       var del = document.createElement("button");
       del.className = "p2-btn red";
       del.textContent = "حذف";
       del.addEventListener("click", function () {
         if (del.dataset.arm) {
           p2.tasks = p2.tasks.filter(function (x) { return x.id !== t.id; });
-          p2OpenRow = null;
-          p2Save();
-          p2RenderAll();
-        } else {
-          del.dataset.arm = "1";
-          del.textContent = "تأكيد الحذف؟";
-        }
+          p2OpenRow = null; p2Save(); p2RenderAll();
+        } else { del.dataset.arm = "1"; del.textContent = "تأكيد الحذف؟"; }
       });
-      det.appendChild(del);
+      actWrap.appendChild(del);
+      det.appendChild(actWrap);
+
       frag.appendChild(det);
     }
     return frag;
@@ -1181,7 +1284,9 @@
     if (!items.length) {
       var em = document.createElement("div");
       em.className = "p2-empty";
-      em.textContent = p2q ? "لا توجد نتائج مطابقة للبحث" : "لا توجد مهام هنا بعد — اضغط زر ＋ بالأسفل لإضافة أول مهمة";
+      em.textContent = p2q ? "لا توجد نتائج مطابقة للبحث" :
+        (p2.sel === "__star" ? "لا توجد مهام مميّزة بعد — ميّز أي مهمة بالنجمة ★" :
+          "لا توجد مهام هنا بعد — اضغط زر ＋ بالأسفل لإضافة أول مهمة");
       box.appendChild(em);
       return;
     }
@@ -1264,10 +1369,12 @@
     var menu = document.getElementById("p2-menu");
     document.getElementById("p2-menu-btn").addEventListener("click", function (e) {
       e.stopPropagation();
+      delete document.getElementById("p2-m-delete").dataset.arm;
+      document.getElementById("p2-m-delete").textContent = "حذف القائمة";
       menu.classList.toggle("open");
     });
     document.addEventListener("click", function (e) {
-      if (!menu.contains(e.target)) menu.classList.remove("open");
+      if (!menu.contains(e.target) && e.target.id !== "p2-menu-btn") menu.classList.remove("open");
     });
     document.getElementById("p2-search-btn").addEventListener("click", function () {
       var row = document.getElementById("p2-search-row");
@@ -1281,6 +1388,9 @@
     });
     document.getElementById("p2-all").addEventListener("click", function () {
       p2.sel = "__all"; p2OpenRow = null; p2Save(); p2RenderAll();
+    });
+    document.getElementById("p2-star").addEventListener("click", function () {
+      p2.sel = "__star"; p2OpenRow = null; p2Save(); p2RenderAll();
     });
     document.getElementById("p2-add-list").addEventListener("click", function () { p2OpenDialog(null); });
     document.getElementById("p2-d-cancel").addEventListener("click", p2CloseDialog);
@@ -1305,7 +1415,9 @@
       menu.classList.remove("open");
       p2.tasks = p2.tasks.filter(function (t) {
         if (!t.done) return true;
-        return p2.sel !== "__all" && t.list !== p2.sel;
+        if (p2.sel === "__all") return false;
+        if (p2.sel === "__star") return !t.star;
+        return t.list !== p2.sel;
       });
       p2Save(); p2RenderAll();
     });
@@ -1327,14 +1439,28 @@
         delBtn.textContent = "اضغط مرة أخرى لتأكيد الحذف";
       }
     });
-    document.getElementById("p2-menu-btn").addEventListener("click", function () {
-      delete delBtn.dataset.arm;
-      delBtn.textContent = "حذف القائمة";
-    });
+
+    // ===== المُنشئ (إضافة مهمة) مع تاريخ اختياري وتقويم =====
     var composer = document.getElementById("p2-composer");
+    var cDate = document.getElementById("p2-c-date");
+    var cDateChip = document.getElementById("p2-c-datechip");
+    function p2SyncDateChip() {
+      if (cDate.value) {
+        cDateChip.classList.add("has");
+        cDateChip.innerHTML = "📅 " + p2ShortDate(cDate.value) + " <span class='x'>✕</span>";
+      } else {
+        cDateChip.classList.remove("has");
+        cDateChip.textContent = "📅 أضف تاريخًا (اختياري)";
+      }
+    }
+    cDateChip.addEventListener("click", function (e) {
+      if (e.target && e.target.className === "x") { cDate.value = ""; p2SyncDateChip(); return; }
+      try { cDate.showPicker(); } catch (e2) { cDate.focus(); cDate.click(); }
+    });
+    cDate.addEventListener("change", p2SyncDateChip);
     document.getElementById("p2-fab").addEventListener("click", function () {
       var listSel = document.getElementById("p2-c-list");
-      if (p2.sel === "__all") {
+      if (p2IsAggregate()) {
         listSel.style.display = "";
         listSel.innerHTML = "";
         p2.lists.forEach(function (L) {
@@ -1343,27 +1469,36 @@
           listSel.appendChild(o);
         });
       } else listSel.style.display = "none";
+      cDate.value = "";
+      document.getElementById("p2-c-note").value = "";
+      p2SyncDateChip();
       composer.classList.add("open");
       document.getElementById("p2-c-text").focus();
     });
     function p2CloseComposer() {
       composer.classList.remove("open");
       document.getElementById("p2-c-text").value = "";
-      document.getElementById("p2-c-date").value = "";
+      document.getElementById("p2-c-note").value = "";
+      cDate.value = "";
+      p2SyncDateChip();
     }
     document.getElementById("p2-c-cancel").addEventListener("click", p2CloseComposer);
     function p2AddTask() {
       var text = document.getElementById("p2-c-text").value.trim();
       if (!text) return;
-      var listId = p2.sel === "__all" ? document.getElementById("p2-c-list").value : p2.sel;
+      var listId = p2IsAggregate() ? document.getElementById("p2-c-list").value : p2.sel;
       if (!listId && p2.lists.length) listId = p2.lists[0].id;
       if (!listId) return;
-      var due = document.getElementById("p2-c-date").value || null;
-      p2.tasks.push({ id: "t" + (p2.nid++), list: listId, text: text, done: false, due: due });
+      var due = cDate.value || null;
+      var note = document.getElementById("p2-c-note").value.trim();
+      p2.tasks.push({ id: "t" + (p2.nid++), list: listId, text: text, note: note, done: false, due: due, star: false });
       p2Save(); p2CloseComposer(); p2RenderAll();
     }
     document.getElementById("p2-c-save").addEventListener("click", p2AddTask);
     document.getElementById("p2-c-text").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("p2-c-note").focus(); }
+    });
+    document.getElementById("p2-c-note").addEventListener("keydown", function (e) {
       if (e.key === "Enter") { e.preventDefault(); p2AddTask(); }
     });
     p2RenderAll();
@@ -2121,8 +2256,14 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "4.0.0";
+  var APP_VERSION = "4.1.0";
   var RELEASES = [
+    { v: "4.1.0", date: "٢٣ يوليو ٢٠٢٦", items: [
+      ["new", "تحديد تاريخ لأي مهمة أصبح واضحًا: زر «📅 أضف تاريخًا» يفتح التقويم مباشرة عند الإضافة، وفي تفاصيل المهمة زر لتحديد التاريخ أو إزالته — فبعض المهام بتاريخ وبعضها بدونه"],
+      ["new", "ملاحظة اختيارية لكل مهمة تظهر كسطر ثانوي تحت العنوان، وتمييز المهام المهمة بنجمة ⭐ مع قائمة ذكية «المهم»"],
+      ["new", "في «كل المهام» يظهر اسم القائمة بلونها فوق كل مهمة، تمامًا كنمط تطبيقات المهام الاحترافية"],
+      ["imp", "تنظيف المهام التجريبية من كل القوائم لتبدأ نظيفة، مع الإبقاء على أسماء قوائمك وألوانها"]
+    ]},
     { v: "4.0.0", date: "٢٣ يوليو ٢٠٢٦", items: [
       ["new", "مخطط جديد كليًا على نمط تطبيقات المهام الاحترافية: قوائم ملونة تُنشئها وتعدّلها بنفسك (المنزل، العمل، عاجل اليوم…) مع شريط جانبي أنيق"],
       ["new", "مهام بدوائر إنجاز، مجمّعة تلقائيًا حسب تاريخ الاستحقاق (متأخرة، اليوم، غدًا، بدون تاريخ) مع قسم للمنجزة قابل للطي"],
