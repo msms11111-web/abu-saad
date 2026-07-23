@@ -228,19 +228,19 @@
 
   /* ===== THE PLANNER — المخطط (نمط قوائم المهام الاحترافي) ===== */
   #planner { grid-area:planner; position:relative; overflow:hidden; padding:0; background:#FFFFFF; border:1px solid rgba(0,0,0,0.3); border-radius:22px; box-shadow:0 26px 54px -32px rgba(0,0,0,0.85); display:flex; flex-direction:column; height:clamp(560px, 80vh, 720px); }
-  .p2-top { background:linear-gradient(180deg,#7792A8,#6E89A0); display:flex; align-items:center; gap:6px; padding:10px 10px; flex-shrink:0; }
+  .p2-top { background:linear-gradient(160deg,#C88A4E,#A5632F 50%,#7E4620); display:flex; align-items:center; gap:6px; padding:10px 10px; flex-shrink:0; box-shadow:inset 0 1px 0 rgba(255,232,200,0.35); }
   .p2-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#F2F6F9; font-size:20px; flex-shrink:0; user-select:none; }
   .p2-icon:active { background:rgba(255,255,255,0.15); }
   .p2-title-wrap { flex:1; text-align:center; min-width:0; }
   .p2-title { font-size:19px; font-weight:700; color:#FFFFFF; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .p2-count { font-size:12px; color:#D9E3EC; margin-top:1px; }
-  .p2-search-row { background:#6E89A0; padding:0 12px 12px; display:none; flex-shrink:0; }
+  .p2-search-row { background:#8E5427; padding:0 12px 12px; display:none; flex-shrink:0; }
   .p2-search-row.open { display:block; }
   .p2-search-row input { width:100%; border:none; border-radius:10px; padding:12px 14px; font-family:'Tajawal',sans-serif; font-size:16px; background:#FFFFFF; color:#22303C; outline:none; }
   .p2-body { display:flex; flex:1; min-height:0; }
   .p2-main { flex:1; min-width:0; position:relative; display:flex; flex-direction:column; background:#FFFFFF; }
-  .p2-side { width:150px; flex-shrink:0; background:#7E96AB; display:flex; flex-direction:column; padding:12px 0 12px; overflow-y:auto; scrollbar-width:thin; }
-  .p2-side-label { font-size:11px; font-weight:800; letter-spacing:0.08em; color:#2E3F4E; padding:6px 14px 6px 8px; }
+  .p2-side { width:150px; flex-shrink:0; background:linear-gradient(180deg,#A9693B,#8C5330); display:flex; flex-direction:column; padding:12px 0 12px; overflow-y:auto; scrollbar-width:thin; box-shadow:inset -6px 0 14px -10px rgba(0,0,0,0.5); }
+  .p2-side-label { font-size:11px; font-weight:800; letter-spacing:0.08em; color:#3A2010; padding:6px 14px 6px 8px; }
   .p2-side-label + .p2-side-label { margin-top:8px; }
   .p2-lists { display:flex; flex-direction:column; }
   .p2-l { position:relative; display:flex; align-items:center; gap:6px; min-height:47px; padding:6px 12px 6px 16px; color:#F3F6F8; font-size:14.5px; font-weight:500; cursor:pointer; user-select:none; }
@@ -259,9 +259,9 @@
   .p2-sec .n { color:#5A6B7C; font-weight:700; font-size:13px; }
   .p2-sec.done-h { cursor:pointer; user-select:none; color:#5A6B7C; }
   .p2-row { display:flex; align-items:center; gap:12px; min-height:58px; padding:8px 14px; border-bottom:1px solid #E7E8EA; background:#FFFFFF; }
-  .p2-chk { width:28px; height:28px; border-radius:50%; border:2px solid #5E86AC; flex-shrink:0; position:relative; cursor:pointer; background:#FFFFFF; }
+  .p2-chk { width:28px; height:28px; border-radius:50%; border:2px solid #A5632F; flex-shrink:0; position:relative; cursor:pointer; background:#FFFFFF; }
   .p2-chk::before { content:''; position:absolute; inset:-9px; }
-  .p2-row.done .p2-chk { background:#5E86AC; }
+  .p2-row.done .p2-chk { background:#A5632F; }
   .p2-row.done .p2-chk::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:15px; font-weight:700; }
   .p2-txt { flex:1; min-width:0; cursor:pointer; padding:6px 0; }
   .p2-listlabel { font-size:11.5px; font-weight:800; margin-bottom:1px; letter-spacing:0.02em; }
@@ -277,24 +277,24 @@
   .p2-drow { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .p2-detail label { font-size:13px; color:#5A6B7C; }
   .p2-dnote { flex:1; min-width:160px; font-family:'Tajawal',sans-serif; font-size:16px; padding:10px 12px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; outline:none; }
-  .p2-dnote:focus { border-color:#6E89A0; }
+  .p2-dnote:focus { border-color:#A5632F; }
   .p2-detail input[type="date"], .p2-date { font-family:'Tajawal',sans-serif; font-size:16px; padding:8px 10px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; min-height:44px; }
   .p2-btn { border:none; border-radius:10px; padding:11px 18px; font-size:14px; cursor:pointer; min-height:44px; font-family:'Tajawal',sans-serif; font-weight:700; }
-  .p2-btn.blue { background:#6E89A0; color:#FFFFFF; }
+  .p2-btn.blue { background:linear-gradient(160deg,#B87A44,#9A5A2A); color:#FFFFFF; }
   .p2-btn.gray { background:#E4E8EB; color:#3E4B57; }
   .p2-btn.red { background:#B03A34; color:#FFFFFF; }
   .p2-empty { text-align:center; color:#93A1AD; padding:46px 20px; font-size:14.5px; line-height:1.9; }
-  .p2-fab { position:absolute; bottom:18px; right:18px; width:58px; height:58px; border-radius:50%; background:linear-gradient(180deg,#7590A7,#657F95); color:#FFFFFF; font-size:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 12px 26px -8px rgba(30,50,70,0.6); z-index:3; user-select:none; }
+  .p2-fab { position:absolute; bottom:18px; right:18px; width:58px; height:58px; border-radius:50%; background:linear-gradient(160deg,#C88A4E,#98592A); color:#FFFFFF; font-size:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 12px 26px -8px rgba(92,50,18,0.6), inset 0 1px 0 rgba(255,232,200,0.4); z-index:3; user-select:none; }
   .p2-fab:active { transform:scale(0.94); }
   .p2-composer { position:absolute; left:12px; right:12px; bottom:12px; background:#FFFFFF; border:1px solid #D5DBE1; border-radius:16px; box-shadow:0 18px 42px -16px rgba(20,40,60,0.55); padding:14px; display:none; flex-direction:column; gap:10px; z-index:4; }
   .p2-composer.open { display:flex; }
   .p2-composer input[type="text"] { border:1px solid #C9D2DA; border-radius:10px; padding:12px 14px; font-size:16px; font-family:'Tajawal',sans-serif; outline:none; color:#22303C; width:100%; }
-  .p2-composer input[type="text"]:focus { border-color:#6E89A0; }
+  .p2-composer input[type="text"]:focus { border-color:#A5632F; }
   .p2-composer .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
   .p2-composer select { font-family:'Tajawal',sans-serif; font-size:14.5px; padding:10px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; min-height:44px; max-width:150px; }
-  .p2-datechip { display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:10px 15px; border-radius:10px; border:1px dashed #A9B6C2; background:#F4F7F9; color:#5A6B7C; font-size:14px; font-weight:600; cursor:pointer; user-select:none; }
-  .p2-datechip.has { border-style:solid; border-color:#6E89A0; background:#EAF0F4; color:#2E4456; }
-  .p2-datechip .x { margin-inline-start:4px; font-size:12px; color:#8496A6; padding:0 3px; }
+  .p2-datechip { display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:10px 15px; border-radius:10px; border:1px dashed #C9AE95; background:#F7EFE6; color:#8A6A4C; font-size:14px; font-weight:600; cursor:pointer; user-select:none; }
+  .p2-datechip.has { border-style:solid; border-color:#A5632F; background:#F3E3D2; color:#7A4A22; }
+  .p2-datechip .x { margin-inline-start:4px; font-size:12px; color:#B08A6A; padding:0 3px; }
   .p2-menu { position:absolute; top:60px; right:12px; background:#FFFFFF; border-radius:12px; box-shadow:0 16px 34px -12px rgba(0,0,0,0.45); z-index:6; display:none; min-width:200px; overflow:hidden; }
   .p2-menu.open { display:block; }
   .p2-mi { padding:13px 16px; font-size:14.5px; color:#22303C; cursor:pointer; border-bottom:1px solid #EEF0F2; min-height:47px; display:flex; align-items:center; user-select:none; }
@@ -2270,8 +2270,11 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "4.1.1";
+  var APP_VERSION = "4.2.0";
   var RELEASES = [
+    { v: "4.2.0", date: "٢٣ يوليو ٢٠٢٦", items: [
+      ["imp", "خلفية المخطط أصبحت بلون نحاسي فخم دافئ بدل الأزرق — الرأس والشريط الجانبي والأزرار ودوائر الإنجاز، مع لمسات لمعان راقية"]
+    ]},
     { v: "4.1.1", date: "٢٣ يوليو ٢٠٢٦", items: [
       ["imp", "تبسيط القوائم الافتراضية إلى ثلاث فقط: «المنزل» و«العمل» و«عاجل جدًا» — وأي قائمة أخرى تضيفها بنفسك من زر «＋ إضافة قائمة»"]
     ]},
