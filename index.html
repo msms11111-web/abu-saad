@@ -228,24 +228,24 @@
 
   /* ===== THE PLANNER — المخطط (نمط قوائم المهام الاحترافي) ===== */
   #planner { grid-area:planner; position:relative; overflow:hidden; padding:0; background:#FFFFFF; border:1px solid rgba(0,0,0,0.3); border-radius:22px; box-shadow:0 26px 54px -32px rgba(0,0,0,0.85); display:flex; flex-direction:column; height:clamp(560px, 80vh, 720px); }
-  .p2-top { background:linear-gradient(160deg,#C88A4E,#A5632F 50%,#7E4620); display:flex; align-items:center; gap:6px; padding:10px 10px; flex-shrink:0; box-shadow:inset 0 1px 0 rgba(255,232,200,0.35); }
+  .p2-top { background:linear-gradient(160deg,#6E4A18,#3E2809); display:flex; align-items:center; gap:6px; padding:10px 10px; flex-shrink:0; box-shadow:inset 0 1px 0 rgba(240,205,140,0.4); }
   .p2-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#F2F6F9; font-size:20px; flex-shrink:0; user-select:none; }
   .p2-icon:active { background:rgba(255,255,255,0.15); }
   .p2-title-wrap { flex:1; text-align:center; min-width:0; }
   .p2-title { font-size:19px; font-weight:700; color:#FFFFFF; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .p2-count { font-size:12px; color:#D9E3EC; margin-top:1px; }
-  .p2-search-row { background:#8E5427; padding:0 12px 12px; display:none; flex-shrink:0; }
+  .p2-search-row { background:#3E2809; padding:0 12px 12px; display:none; flex-shrink:0; }
   .p2-search-row.open { display:block; }
   .p2-search-row input { width:100%; border:none; border-radius:10px; padding:12px 14px; font-family:'Tajawal',sans-serif; font-size:16px; background:#FFFFFF; color:#22303C; outline:none; }
   .p2-body { display:flex; flex:1; min-height:0; }
   .p2-main { flex:1; min-width:0; position:relative; display:flex; flex-direction:column; background:#FFFFFF; }
-  .p2-side { width:150px; flex-shrink:0; background:linear-gradient(180deg,#A9693B,#8C5330); display:flex; flex-direction:column; padding:12px 0 12px; overflow-y:auto; scrollbar-width:thin; box-shadow:inset -6px 0 14px -10px rgba(0,0,0,0.5); }
-  .p2-side-label { font-size:11px; font-weight:800; letter-spacing:0.08em; color:#3A2010; padding:6px 14px 6px 8px; }
+  .p2-side { width:150px; flex-shrink:0; background:radial-gradient(120% 55% at 50% -8%, rgba(255,242,214,0.30), transparent 60%), repeating-linear-gradient(114deg, rgba(255,236,200,0.05) 0 1px, transparent 1px 6px), linear-gradient(180deg,#CF9D66,#B07C46); display:flex; flex-direction:column; padding:8px 0 12px; overflow-y:auto; scrollbar-width:thin; box-shadow:inset -7px 0 16px -10px rgba(74,42,12,0.55); }
+  .p2-side-label { font-size:11px; font-weight:800; letter-spacing:0.08em; color:#4A2C0E; padding:8px 14px 4px 8px; }
   .p2-side-label + .p2-side-label { margin-top:8px; }
   .p2-lists { display:flex; flex-direction:column; }
-  .p2-l { position:relative; display:flex; align-items:center; gap:6px; min-height:47px; padding:6px 12px 6px 16px; color:#F3F6F8; font-size:14.5px; font-weight:500; cursor:pointer; user-select:none; }
+  .p2-l { position:relative; display:flex; align-items:center; gap:6px; min-height:40px; padding:4px 12px 4px 16px; color:#3A2208; font-size:14.5px; font-weight:600; cursor:pointer; user-select:none; }
   .p2-l::before { content:''; position:absolute; left:0; top:0; bottom:0; width:7px; background:var(--lc); }
-  .p2-l.on { background:var(--lc); font-weight:700; }
+  .p2-l.on { background:var(--lc); font-weight:800; color:#FFFFFF; }
   .p2-l .nm { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .p2-l .ed { flex-shrink:0; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; color:rgba(255,255,255,0.85); background:rgba(0,0,0,0.18); }
   .p2-l.smart { --lc:#8A64A8; }
@@ -312,7 +312,7 @@
   .p2-dialog .btns { display:flex; gap:8px; flex-wrap:wrap; }
   @media (max-width:520px){
     .p2-side { width:112px; }
-    .p2-l { font-size:13.5px; padding:6px 9px 6px 13px; }
+    .p2-l { font-size:13.5px; padding:4px 9px 4px 13px; }
   }
 
   /* LIVE TV */
@@ -1028,10 +1028,11 @@
 
   // ---------- Planner v2 (قوائم المهام على النمط الاحترافي) ----------
   var P2_KEY = "abusaad_planner_v2";
-  var P2_GEN = 4; // علامة ترحيل لمرة واحدة: ترتفع مع كل تغيير يجب تطبيقه على البيانات المحفوظة
+  var P2_GEN = 5; // علامة ترحيل لمرة واحدة: ترتفع مع كل تغيير يجب تطبيقه على البيانات المحفوظة
   var P2_COLORS = ["#2A46C8", "#3E8E2E", "#B03A34", "#1F2429", "#E8862C", "#8A64A8", "#0E8FA3", "#E3C929", "#6B7280"];
   // القوائم الافتراضية الثلاث فقط — يضيف المستخدم غيرها بزر «＋ إضافة قائمة»
-  var P2_SEED = [["المنزل", "#2A46C8"], ["العمل", "#3E8E2E"], ["عاجل جدًا", "#B03A34"]];
+  var P2_SEED = [["عاجل جدًا", "#B03A34"], ["المنزل", "#2A46C8"], ["العمل", "#3E8E2E"]];
+  var P2_ORDER = ["عاجل جدًا", "المنزل", "العمل"]; // ترتيب القوائم الافتراضية من الأعلى
 
   function p2FreshLists() {
     var nid = 1, lists = [];
@@ -1059,6 +1060,14 @@
             saved.tasks = saved.tasks.filter(function (t) { return keptIds[t.list]; });
             P2_SEED.forEach(function (s) {
               if (!saved.lists.some(function (L) { return L.name === s[0]; })) saved.lists.push({ id: "l" + (saved.nid++), name: s[0], color: s[1] });
+            });
+          }
+          // gen<5: إعادة ترتيب القوائم من الأعلى (عاجل جدًا، المنزل، العمل، ثم غيرها)
+          if (saved.gen < 5) {
+            saved.lists.sort(function (a, b) {
+              var ia = P2_ORDER.indexOf(a.name); if (ia === -1) ia = 999;
+              var ib = P2_ORDER.indexOf(b.name); if (ib === -1) ib = 999;
+              return ia - ib;
             });
           }
           saved.gen = P2_GEN;
@@ -2270,8 +2279,12 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "4.2.0";
+  var APP_VERSION = "4.3.0";
   var RELEASES = [
+    { v: "4.3.0", date: "٢٣ يوليو ٢٠٢٦", items: [
+      ["imp", "خلفية المخطط بلوحة فخمة جديدة: الرأس بني محروق قريب للذهبي الداكن، والشريط الجانبي نحاسي فاتح راقٍ بلمسة وهج ونسيج"],
+      ["imp", "إعادة ترتيب القوائم من الأعلى: عاجل جدًا ثم المنزل ثم العمل ثم غيرها، وتقليص التباعد بينها"]
+    ]},
     { v: "4.2.0", date: "٢٣ يوليو ٢٠٢٦", items: [
       ["imp", "خلفية المخطط أصبحت بلون نحاسي فخم دافئ بدل الأزرق — الرأس والشريط الجانبي والأزرار ودوائر الإنجاز، مع لمسات لمعان راقية"]
     ]},
