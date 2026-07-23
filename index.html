@@ -1028,11 +1028,10 @@
 
   // ---------- Planner v2 (قوائم المهام على النمط الاحترافي) ----------
   var P2_KEY = "abusaad_planner_v2";
-  var P2_GEN = 3; // علامة تنظيف لمرة واحدة: عند رفعها تُفرَّغ المهام مع الإبقاء على القوائم
+  var P2_GEN = 4; // علامة ترحيل لمرة واحدة: ترتفع مع كل تغيير يجب تطبيقه على البيانات المحفوظة
   var P2_COLORS = ["#2A46C8", "#3E8E2E", "#B03A34", "#1F2429", "#E8862C", "#8A64A8", "#0E8FA3", "#E3C929", "#6B7280"];
-  var P2_SEED = [["المنزل", "#2A46C8"], ["العمل", "#3E8E2E"], ["خاص", "#B03A34"], ["السيارة", "#1F2429"],
-    ["عاجل اليوم", "#B03A34"], ["النادي", "#3E8E2E"], ["مصاريف النقل", "#B03A34"], ["الرجيم", "#3E8E2E"],
-    ["الاسنان", "#4A5560"], ["رمضان", "#B03A34"], ["الجميح", "#3E8E2E"], ["اسطنبول", "#E3C929"]];
+  // القوائم الافتراضية الثلاث فقط — يضيف المستخدم غيرها بزر «＋ إضافة قائمة»
+  var P2_SEED = [["المنزل", "#2A46C8"], ["العمل", "#3E8E2E"], ["عاجل جدًا", "#B03A34"]];
 
   function p2FreshLists() {
     var nid = 1, lists = [];
@@ -1047,7 +1046,22 @@
       try {
         var saved = JSON.parse(raw);
         if (saved && saved.lists && saved.tasks) {
-          if (saved.gen !== P2_GEN) { saved.tasks = []; saved.gen = P2_GEN; } // تنظيف لمرة واحدة
+          if (typeof saved.gen !== "number") saved.gen = 0;
+          if (typeof saved.nid !== "number") saved.nid = saved.lists.length + saved.tasks.length + 1;
+          // gen<3: تنظيف المهام التجريبية القديمة
+          if (saved.gen < 3) saved.tasks = [];
+          // gen<4: اختصار القوائم إلى (المنزل، العمل، عاجل جدًا) وإعادة تسمية «عاجل اليوم»
+          if (saved.gen < 4) {
+            saved.lists.forEach(function (L) { if (L.name === "عاجل اليوم" || L.name === "عاجل جدا") L.name = "عاجل جدًا"; });
+            var keep = { "المنزل": 1, "العمل": 1, "عاجل جدًا": 1 };
+            var keptIds = {};
+            saved.lists = saved.lists.filter(function (L) { if (keep[L.name]) { keptIds[L.id] = 1; return true; } return false; });
+            saved.tasks = saved.tasks.filter(function (t) { return keptIds[t.list]; });
+            P2_SEED.forEach(function (s) {
+              if (!saved.lists.some(function (L) { return L.name === s[0]; })) saved.lists.push({ id: "l" + (saved.nid++), name: s[0], color: s[1] });
+            });
+          }
+          saved.gen = P2_GEN;
           saved.tasks.forEach(function (t) {
             if (typeof t.note !== "string") t.note = "";
             if (typeof t.star !== "boolean") t.star = false;
@@ -2256,8 +2270,11 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "4.1.0";
+  var APP_VERSION = "4.1.1";
   var RELEASES = [
+    { v: "4.1.1", date: "٢٣ يوليو ٢٠٢٦", items: [
+      ["imp", "تبسيط القوائم الافتراضية إلى ثلاث فقط: «المنزل» و«العمل» و«عاجل جدًا» — وأي قائمة أخرى تضيفها بنفسك من زر «＋ إضافة قائمة»"]
+    ]},
     { v: "4.1.0", date: "٢٣ يوليو ٢٠٢٦", items: [
       ["new", "تحديد تاريخ لأي مهمة أصبح واضحًا: زر «📅 أضف تاريخًا» يفتح التقويم مباشرة عند الإضافة، وفي تفاصيل المهمة زر لتحديد التاريخ أو إزالته — فبعض المهام بتاريخ وبعضها بدونه"],
       ["new", "ملاحظة اختيارية لكل مهمة تظهر كسطر ثانوي تحت العنوان، وتمييز المهام المهمة بنجمة ⭐ مع قائمة ذكية «المهم»"],
