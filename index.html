@@ -953,6 +953,11 @@
               <span class="msr" style="color:var(--faint)">chevron_left</span>
             </div>
             <div class="ta-set-i">
+              <div class="ic"><span class="msr">groups</span></div>
+              <div class="tx"><div class="t">زوّار الموقع</div><div class="s" id="ta-visitors">—</div></div>
+              <div class="th-btn" id="ta-visitors-refresh" title="تحديث"><span class="msr">refresh</span></div>
+            </div>
+            <div class="ta-set-i">
               <div class="ic"><span class="msr">info</span></div>
               <div class="tx"><div class="t">تطبيق المهام</div><div class="s" id="ta-ver"></div></div>
             </div>
@@ -1717,6 +1722,25 @@
     if (view === "ta-home") taRenderHome();
     else if (view === "ta-cal") { if (taCalY === undefined) { var n = new Date(); taCalY = n.getFullYear(); taCalM = n.getMonth(); } taRenderCal(); }
     else if (view === "ta-stats") taRenderStats();
+    else if (view === "ta-settings") taLoadVisitors();
+  }
+
+  // عدّاد الزوّار من GoatCounter (نقطة عامة بلا رموز سرية)
+  var taVisitorsLoaded = false;
+  function taLoadVisitors(force) {
+    var el = document.getElementById("ta-visitors"); if (!el) return;
+    if (taVisitorsLoaded && !force) return;
+    taVisitorsLoaded = true;
+    el.textContent = "جارٍ التحميل…";
+    fetch("https://abusaad.goatcounter.com/counter/TOTAL.json", { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (d) {
+        var total = String(d.count || "").replace(/[^0-9]/g, "");
+        var uniq = String(d.count_unique || "").replace(/[^0-9]/g, "");
+        if (!total) { el.textContent = "لا توجد زيارات بعد"; return; }
+        el.textContent = toAr(total) + " زيارة" + (uniq ? " · " + toAr(uniq) + " زائر" : "");
+      })
+      .catch(function () { taVisitorsLoaded = false; el.textContent = "غير متاح — فعّل «عدّاد الزوّار» في إعدادات GoatCounter"; });
   }
 
   function initTasksApp() {
@@ -1742,6 +1766,7 @@
     document.getElementById("ta-set-clear").addEventListener("click", function () {
       TA.tasks = TA.tasks.filter(function (t) { return !t.done; }); taSave(); taRenderCurrent();
     });
+    document.getElementById("ta-visitors-refresh").addEventListener("click", function () { taLoadVisitors(true); });
     if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { if (TA.theme === "auto") taApplyTheme(); }); } catch (e) {} }
     var n = new Date(); taCalY = n.getFullYear(); taCalM = n.getMonth();
     taApplyTheme(); taRenderHome(); taSave();
@@ -2515,8 +2540,11 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "5.0.1";
+  var APP_VERSION = "5.1.0";
   var RELEASES = [
+    { v: "5.1.0", date: "٢٤ يوليو ٢٠٢٦", items: [
+      ["new", "عرض «عدد زوّار الموقع» داخل صفحة الإعدادات — يُقرأ مباشرة من عدّاد GoatCounter مع زر تحديث"]
+    ]},
     { v: "5.0.1", date: "٢٤ يوليو ٢٠٢٦", items: [
       ["imp", "إضافة عدّاد زوّار مجهّل (GoatCounter) — يُحصي الزيارات وأماكنها بلا كوكيز ولا بيانات شخصية، ويظهر في لوحة إحصاءات خاصة بالمالك فقط"]
     ]},
