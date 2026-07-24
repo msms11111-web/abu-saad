@@ -21,8 +21,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.aladhan.com">
 <!-- تحميل الخطوط بدون حجب الرسم الأول: تُطبق فور جهوزها والنص يظهر فورًا بخط النظام -->
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block">
 <style>
   html, body { margin:0; background:#141312; overflow-x:hidden; }
   html { -webkit-text-size-adjust:100%; }
@@ -226,146 +227,223 @@
   #about .about-sign .name { font-family:'Aref Ruqaa',serif; font-weight:700; font-size:22px; color:#E4C687; }
   #about .about-sign .dot { width:6px; height:6px; border-radius:50%; background:#C9A96A; box-shadow:0 0 8px rgba(201,169,106,0.6); }
 
-  /* ===== THE PLANNER — المخطط (نمط قوائم المهام الاحترافي) ===== */
-  #planner { grid-area:planner; position:relative; overflow:hidden; padding:0; background:#FFFFFF; border:1px solid rgba(0,0,0,0.3); border-radius:22px; box-shadow:0 26px 54px -32px rgba(0,0,0,0.85); display:flex; flex-direction:column; height:clamp(560px, 80vh, 720px); }
-  .p2-top { background:linear-gradient(160deg,#6E4A18,#3E2809); display:flex; align-items:center; gap:6px; padding:10px 10px; flex-shrink:0; box-shadow:inset 0 1px 0 rgba(240,205,140,0.4); }
-  .p2-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#F2F6F9; font-size:20px; flex-shrink:0; user-select:none; }
-  .p2-icon:active { background:rgba(255,255,255,0.15); }
-  .p2-title-wrap { flex:1; text-align:center; min-width:0; }
-  .p2-title { font-size:19px; font-weight:700; color:#FFFFFF; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .p2-count { font-size:12px; color:#D9E3EC; margin-top:1px; }
-  .p2-search-row { background:#3E2809; padding:0 12px 12px; display:none; flex-shrink:0; }
-  .p2-search-row.open { display:block; }
-  .p2-search-row input { width:100%; border:none; border-radius:10px; padding:12px 14px; font-family:'Tajawal',sans-serif; font-size:16px; background:#FFFFFF; color:#22303C; outline:none; }
-  .p2-body { display:flex; flex:1; min-height:0; }
-  .p2-main { flex:1; min-width:0; position:relative; display:flex; flex-direction:column; background:#FFFFFF; }
-  .p2-side { width:150px; flex-shrink:0; background:radial-gradient(120% 55% at 50% -8%, rgba(255,242,214,0.30), transparent 60%), repeating-linear-gradient(114deg, rgba(255,236,200,0.05) 0 1px, transparent 1px 6px), linear-gradient(180deg,#CF9D66,#B07C46); display:flex; flex-direction:column; padding:8px 0 12px; overflow-y:auto; scrollbar-width:thin; box-shadow:inset -7px 0 16px -10px rgba(74,42,12,0.55); }
-  .p2-side-label { font-size:11px; font-weight:800; letter-spacing:0.08em; color:#4A2C0E; padding:8px 14px 4px 8px; }
-  .p2-side-label + .p2-side-label { margin-top:8px; }
-  .p2-lists { display:flex; flex-direction:column; }
-  .p2-l { position:relative; display:flex; align-items:center; gap:6px; min-height:40px; padding:4px 12px 4px 16px; color:#3A2208; font-family:'Almarai','Tajawal',sans-serif; font-size:14.5px; font-weight:800; cursor:pointer; user-select:none; }
-  .p2-l::before { content:''; position:absolute; left:0; top:0; bottom:0; width:7px; background:var(--lc); }
-  .p2-l.on { background:var(--lc); font-weight:800; color:#FFFFFF; }
-  .p2-l .nm { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .p2-l .ed { flex-shrink:0; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; color:rgba(255,255,255,0.85); background:rgba(0,0,0,0.18); }
-  .p2-l.smart { --lc:#8A64A8; }
-  .p2-l.smart.star { --lc:#E8A21C; }
-  .p2-l.smart::before { background:var(--lc); }
-  .p2-add-list { margin:12px auto 4px; width:46px; height:46px; border-radius:12px; color:#FFFFFF; font-size:26px; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; background:rgba(74,42,12,0.18); }
-  .p2-add-list:active { background:rgba(74,42,12,0.3); }
-  .p2-cal-open { margin:14px 10px 6px; padding:12px 10px; border-radius:12px; background:linear-gradient(160deg,#6E4A18,#3E2809); color:#F5E4C4; font-size:14.5px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer; user-select:none; box-shadow:0 8px 18px -10px rgba(50,30,8,0.8), inset 0 1px 0 rgba(240,205,140,0.35); }
-  .p2-cal-open:active { filter:brightness(1.08); }
+  /* ===== TASKS APP — إعادة تصميم كاملة (Material 3 + Apple touch) ===== */
+  #planner { grid-area:planner; padding:0; border:none; background:transparent; box-shadow:none; }
+  .ta { --pri:#2563EB; --pri-soft:rgba(37,99,235,0.12); --ok:#22C55E; --warn:#F59E0B; --danger:#EF4444;
+    --bg:#F1F5F9; --surface:#FFFFFF; --surface2:#F8FAFC; --text:#0F172A; --muted:#64748B; --faint:#94A3B8; --border:#E7EDF3;
+    --shadow:0 6px 22px -10px rgba(15,23,42,0.18); --shadow-sm:0 2px 8px -3px rgba(15,23,42,0.12);
+    --p-urgent:#EF4444; --p-high:#F59E0B; --p-med:#EAB308; --p-low:#22C55E;
+    position:relative; height:clamp(600px,86vh,820px); border-radius:26px; overflow:hidden;
+    background:var(--bg); color:var(--text); display:flex; flex-direction:column;
+    font-family:'IBM Plex Sans Arabic','Cairo','Tajawal',sans-serif; box-shadow:0 30px 60px -34px rgba(0,0,0,0.7); isolation:isolate; }
+  .ta[data-theme="dark"] { --pri:#3B82F6; --pri-soft:rgba(59,130,246,0.18); --bg:#0B1220; --surface:#151E2E; --surface2:#1B2536;
+    --text:#F1F5F9; --muted:#94A3B8; --faint:#64748B; --border:#25324A; --shadow:0 10px 30px -12px rgba(0,0,0,0.7); --shadow-sm:0 3px 10px -4px rgba(0,0,0,0.55); }
+  .ta * { box-sizing:border-box; }
+  .ta .msr { font-family:'Material Symbols Rounded'; font-weight:normal; font-style:normal; line-height:1; letter-spacing:normal; text-transform:none; display:inline-block; white-space:nowrap; direction:ltr; font-feature-settings:'liga'; -webkit-font-feature-settings:'liga'; font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24; user-select:none; }
+  .ta .msr.fill { font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 24; }
+  .ta.no-icons .msr { display:none; }
 
-  .p2-cal-modal { position:absolute; inset:0; background:#FBF7F0; z-index:7; display:none; flex-direction:column; }
-  .p2-cal-modal.open { display:flex; }
-  .p2-cal-head { display:flex; align-items:center; gap:6px; padding:12px; background:linear-gradient(160deg,#6E4A18,#3E2809); color:#FFFFFF; box-shadow:inset 0 -1px 0 rgba(240,205,140,0.25); }
-  .p2-cal-nav { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; color:#F5E4C4; cursor:pointer; user-select:none; flex-shrink:0; }
-  .p2-cal-nav:active { background:rgba(255,255,255,0.14); }
-  .p2-cal-titles { flex:1; text-align:center; min-width:0; }
-  .p2-cal-greg { font-size:18px; font-weight:800; color:#FFFFFF; }
-  .p2-cal-hijri { font-size:13px; color:#E8CFA0; margin-top:2px; }
-  .p2-cal-close { width:40px; height:40px; border-radius:10px; background:rgba(0,0,0,0.22); color:#F5E4C4; display:flex; align-items:center; justify-content:center; font-size:15px; cursor:pointer; flex-shrink:0; }
-  .p2-cal-close:active { background:rgba(0,0,0,0.35); }
-  .p2-cal-sub { display:flex; justify-content:center; padding:10px; background:#F3EADC; border-bottom:1px solid #E7DBC8; }
-  .p2-cal-today-btn { min-height:40px; padding:9px 22px; border-radius:10px; background:linear-gradient(160deg,#B87A44,#8A5222); color:#FFFFFF; font-size:14px; font-weight:700; cursor:pointer; user-select:none; }
-  .p2-cal-weekdays { display:grid; grid-template-columns:repeat(7,1fr); background:#EFE4D2; color:#6E4A1E; font-size:10px; font-weight:700; }
-  .p2-cal-weekdays > div { padding:7px 1px; text-align:center; line-height:1.15; }
-  .p2-cal-grid { flex:1; display:grid; grid-template-columns:repeat(7,1fr); grid-auto-rows:minmax(58px,1fr); overflow-y:auto; background:#E7DBC8; gap:1px; padding:1px; }
-  .p2-cal-cell { background:#FFFFFF; position:relative; display:flex; flex-direction:column; align-items:stretch; padding:4px 2px 3px; gap:2px; cursor:pointer; }
-  .p2-cal-cell.blank { background:#F7F1E7; cursor:default; }
-  .p2-cal-cell .nums { display:flex; align-items:baseline; justify-content:center; gap:4px; flex-shrink:0; }
-  .p2-cal-cell .g { font-size:15px; font-weight:800; color:#2E2418; line-height:1; }
-  .p2-cal-cell .h { font-size:9.5px; color:#A6763A; line-height:1; }
-  .p2-cal-cell.fri .g { color:#8A5222; }
-  .p2-cal-cell.today .nums { border-radius:8px; }
-  .p2-cal-cell.today { box-shadow:inset 0 0 0 2px #8A5222; }
-  .p2-cal-cell.today .g { color:#8A5222; }
-  .p2-cal-cell.sel { background:#FBEFDD; }
-  .p2-cal-chips { display:flex; flex-direction:column; gap:1.5px; overflow:hidden; }
-  .p2-cal-chip { display:flex; align-items:center; gap:2px; font-size:8.5px; line-height:1.25; color:#33291B; background:#F3ECDF; border-radius:3px; padding:1px 3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .p2-cal-chip .cc { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
-  .p2-cal-chip.done { text-decoration:line-through; color:#9AA5AF; }
-  .p2-cal-chip .ct { overflow:hidden; text-overflow:ellipsis; }
-  .p2-cal-more { font-size:8px; color:#8A5222; font-weight:700; text-align:center; }
-  .p2-cal-daypanel { flex-shrink:0; max-height:42%; overflow-y:auto; background:#FBF7F0; border-top:2px solid #C9A06A; display:none; }
-  .p2-cal-daypanel.open { display:block; }
-  .p2-cal-dp-head { position:sticky; top:0; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#F0E4D2; border-bottom:1px solid #E2D3BC; }
-  .p2-cal-dp-title { font-size:14px; font-weight:800; color:#4A2E12; }
-  .p2-cal-dp-close { font-size:14px; color:#8A5222; cursor:pointer; padding:4px 8px; }
-  .p2-cal-dp-row { display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid #EEE4D4; }
-  .p2-cal-dp-chk { width:24px; height:24px; border-radius:50%; border:2px solid #A5632F; flex-shrink:0; position:relative; cursor:pointer; }
-  .p2-cal-dp-row.done .p2-cal-dp-chk { background:#A5632F; }
-  .p2-cal-dp-row.done .p2-cal-dp-chk::after { content:'\u2713'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#FFF; font-size:13px; }
-  .p2-cal-dp-cc { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-  .p2-cal-dp-txt { flex:1; font-size:15px; color:#22303C; }
-  .p2-cal-dp-row.done .p2-cal-dp-txt { text-decoration:line-through; color:#9AA5AF; }
-  .p2-cal-dp-empty { padding:18px 14px; text-align:center; color:#93826A; font-size:13.5px; }
-  .p2-cal-legend { padding:8px 12px; font-size:10.5px; color:#7A5A32; background:#F3EADC; border-top:1px solid #E7DBC8; text-align:center; line-height:1.7; flex-shrink:0; }
-  .p2-cal-legend .lg-today { display:inline-block; width:11px; height:11px; border-radius:3px; box-shadow:inset 0 0 0 2px #8A5222; vertical-align:-1px; }
-  .p2-cal-legend .lg-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#B03A34; vertical-align:-1px; }
-  .p2-sortbar { background:#E9EBEC; color:#3E4B57; font-size:13px; padding:10px 14px; display:flex; align-items:center; gap:6px; border-bottom:1px solid #D8DBDE; flex-shrink:0; }
-  .p2-tasks { flex:1; overflow-y:auto; padding-bottom:96px; scrollbar-width:thin; }
-  .p2-sec { display:flex; justify-content:space-between; align-items:center; padding:16px 16px 9px; font-size:13.5px; font-weight:800; color:#25384C; letter-spacing:0.03em; border-bottom:1px solid #E3E5E7; background:#FFFFFF; }
-  .p2-sec .n { color:#5A6B7C; font-weight:700; font-size:13px; }
-  .p2-sec.done-h { cursor:pointer; user-select:none; color:#5A6B7C; }
-  .p2-row { display:flex; align-items:center; gap:12px; min-height:58px; padding:8px 14px; border-bottom:1px solid #E7E8EA; background:#FFFFFF; }
-  .p2-chk { width:28px; height:28px; border-radius:50%; border:2px solid #A5632F; flex-shrink:0; position:relative; cursor:pointer; background:#FFFFFF; }
-  .p2-chk::before { content:''; position:absolute; inset:-9px; }
-  .p2-row.done .p2-chk { background:#A5632F; }
-  .p2-row.done .p2-chk::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:15px; font-weight:700; }
-  .p2-txt { flex:1; min-width:0; cursor:pointer; padding:6px 0; }
-  .p2-listlabel { font-size:11.5px; font-weight:800; margin-bottom:1px; letter-spacing:0.02em; }
-  .p2-ttl { font-size:16px; color:#22303C; line-height:1.45; word-break:break-word; }
-  .p2-row.done .p2-ttl { color:#9AA5AF; text-decoration:line-through; }
-  .p2-note { font-size:12.5px; color:#93A1AD; margin-top:2px; line-height:1.45; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; }
-  .p2-sub { font-size:11.5px; color:#B03A34; margin-top:2px; font-weight:600; }
-  .p2-star-btn { width:34px; height:44px; display:flex; align-items:center; justify-content:center; color:#D3DAE0; cursor:pointer; font-size:19px; flex-shrink:0; user-select:none; }
-  .p2-star-btn.on { color:#E8A21C; }
-  .p2-car { width:32px; height:46px; display:flex; align-items:center; justify-content:center; color:#B9C2CA; cursor:pointer; font-size:12px; flex-shrink:0; transition:transform .2s ease; user-select:none; }
-  .p2-row.open .p2-car { transform:rotate(180deg); }
-  .p2-detail { background:#F5F7F8; border-bottom:1px solid #E7E8EA; padding:12px 16px; display:flex; flex-direction:column; gap:10px; }
-  .p2-drow { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-  .p2-detail label { font-size:13px; color:#5A6B7C; }
-  .p2-dnote { flex:1; min-width:160px; font-family:'Tajawal',sans-serif; font-size:16px; padding:10px 12px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; outline:none; }
-  .p2-dnote:focus { border-color:#A5632F; }
-  .p2-detail input[type="date"], .p2-date { font-family:'Tajawal',sans-serif; font-size:16px; padding:8px 10px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; min-height:44px; }
-  .p2-btn { border:none; border-radius:10px; padding:11px 18px; font-size:14px; cursor:pointer; min-height:44px; font-family:'Tajawal',sans-serif; font-weight:700; }
-  .p2-btn.blue { background:linear-gradient(160deg,#B87A44,#9A5A2A); color:#FFFFFF; }
-  .p2-btn.gray { background:#E4E8EB; color:#3E4B57; }
-  .p2-btn.red { background:#B03A34; color:#FFFFFF; }
-  .p2-empty { text-align:center; color:#93A1AD; padding:46px 20px; font-size:14.5px; line-height:1.9; }
-  .p2-fab { position:absolute; bottom:18px; right:18px; width:58px; height:58px; border-radius:50%; background:linear-gradient(160deg,#C88A4E,#98592A); color:#FFFFFF; font-size:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 12px 26px -8px rgba(92,50,18,0.6), inset 0 1px 0 rgba(255,232,200,0.4); z-index:3; user-select:none; }
-  .p2-fab:active { transform:scale(0.94); }
-  .p2-composer { position:absolute; left:12px; right:12px; bottom:12px; background:#FFFFFF; border:1px solid #D5DBE1; border-radius:16px; box-shadow:0 18px 42px -16px rgba(20,40,60,0.55); padding:14px; display:none; flex-direction:column; gap:10px; z-index:4; }
-  .p2-composer.open { display:flex; }
-  .p2-composer input[type="text"] { border:1px solid #C9D2DA; border-radius:10px; padding:12px 14px; font-size:16px; font-family:'Tajawal',sans-serif; outline:none; color:#22303C; width:100%; }
-  .p2-composer input[type="text"]:focus { border-color:#A5632F; }
-  .p2-composer .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-  .p2-composer select { font-family:'Tajawal',sans-serif; font-size:14.5px; padding:10px; border:1px solid #C9D2DA; border-radius:10px; background:#FFFFFF; color:#22303C; min-height:44px; max-width:150px; }
-  .p2-dateinput { font-family:'Tajawal',sans-serif; font-size:16px; padding:9px 12px; border:1px solid #C9AE95; border-radius:10px; background:#FBF7F0; color:#3A2410; min-height:44px; flex:1; min-width:130px; }
-  .p2-c-datelabel { font-size:14px; font-weight:600; color:#7A5A32; flex-shrink:0; }
-  .p2-c-dateclear { font-family:'Tajawal',sans-serif; font-size:13px; font-weight:700; min-height:44px; padding:9px 15px; border:none; border-radius:10px; background:#E4E8EB; color:#3E4B57; cursor:pointer; flex-shrink:0; }
-  .p2-menu { position:absolute; top:60px; right:12px; background:#FFFFFF; border-radius:12px; box-shadow:0 16px 34px -12px rgba(0,0,0,0.45); z-index:6; display:none; min-width:200px; overflow:hidden; }
-  .p2-menu.open { display:block; }
-  .p2-mi { padding:13px 16px; font-size:14.5px; color:#22303C; cursor:pointer; border-bottom:1px solid #EEF0F2; min-height:47px; display:flex; align-items:center; user-select:none; }
-  .p2-mi:last-child { border-bottom:none; }
-  .p2-mi:hover { background:#F3F6F8; }
-  .p2-mi.danger { color:#B03A34; }
-  .p2-overlay { position:absolute; inset:0; background:rgba(20,32,44,0.45); display:none; align-items:center; justify-content:center; z-index:5; padding:20px; }
-  .p2-overlay.open { display:flex; }
-  .p2-dialog { background:#FFFFFF; border-radius:16px; width:100%; max-width:320px; padding:18px; display:flex; flex-direction:column; gap:13px; }
-  .p2-dialog h4 { font-size:16px; color:#22303C; font-weight:800; }
-  .p2-dialog input[type="text"] { border:1px solid #C9D2DA; border-radius:10px; padding:12px 14px; font-size:16px; font-family:'Tajawal',sans-serif; outline:none; color:#22303C; width:100%; }
-  .p2-swatches { display:flex; flex-wrap:wrap; gap:9px; }
-  .p2-sw { width:36px; height:36px; border-radius:50%; cursor:pointer; border:3px solid transparent; box-sizing:border-box; }
-  .p2-sw.on { border-color:#22303C; }
-  .p2-dialog .btns { display:flex; gap:8px; flex-wrap:wrap; }
-  @media (max-width:520px){
-    .p2-side { width:112px; }
-    .p2-l { font-size:13.5px; padding:4px 9px 4px 13px; }
-  }
+  .ta-body { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:thin; }
+  .ta-view { display:none; padding:20px 16px 26px; animation:taFade .32s cubic-bezier(.22,.61,.36,1); }
+  .ta-view.on { display:block; }
+  @keyframes taFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
 
-  /* LIVE TV */
+  /* Header / greeting */
+  .ta-hd { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; }
+  .ta-hd .greet { font-size:14px; color:var(--muted); font-weight:600; }
+  .ta-hd .name { font-size:24px; font-weight:800; color:var(--text); line-height:1.25; margin-top:2px; }
+  .ta-hd .date { font-size:12.5px; color:var(--faint); margin-top:3px; }
+  .ta-hd .th-btn { width:44px; height:44px; border-radius:14px; background:var(--surface); border:1px solid var(--border); color:var(--muted); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow-sm); flex-shrink:0; }
+  .ta-hd .th-btn:active { transform:scale(.92); }
+
+  /* Hero progress card */
+  .ta-hero { background:linear-gradient(150deg,var(--pri),#1E40AF); border-radius:22px; padding:20px; color:#fff; display:flex; align-items:center; gap:18px; box-shadow:0 16px 34px -16px rgba(37,99,235,0.6); margin-bottom:16px; position:relative; overflow:hidden; }
+  .ta-hero::after { content:''; position:absolute; top:-40%; left:-10%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.09); }
+  .ta-ring { position:relative; width:78px; height:78px; flex-shrink:0; }
+  .ta-ring svg { transform:rotate(-90deg); }
+  .ta-ring .pct { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:19px; font-weight:800; }
+  .ta-hero .h-txt { flex:1; min-width:0; }
+  .ta-hero .h-title { font-size:16px; font-weight:800; }
+  .ta-hero .h-sub { font-size:13px; opacity:.9; margin-top:3px; line-height:1.6; }
+
+  /* Stat cards */
+  .ta-stats-row { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:22px; }
+  .ta-stat { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:14px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:11px; }
+  .ta-stat .ic { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .ta-stat .ic .msr { font-size:22px; }
+  .ta-stat .v { font-size:21px; font-weight:800; line-height:1; }
+  .ta-stat .l { font-size:11.5px; color:var(--muted); margin-top:3px; }
+
+  /* Section */
+  .ta-sec { margin-bottom:22px; }
+  .ta-sec-h { display:flex; align-items:center; justify-content:space-between; margin:0 2px 11px; }
+  .ta-sec-h .t { font-size:16px; font-weight:800; display:flex; align-items:center; gap:7px; }
+  .ta-sec-h .t .msr { font-size:20px; }
+  .ta-sec-h .c { font-size:12px; font-weight:700; color:var(--muted); background:var(--surface2); border:1px solid var(--border); padding:2px 10px; border-radius:20px; }
+  .ta-empty { text-align:center; color:var(--faint); font-size:13.5px; padding:22px 12px; background:var(--surface); border:1px dashed var(--border); border-radius:16px; }
+
+  /* Task card */
+  .ta-card { position:relative; background:var(--surface); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow-sm); margin-bottom:10px; overflow:hidden; }
+  .ta-card-in { display:flex; align-items:flex-start; gap:12px; padding:13px 14px; cursor:pointer; position:relative; z-index:1; background:var(--surface); transition:transform .25s cubic-bezier(.4,0,.2,1); }
+  .ta-card .pbar { position:absolute; top:0; bottom:0; right:0; width:5px; z-index:2; }
+  .ta-chk { width:26px; height:26px; border-radius:50%; border:2px solid var(--faint); flex-shrink:0; position:relative; cursor:pointer; margin-top:1px; transition:border-color .2s, background .2s; }
+  .ta-chk::after { content:''; position:absolute; inset:-9px; }
+  .ta-chk .msr { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:17px; color:#fff; opacity:0; transform:scale(.4); transition:opacity .2s, transform .3s cubic-bezier(.34,1.56,.64,1); }
+  .ta-card.done .ta-chk { background:var(--ok); border-color:var(--ok); }
+  .ta-card.done .ta-chk .msr { opacity:1; transform:scale(1); }
+  .ta-card.completing .ta-chk { animation:taPop .4s ease; }
+  @keyframes taPop { 0%{transform:scale(1);} 40%{transform:scale(1.35);} 100%{transform:scale(1);} }
+  .ta-card.leaving { animation:taLeave .38s cubic-bezier(.4,0,.2,1) forwards; }
+  @keyframes taLeave { to { opacity:0; transform:translateX(-40px); max-height:0; margin:0; } }
+  .ta-body-c { flex:1; min-width:0; }
+  .ta-title { font-size:15px; font-weight:700; color:var(--text); line-height:1.45; word-break:break-word; }
+  .ta-card.done .ta-title { color:var(--faint); text-decoration:line-through; }
+  .ta-desc { font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.5; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; }
+  .ta-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .ta-chip { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; }
+  .ta-chip .msr { font-size:14px; }
+  .ta-time { display:inline-flex; align-items:center; gap:3px; font-size:11.5px; color:var(--muted); font-weight:600; }
+  .ta-time .msr { font-size:14px; }
+  .ta-time.overdue { color:var(--danger); }
+  .ta-pdot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .ta-opts { width:30px; height:30px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--faint); cursor:pointer; flex-shrink:0; margin-top:-2px; }
+  .ta-opts:active { background:var(--surface2); }
+  .ta-swipe-bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; padding:0 20px; z-index:0; }
+  .ta-swipe-bg .s-ok { color:var(--ok); } .ta-swipe-bg .s-del { color:var(--danger); }
+  .ta-swipe-bg .msr { font-size:24px; }
+
+  /* Bottom navigation */
+  .ta-nav { flex-shrink:0; display:flex; align-items:center; justify-content:space-around; background:var(--surface); border-top:1px solid var(--border); padding:8px 6px calc(8px + env(safe-area-inset-bottom)); position:relative; box-shadow:0 -6px 20px -12px rgba(15,23,42,0.2); }
+  .ta-nav-i { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 0; color:var(--faint); cursor:pointer; position:relative; user-select:none; border-radius:14px; transition:color .2s; }
+  .ta-nav-i .msr { font-size:25px; transition:transform .25s cubic-bezier(.34,1.56,.64,1); }
+  .ta-nav-i .lb { font-size:10px; font-weight:700; }
+  .ta-nav-i.on { color:var(--pri); }
+  .ta-nav-i.on .msr { transform:translateY(-2px); }
+  .ta-nav-i.on .msr { font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 24; }
+  .ta-nav-add { flex:0 0 auto; }
+  .ta-nav-add .fab { width:56px; height:56px; border-radius:20px; background:linear-gradient(150deg,var(--pri),#1E40AF); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 12px 26px -8px rgba(37,99,235,0.65); margin-top:-24px; transition:transform .25s cubic-bezier(.34,1.56,.64,1); }
+  .ta-nav-add .fab .msr { font-size:30px; }
+  .ta-nav-add:active .fab { transform:scale(.9) rotate(90deg); }
+
+  /* Add task view */
+  .ta-add-h { font-size:20px; font-weight:800; margin-bottom:16px; }
+  .ta-field { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:14px; margin-bottom:12px; box-shadow:var(--shadow-sm); }
+  .ta-field .fl { font-size:12px; font-weight:700; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .ta-field .fl .msr { font-size:17px; color:var(--pri); }
+  .ta-input { width:100%; border:none; background:transparent; font-family:inherit; font-size:16px; color:var(--text); outline:none; }
+  .ta-input::placeholder { color:var(--faint); }
+  textarea.ta-input { resize:none; min-height:52px; line-height:1.6; }
+  .ta-row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .ta-dateinput { width:100%; border:none; background:transparent; font-family:inherit; font-size:15px; color:var(--text); outline:none; min-height:26px; }
+  .ta-chips { display:flex; gap:8px; flex-wrap:wrap; }
+  .ta-opt { display:inline-flex; align-items:center; gap:5px; padding:9px 13px; border-radius:14px; border:1.5px solid var(--border); background:var(--surface2); color:var(--muted); font-size:13px; font-weight:700; cursor:pointer; transition:all .18s; }
+  .ta-opt .msr { font-size:17px; }
+  .ta-opt .pd { width:11px; height:11px; border-radius:50%; }
+  .ta-opt.on { color:#fff; }
+  .ta-cat-opt.on { border-color:transparent; }
+  .ta-toggle { width:48px; height:28px; border-radius:20px; background:var(--border); position:relative; cursor:pointer; transition:background .2s; flex-shrink:0; }
+  .ta-toggle::after { content:''; position:absolute; top:3px; right:3px; width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.2); transition:transform .22s cubic-bezier(.34,1.56,.64,1); }
+  .ta-toggle.on { background:var(--pri); }
+  .ta-toggle.on::after { transform:translateX(-20px); }
+  .ta-field.row { display:flex; align-items:center; justify-content:space-between; }
+  .ta-save { width:100%; padding:16px; border:none; border-radius:18px; background:linear-gradient(150deg,var(--pri),#1E40AF); color:#fff; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 14px 30px -12px rgba(37,99,235,0.6); margin-top:4px; }
+  .ta-save:active { transform:scale(.98); }
+  .ta-cancel { width:100%; padding:13px; border:none; border-radius:16px; background:transparent; color:var(--muted); font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; margin-top:6px; }
+
+  /* Detail sheet */
+  .ta-sheet { position:absolute; inset:0; z-index:20; background:var(--bg); display:flex; flex-direction:column; transform:translateY(100%); transition:transform .34s cubic-bezier(.22,.61,.36,1); }
+  .ta-sheet.open { transform:none; }
+  .ta-sheet-top { display:flex; align-items:center; gap:8px; padding:14px 12px; }
+  .ta-sheet-top .bk { width:42px; height:42px; border-radius:13px; background:var(--surface); border:1px solid var(--border); color:var(--text); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .ta-sheet-top .sp { flex:1; }
+  .ta-sheet-body { flex:1; overflow-y:auto; padding:6px 18px 26px; }
+  .ta-d-title { font-size:23px; font-weight:800; line-height:1.35; word-break:break-word; }
+  .ta-d-title.done { color:var(--faint); text-decoration:line-through; }
+  .ta-d-meta { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 16px; }
+  .ta-d-block { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:14px; margin-bottom:12px; box-shadow:var(--shadow-sm); }
+  .ta-d-block .bh { font-size:12.5px; font-weight:800; color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .ta-d-block .bh .msr { font-size:17px; color:var(--pri); }
+  .ta-d-desc { font-size:14.5px; color:var(--text); line-height:1.7; white-space:pre-wrap; word-break:break-word; }
+  .ta-sub { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+  .ta-sub:last-child { border-bottom:none; }
+  .ta-sub .sc { width:22px; height:22px; border-radius:50%; border:2px solid var(--faint); flex-shrink:0; position:relative; cursor:pointer; }
+  .ta-sub.done .sc { background:var(--ok); border-color:var(--ok); }
+  .ta-sub.done .sc::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; }
+  .ta-sub .st { flex:1; font-size:14px; color:var(--text); }
+  .ta-sub.done .st { color:var(--faint); text-decoration:line-through; }
+  .ta-sub .sx { color:var(--faint); cursor:pointer; font-size:16px; }
+  .ta-sub-add { display:flex; align-items:center; gap:10px; padding-top:10px; }
+  .ta-sub-add input { flex:1; border:none; background:var(--surface2); border-radius:10px; padding:9px 12px; font-family:inherit; font-size:14px; color:var(--text); outline:none; }
+  .ta-subbar { height:7px; border-radius:20px; background:var(--surface2); overflow:hidden; margin-bottom:10px; }
+  .ta-subbar span { display:block; height:100%; background:var(--ok); border-radius:20px; transition:width .35s ease; }
+  .ta-d-actions { display:flex; gap:10px; margin-top:8px; }
+  .ta-d-btn { flex:1; padding:14px; border:none; border-radius:15px; font-family:inherit; font-size:14.5px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; }
+  .ta-d-btn.done { background:var(--ok); color:#fff; }
+  .ta-d-btn.del { background:rgba(239,68,68,0.12); color:var(--danger); flex:0 0 auto; padding:14px 18px; }
+  .ta-log { font-size:12.5px; color:var(--muted); line-height:1.9; }
+
+  /* Options menu (bottom sheet) */
+  .ta-menu-scrim { position:absolute; inset:0; z-index:30; background:rgba(15,23,42,0.45); display:none; align-items:flex-end; }
+  .ta-menu-scrim.open { display:flex; animation:taFade .2s; }
+  .ta-menu { width:100%; background:var(--surface); border-radius:24px 24px 0 0; padding:8px 10px calc(14px + env(safe-area-inset-bottom)); box-shadow:0 -10px 40px -10px rgba(0,0,0,0.4); animation:taUp .3s cubic-bezier(.22,.61,.36,1); }
+  @keyframes taUp { from { transform:translateY(100%); } to { transform:none; } }
+  .ta-menu .grip { width:40px; height:4px; border-radius:4px; background:var(--border); margin:6px auto 12px; }
+  .ta-menu-i { display:flex; align-items:center; gap:14px; padding:14px 14px; border-radius:14px; font-size:15px; font-weight:600; color:var(--text); cursor:pointer; }
+  .ta-menu-i:active { background:var(--surface2); }
+  .ta-menu-i .msr { font-size:22px; color:var(--muted); }
+  .ta-menu-i.danger { color:var(--danger); } .ta-menu-i.danger .msr { color:var(--danger); }
+
+  /* Calendar view (theme-aware) */
+  .ta-cal-h { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .ta-cal-h .nav { width:42px; height:42px; border-radius:13px; background:var(--surface); border:1px solid var(--border); color:var(--text); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .ta-cal-h .ttl { text-align:center; }
+  .ta-cal-h .g { font-size:17px; font-weight:800; }
+  .ta-cal-h .hj { font-size:12px; color:var(--muted); margin-top:2px; }
+  .ta-wd { display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:6px; }
+  .ta-wd > div { text-align:center; font-size:10.5px; font-weight:700; color:var(--muted); padding:4px 0; }
+  .ta-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+  .ta-cell { aspect-ratio:1; border-radius:13px; background:var(--surface); border:1px solid var(--border); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; cursor:pointer; position:relative; }
+  .ta-cell.blank { background:transparent; border:none; cursor:default; }
+  .ta-cell .cg { font-size:14.5px; font-weight:800; color:var(--text); }
+  .ta-cell .ch { font-size:9px; color:var(--faint); }
+  .ta-cell.today { background:var(--pri); border-color:var(--pri); }
+  .ta-cell.today .cg, .ta-cell.today .ch { color:#fff; }
+  .ta-cell.sel { box-shadow:0 0 0 2px var(--pri) inset; }
+  .ta-cell .dots { display:flex; gap:2px; position:absolute; bottom:6px; }
+  .ta-cell .dots i { width:5px; height:5px; border-radius:50%; }
+  .ta-cell.today .dots i { background:#fff !important; }
+  .ta-cal-day { margin-top:16px; }
+  .ta-cal-day .dh { font-size:14px; font-weight:800; margin-bottom:10px; }
+
+  /* Stats view */
+  .ta-stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:18px; }
+  .ta-donut-wrap { display:flex; align-items:center; gap:18px; }
+  .ta-donut { position:relative; width:120px; height:120px; flex-shrink:0; }
+  .ta-donut svg { transform:rotate(-90deg); }
+  .ta-donut .mid { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .ta-donut .mid .n { font-size:24px; font-weight:800; }
+  .ta-donut .mid .l { font-size:11px; color:var(--muted); }
+  .ta-leg { flex:1; }
+  .ta-leg-i { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); margin-bottom:8px; }
+  .ta-leg-i .d { width:11px; height:11px; border-radius:4px; }
+  .ta-leg-i b { margin-inline-start:auto; font-weight:800; }
+  .ta-bars { display:flex; align-items:flex-end; justify-content:space-between; gap:7px; height:130px; padding-top:10px; }
+  .ta-bar-c { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end; }
+  .ta-bar { width:100%; max-width:26px; border-radius:8px 8px 4px 4px; background:linear-gradient(180deg,var(--pri),#1E40AF); min-height:4px; transition:height .5s cubic-bezier(.22,.61,.36,1); }
+  .ta-bar-c .bl { font-size:10.5px; color:var(--muted); font-weight:700; }
+  .ta-bar-c .bv { font-size:10px; color:var(--faint); font-weight:700; }
+
+  /* Settings */
+  .ta-set-i { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:15px; margin-bottom:11px; display:flex; align-items:center; gap:13px; box-shadow:var(--shadow-sm); }
+  .ta-set-i .ic { width:40px; height:40px; border-radius:12px; background:var(--pri-soft); color:var(--pri); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .ta-set-i .tx { flex:1; }
+  .ta-set-i .tx .t { font-size:14.5px; font-weight:700; }
+  .ta-set-i .tx .s { font-size:11.5px; color:var(--muted); margin-top:2px; }
+  .ta-seg { display:flex; background:var(--surface2); border-radius:12px; padding:3px; gap:2px; }
+  .ta-seg button { border:none; background:transparent; font-family:inherit; font-size:12.5px; font-weight:700; color:var(--muted); padding:7px 12px; border-radius:9px; cursor:pointer; }
+  .ta-seg button.on { background:var(--surface); color:var(--pri); box-shadow:var(--shadow-sm); }
+
+  @media (max-width:400px){ .ta-stats-row { grid-template-columns:repeat(2,1fr); } .ta-nav-i .lb { font-size:9px; } }
   #live { grid-area:live; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; display:flex; flex-direction:column; gap:16px; }
   #live .head { display:flex; align-items:center; justify-content:space-between; }
   #live .head .sub { font-size:12px; color:#7C766A; margin-top:2px; }
@@ -759,92 +837,154 @@
 
       <!-- TASKS -->
       <div id="planner" class="card">
-        <div class="p2-top">
-          <div class="p2-icon" id="p2-menu-btn" title="خيارات">⋯</div>
-          <div class="p2-title-wrap">
-            <div class="p2-title" id="p2-title"></div>
-            <div class="p2-count" id="p2-count"></div>
-          </div>
-          <div class="p2-icon" id="p2-search-btn" title="بحث">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-        </div>
-        <div class="p2-search-row" id="p2-search-row">
-          <input type="text" id="p2-search" placeholder="ابحث في المهام...">
-        </div>
-        <div class="p2-body">
-          <section class="p2-main">
-            <div class="p2-sortbar"><span>↓ تاريخ الاستحقاق</span></div>
-            <div class="p2-tasks" id="p2-tasks"></div>
-            <div class="p2-fab" id="p2-fab" title="إضافة مهمة">＋</div>
-            <div class="p2-composer" id="p2-composer">
-              <input type="text" id="p2-c-text" placeholder="اكتب المهمة...">
-              <input type="text" id="p2-c-note" placeholder="ملاحظة (اختياري)...">
-              <div class="row">
-                <span class="p2-c-datelabel">📅 التاريخ (اختياري):</span>
-                <input type="date" id="p2-c-date" class="p2-dateinput" title="تاريخ الاستحقاق">
-                <button type="button" class="p2-c-dateclear" id="p2-c-dateclear" style="display:none;">مسح</button>
-                <select id="p2-c-list" style="display:none;"></select>
+       <div class="ta" id="tasks-app" data-theme="light">
+        <div class="ta-body" id="ta-body">
+
+          <!-- HOME -->
+          <section class="ta-view on" id="ta-home">
+            <div class="ta-hd">
+              <div>
+                <div class="greet" id="ta-greet"></div>
+                <div class="name" id="ta-name">أبو سعد</div>
+                <div class="date" id="ta-today-date"></div>
               </div>
-              <div class="row">
-                <div style="flex:1"></div>
-                <button class="p2-btn gray" id="p2-c-cancel">إلغاء</button>
-                <button class="p2-btn blue" id="p2-c-save">إضافة</button>
+              <div class="th-btn" id="ta-theme-quick" title="الوضع"><span class="msr">dark_mode</span></div>
+            </div>
+            <div class="ta-hero">
+              <div class="ta-ring" id="ta-ring"></div>
+              <div class="h-txt">
+                <div class="h-title" id="ta-hero-title"></div>
+                <div class="h-sub" id="ta-hero-sub"></div>
               </div>
+            </div>
+            <div class="ta-stats-row" id="ta-home-stats"></div>
+            <div id="ta-home-sections"></div>
+          </section>
+
+          <!-- CALENDAR -->
+          <section class="ta-view" id="ta-cal">
+            <div class="ta-cal-h">
+              <div class="nav" id="ta-cal-prev"><span class="msr">chevron_right</span></div>
+              <div class="ttl"><div class="g" id="ta-cal-g"></div><div class="hj" id="ta-cal-hj"></div></div>
+              <div class="nav" id="ta-cal-next"><span class="msr">chevron_left</span></div>
+            </div>
+            <div class="ta-wd"><div>السبت</div><div>الأحد</div><div>الاثنين</div><div>الثلاثاء</div><div>الأربعاء</div><div>الخميس</div><div>الجمعة</div></div>
+            <div class="ta-grid" id="ta-cal-grid"></div>
+            <div class="ta-cal-day" id="ta-cal-day"></div>
+          </section>
+
+          <!-- ADD -->
+          <section class="ta-view" id="ta-add">
+            <div class="ta-add-h" id="ta-add-h">مهمة جديدة</div>
+            <div class="ta-field">
+              <div class="fl"><span class="msr">title</span> عنوان المهمة</div>
+              <input type="text" class="ta-input" id="ta-f-title" placeholder="ماذا تريد أن تنجز؟">
+            </div>
+            <div class="ta-field">
+              <div class="fl"><span class="msr">notes</span> الوصف</div>
+              <textarea class="ta-input" id="ta-f-desc" placeholder="تفاصيل مختصرة (اختياري)"></textarea>
+            </div>
+            <div class="ta-row2">
+              <div class="ta-field">
+                <div class="fl"><span class="msr">event</span> التاريخ</div>
+                <input type="date" class="ta-dateinput" id="ta-f-date">
+              </div>
+              <div class="ta-field">
+                <div class="fl"><span class="msr">schedule</span> الوقت</div>
+                <input type="time" class="ta-dateinput" id="ta-f-time">
+              </div>
+            </div>
+            <div class="ta-field">
+              <div class="fl"><span class="msr">flag</span> الأولوية</div>
+              <div class="ta-chips" id="ta-f-prio"></div>
+            </div>
+            <div class="ta-field">
+              <div class="fl"><span class="msr">category</span> التصنيف</div>
+              <div class="ta-chips" id="ta-f-cat"></div>
+            </div>
+            <div class="ta-field">
+              <div class="fl"><span class="msr">repeat</span> التكرار</div>
+              <div class="ta-chips" id="ta-f-rep"></div>
+            </div>
+            <div class="ta-field row">
+              <div class="fl" style="margin:0"><span class="msr">notifications</span> تذكير</div>
+              <div class="ta-toggle" id="ta-f-remind"></div>
+            </div>
+            <div class="ta-field">
+              <div class="fl"><span class="msr">sticky_note_2</span> ملاحظات</div>
+              <textarea class="ta-input" id="ta-f-notes" placeholder="ملاحظات إضافية (اختياري)"></textarea>
+            </div>
+            <button class="ta-save" id="ta-f-save">حفظ المهمة</button>
+            <button class="ta-cancel" id="ta-f-cancel">إلغاء</button>
+          </section>
+
+          <!-- STATS -->
+          <section class="ta-view" id="ta-stats">
+            <div class="ta-add-h">الإحصائيات</div>
+            <div class="ta-stats-grid" id="ta-stats-cards"></div>
+            <div class="ta-d-block">
+              <div class="bh"><span class="msr">donut_large</span> توزيع المهام</div>
+              <div class="ta-donut-wrap"><div class="ta-donut" id="ta-donut"></div><div class="ta-leg" id="ta-donut-leg"></div></div>
+            </div>
+            <div class="ta-d-block">
+              <div class="bh"><span class="msr">bar_chart</span> الإنتاجية الأسبوعية (مهام منجزة)</div>
+              <div class="ta-bars" id="ta-bars"></div>
+            </div>
+            <div class="ta-d-block">
+              <div class="bh"><span class="msr">calendar_month</span> نسبة الإنجاز الشهرية</div>
+              <div class="ta-subbar" style="height:12px;margin:4px 0 10px"><span id="ta-month-bar" style="width:0"></span></div>
+              <div style="font-size:13px;color:var(--muted)" id="ta-month-txt"></div>
             </div>
           </section>
-          <aside class="p2-side">
-            <div class="p2-side-label">القوائم</div>
-            <div class="p2-lists" id="p2-lists"></div>
-            <div class="p2-side-label">القوائم الذكية</div>
-            <div class="p2-l smart" id="p2-all"><span class="nm">▦ كل المهام</span></div>
-            <div class="p2-l smart star" id="p2-star"><span class="nm">★ المهم</span></div>
-            <div class="p2-add-list" id="p2-add-list" title="إضافة قائمة">＋</div>
-            <div class="p2-cal-open" id="p2-cal-open" title="التقويم">📅 التقويم</div>
-          </aside>
-        </div>
-        <div class="p2-menu" id="p2-menu">
-          <div class="p2-mi" id="p2-m-rename">إعادة تسمية القائمة</div>
-          <div class="p2-mi" id="p2-m-clear">مسح المهام المنجزة</div>
-          <div class="p2-mi danger" id="p2-m-delete">حذف القائمة</div>
-        </div>
-        <div class="p2-overlay" id="p2-overlay">
-          <div class="p2-dialog">
-            <h4 id="p2-d-title">إضافة قائمة</h4>
-            <input type="text" id="p2-d-name" placeholder="اسم القائمة">
-            <div class="p2-swatches" id="p2-d-swatches"></div>
-            <div class="btns">
-              <button class="p2-btn blue" id="p2-d-save">حفظ</button>
-              <button class="p2-btn gray" id="p2-d-cancel">إلغاء</button>
+
+          <!-- SETTINGS -->
+          <section class="ta-view" id="ta-settings">
+            <div class="ta-add-h">الإعدادات</div>
+            <div class="ta-set-i">
+              <div class="ic"><span class="msr">contrast</span></div>
+              <div class="tx"><div class="t">المظهر</div><div class="s">فاتح · داكن · تلقائي</div></div>
+              <div class="ta-seg" id="ta-theme-seg">
+                <button data-th="light">فاتح</button><button data-th="dark">داكن</button><button data-th="auto">تلقائي</button>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="p2-cal-modal" id="p2-cal-modal">
-          <div class="p2-cal-head">
-            <div class="p2-cal-close" id="p2-cal-close" title="إغلاق">✕</div>
-            <div class="p2-cal-nav" id="p2-cal-prev" title="الشهر السابق">›</div>
-            <div class="p2-cal-titles">
-              <div class="p2-cal-greg" id="p2-cal-greg"></div>
-              <div class="p2-cal-hijri" id="p2-cal-hijri"></div>
+            <div class="ta-set-i" id="ta-set-clear" style="cursor:pointer">
+              <div class="ic"><span class="msr">mop</span></div>
+              <div class="tx"><div class="t">مسح المهام المنجزة</div><div class="s">حذف كل المهام المكتملة</div></div>
+              <span class="msr" style="color:var(--faint)">chevron_left</span>
             </div>
-            <div class="p2-cal-nav" id="p2-cal-next" title="الشهر التالي">‹</div>
-          </div>
-          <div class="p2-cal-sub">
-            <div class="p2-cal-today-btn" id="p2-cal-today">اليوم</div>
-          </div>
-          <div class="p2-cal-weekdays">
-            <div>السبت</div><div>الأحد</div><div>الاثنين</div><div>الثلاثاء</div><div>الأربعاء</div><div>الخميس</div><div>الجمعة</div>
-          </div>
-          <div class="p2-cal-grid" id="p2-cal-grid"></div>
-          <div class="p2-cal-daypanel" id="p2-cal-daypanel">
-            <div class="p2-cal-dp-head">
-              <div class="p2-cal-dp-title" id="p2-cal-dp-title"></div>
-              <div class="p2-cal-dp-close" id="p2-cal-dp-close">✕ إغلاق</div>
+            <div class="ta-set-i">
+              <div class="ic"><span class="msr">info</span></div>
+              <div class="tx"><div class="t">تطبيق المهام</div><div class="s" id="ta-ver"></div></div>
             </div>
-            <div id="p2-cal-dp-list"></div>
-          </div>
-          <div class="p2-cal-legend"><span class="lg-today"></span> اليوم · <span class="lg-dot"></span> يوجد مهام · الرقم الكبير ميلادي والصغير هجري · اضغط أي يوم لعرض مهامه</div>
+          </section>
+
         </div>
+
+        <!-- Bottom navigation -->
+        <nav class="ta-nav">
+          <div class="ta-nav-i on" data-view="ta-home"><span class="msr">home</span><span class="lb">الرئيسية</span></div>
+          <div class="ta-nav-i" data-view="ta-cal"><span class="msr">calendar_month</span><span class="lb">التقويم</span></div>
+          <div class="ta-nav-add" id="ta-nav-add"><div class="fab"><span class="msr">add</span></div></div>
+          <div class="ta-nav-i" data-view="ta-stats"><span class="msr">bar_chart</span><span class="lb">الإحصائيات</span></div>
+          <div class="ta-nav-i" data-view="ta-settings"><span class="msr">settings</span><span class="lb">الإعدادات</span></div>
+        </nav>
+
+        <!-- Detail sheet -->
+        <div class="ta-sheet" id="ta-sheet">
+          <div class="ta-sheet-top">
+            <div class="bk" id="ta-sheet-back"><span class="msr">arrow_forward</span></div>
+            <div class="sp"></div>
+            <div class="bk" id="ta-sheet-opts"><span class="msr">more_horiz</span></div>
+          </div>
+          <div class="ta-sheet-body" id="ta-sheet-body"></div>
+        </div>
+
+        <!-- Options bottom sheet -->
+        <div class="ta-menu-scrim" id="ta-menu-scrim">
+          <div class="ta-menu" id="ta-menu"></div>
+        </div>
+
+       </div>
       </div><!-- /planner -->
 
       <!-- QURAN -->
@@ -1104,624 +1244,518 @@
   renderClock();
   setInterval(renderClock, 1000);
 
-  // ---------- Planner v2 (قوائم المهام على النمط الاحترافي) ----------
-  var P2_KEY = "abusaad_planner_v2";
-  var P2_GEN = 5; // علامة ترحيل لمرة واحدة: ترتفع مع كل تغيير يجب تطبيقه على البيانات المحفوظة
-  var P2_COLORS = ["#2A46C8", "#3E8E2E", "#B03A34", "#1F2429", "#E8862C", "#8A64A8", "#0E8FA3", "#E3C929", "#6B7280"];
-  // القوائم الافتراضية الثلاث فقط — يضيف المستخدم غيرها بزر «＋ إضافة قائمة»
-  var P2_SEED = [["عاجل جدًا", "#B03A34"], ["المنزل", "#2A46C8"], ["العمل", "#3E8E2E"]];
-  var P2_ORDER = ["عاجل جدًا", "المنزل", "العمل"]; // ترتيب القوائم الافتراضية من الأعلى
+  // ================= TASKS APP (redesign) =================
+  var TA_KEY = "abusaad_tasks_app_v1";
+  var TA_GEN = 1;
+  var TA_CATS = [
+    { key: "home", label: "المنزل", icon: "home", color: "#2563EB" },
+    { key: "work", label: "العمل", icon: "work", color: "#0EA5E9" },
+    { key: "personal", label: "شخصي", icon: "person", color: "#8B5CF6" },
+    { key: "finance", label: "مالية", icon: "savings", color: "#10B981" },
+    { key: "health", label: "الصحة", icon: "favorite", color: "#F43F5E" },
+    { key: "study", label: "الدراسة", icon: "school", color: "#F59E0B" },
+    { key: "travel", label: "السفر", icon: "flight", color: "#14B8A6" }
+  ];
+  var TA_PRIOS = [
+    { key: "urgent", label: "عاجل جدًا", color: "#EF4444" },
+    { key: "high", label: "عالي", color: "#F59E0B" },
+    { key: "med", label: "متوسط", color: "#EAB308" },
+    { key: "low", label: "منخفض", color: "#22C55E" }
+  ];
+  var TA_REPEATS = [
+    { key: "none", label: "بدون" }, { key: "daily", label: "يومي" },
+    { key: "weekly", label: "أسبوعي" }, { key: "monthly", label: "شهري" }
+  ];
+  function taCat(k) { for (var i = 0; i < TA_CATS.length; i++) if (TA_CATS[i].key === k) return TA_CATS[i]; return TA_CATS[0]; }
+  function taPrio(k) { for (var i = 0; i < TA_PRIOS.length; i++) if (TA_PRIOS[i].key === k) return TA_PRIOS[i]; return TA_PRIOS[2]; }
 
-  function p2FreshLists() {
-    var nid = 1, lists = [];
-    P2_SEED.forEach(function (s) { lists.push({ id: "l" + (nid++), name: s[0], color: s[1] }); });
-    return { nid: nid, lists: lists };
-  }
-
-  function p2Load() {
-    var raw = null;
-    try { raw = localStorage.getItem(P2_KEY); } catch (e) {}
-    if (raw) {
-      try {
-        var saved = JSON.parse(raw);
-        if (saved && saved.lists && saved.tasks) {
-          if (typeof saved.gen !== "number") saved.gen = 0;
-          if (typeof saved.nid !== "number") saved.nid = saved.lists.length + saved.tasks.length + 1;
-          // gen<3: تنظيف المهام التجريبية القديمة
-          if (saved.gen < 3) saved.tasks = [];
-          // gen<4: اختصار القوائم إلى (المنزل، العمل، عاجل جدًا) وإعادة تسمية «عاجل اليوم»
-          if (saved.gen < 4) {
-            saved.lists.forEach(function (L) { if (L.name === "عاجل اليوم" || L.name === "عاجل جدا") L.name = "عاجل جدًا"; });
-            var keep = { "المنزل": 1, "العمل": 1, "عاجل جدًا": 1 };
-            var keptIds = {};
-            saved.lists = saved.lists.filter(function (L) { if (keep[L.name]) { keptIds[L.id] = 1; return true; } return false; });
-            saved.tasks = saved.tasks.filter(function (t) { return keptIds[t.list]; });
-            P2_SEED.forEach(function (s) {
-              if (!saved.lists.some(function (L) { return L.name === s[0]; })) saved.lists.push({ id: "l" + (saved.nid++), name: s[0], color: s[1] });
-            });
-          }
-          // gen<5: إعادة ترتيب القوائم من الأعلى (عاجل جدًا، المنزل، العمل، ثم غيرها)
-          if (saved.gen < 5) {
-            saved.lists.sort(function (a, b) {
-              var ia = P2_ORDER.indexOf(a.name); if (ia === -1) ia = 999;
-              var ib = P2_ORDER.indexOf(b.name); if (ib === -1) ib = 999;
-              return ia - ib;
-            });
-          }
-          saved.gen = P2_GEN;
-          saved.tasks.forEach(function (t) {
-            if (typeof t.note !== "string") t.note = "";
-            if (typeof t.star !== "boolean") t.star = false;
-          });
-          var ok = saved.sel === "__all" || saved.sel === "__star" ||
-            saved.lists.some(function (L) { return L.id === saved.sel; });
-          if (!ok) saved.sel = saved.lists.length ? saved.lists[0].id : "__all";
-          return saved;
-        }
-      } catch (e) {}
-    }
-    var f = p2FreshLists();
-    return { v: 2, gen: P2_GEN, nid: f.nid, lists: f.lists, tasks: [], sel: f.lists.length ? f.lists[0].id : "__all" };
-  }
-
-  var p2 = p2Load();
-  var p2q = "", p2OpenRow = null, p2DoneOpen = false, p2EditList = null, p2DColor = P2_COLORS[0];
-
-  function p2Save() {
-    try { localStorage.setItem(P2_KEY, JSON.stringify({ v: p2.v, gen: P2_GEN, nid: p2.nid, lists: p2.lists, tasks: p2.tasks, sel: p2.sel })); } catch (e) {}
-  }
-  function p2ListById(id) {
-    for (var i = 0; i < p2.lists.length; i++) if (p2.lists[i].id === id) return p2.lists[i];
-    return null;
-  }
-  function p2IsAggregate() { return p2.sel === "__all" || p2.sel === "__star"; }
-  function p2CurList() { return p2IsAggregate() ? null : p2ListById(p2.sel); }
-  function p2Visible() {
-    return p2.tasks.filter(function (t) {
-      if (p2.sel === "__star") { if (!t.star) return false; }
-      else if (p2.sel !== "__all") { if (t.list !== p2.sel) return false; }
-      if (p2q) {
-        var hay = String(t.text) + " " + String(t.note || "");
-        if (hay.indexOf(p2q) === -1) return false;
+  function taMigrate() {
+    var out = [], nid = 1;
+    try {
+      var p2 = JSON.parse(localStorage.getItem("abusaad_planner_v2") || "null");
+      if (p2 && p2.tasks && p2.lists) {
+        var lname = {}; p2.lists.forEach(function (L) { lname[L.id] = L.name; });
+        p2.tasks.forEach(function (t) {
+          var nm = lname[t.list] || "";
+          var cat = nm.indexOf("منزل") >= 0 ? "home" : (nm.indexOf("عمل") >= 0 ? "work" : "personal");
+          var prio = nm.indexOf("عاجل") >= 0 ? "urgent" : (t.star ? "high" : "med");
+          out.push({ id: "k" + (nid++), title: String(t.text || ""), desc: "", done: !!t.done,
+            date: (typeof t.due === "string" && t.due) ? t.due : null, time: null, priority: prio,
+            category: cat, repeat: "none", reminder: false, notes: String(t.note || ""), subtasks: [],
+            created: Date.now(), completedAt: t.done ? Date.now() : null });
+        });
       }
-      return true;
+    } catch (e) {}
+    return { nid: nid, tasks: out };
+  }
+
+  function taLoad() {
+    var raw = null; try { raw = localStorage.getItem(TA_KEY); } catch (e) {}
+    if (raw) { try { var s = JSON.parse(raw); if (s && s.tasks) return s; } catch (e) {} }
+    var m = taMigrate();
+    return { gen: TA_GEN, nid: m.nid, theme: "light", tasks: m.tasks };
+  }
+  var TA = taLoad();
+  var taView = "ta-home", taEditId = null, taSheetId = null, taMenuId = null;
+  var taCalY, taCalM, taCalSel = null;
+  var taNewPrio = "med", taNewCat = "home", taNewRep = "none", taNewRemind = false;
+
+  function taSave() { try { localStorage.setItem(TA_KEY, JSON.stringify(TA)); } catch (e) {} }
+  function taById(id) { for (var i = 0; i < TA.tasks.length; i++) if (TA.tasks[i].id === id) return TA.tasks[i]; return null; }
+
+  var TA_HJ_D = null, TA_HJ_MY = null;
+  try { TA_HJ_D = new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", { day: "numeric" });
+        TA_HJ_MY = new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", { month: "long", year: "numeric" }); } catch (e) {}
+
+  function taFmtTime(t) { if (!t) return ""; var p = t.split(":"); var h = parseInt(p[0], 10); var ap = h < 12 ? "ص" : "م"; var h12 = h % 12; if (h12 === 0) h12 = 12; return toAr(h12 + ":" + p[1]) + " " + ap; }
+  function taDateLabel(d) {
+    if (!d) return "";
+    var todayStr = fmt(new Date()); var now = new Date();
+    var tom = fmt(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
+    if (d === todayStr) return "اليوم"; if (d === tom) return "غدًا";
+    var p = d.split("-").map(Number);
+    try { return toAr(new Date(p[0], p[1] - 1, p[2]).toLocaleDateString("ar", { day: "numeric", month: "short" })); } catch (e) { return toAr(d); }
+  }
+
+  // ---------- theme ----------
+  function taApplyTheme() {
+    var el = document.getElementById("tasks-app");
+    var mode = TA.theme;
+    if (mode === "auto") mode = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+    el.setAttribute("data-theme", mode);
+    var q = document.querySelector("#ta-theme-quick .msr");
+    if (q) q.textContent = mode === "dark" ? "light_mode" : "dark_mode";
+    Array.prototype.forEach.call(document.querySelectorAll("#ta-theme-seg button"), function (b) {
+      b.classList.toggle("on", b.getAttribute("data-th") === TA.theme);
     });
   }
-  function p2DateLabel(due, todayStr, tomorrowStr) {
-    if (due === todayStr) return "اليوم";
-    if (due === tomorrowStr) return "غدًا";
-    var p = due.split("-").map(Number);
-    try { return toAr(new Date(p[0], p[1] - 1, p[2]).toLocaleDateString("ar", { weekday: "long", day: "numeric", month: "long" })); }
-    catch (e) { return toAr(due); }
-  }
-  function p2ShortDate(due) {
-    try { return toAr(new Date(due + "T00:00:00").toLocaleDateString("ar", { day: "numeric", month: "long" })); }
-    catch (e) { return toAr(due); }
+
+  // ---------- ring svg ----------
+  function taRing(el, pct, size, stroke, track, fill, txtColor) {
+    var r = (size - stroke) / 2, c = 2 * Math.PI * r, off = c * (1 - pct / 100);
+    el.innerHTML = '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '">' +
+      '<circle cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke="' + track + '" stroke-width="' + stroke + '"/>' +
+      '<circle cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke="' + fill + '" stroke-width="' + stroke + '" stroke-linecap="round" stroke-dasharray="' + c + '" stroke-dashoffset="' + off + '" style="transition:stroke-dashoffset .6s ease"/></svg>' +
+      '<div class="pct" style="color:' + txtColor + '">' + toAr(Math.round(pct)) + '%</div>';
   }
 
-  function p2RenderTop() {
-    var L = p2CurList();
-    var title = p2.sel === "__all" ? "كل المهام" : (p2.sel === "__star" ? "المهم" : (L ? L.name : ""));
-    document.getElementById("p2-title").textContent = title;
-    var pend = p2Visible().filter(function (t) { return !t.done; }).length;
-    document.getElementById("p2-count").textContent = toAr(pend);
-    document.getElementById("p2-m-rename").style.display = L ? "flex" : "none";
-    document.getElementById("p2-m-delete").style.display = L ? "flex" : "none";
+  // ---------- task card ----------
+  function taBuildCard(t) {
+    var cat = taCat(t.category), prio = taPrio(t.priority);
+    var card = document.createElement("div");
+    card.className = "ta-card" + (t.done ? " done" : "");
+    var inner = document.createElement("div"); inner.className = "ta-card-in";
+    var bar = document.createElement("div"); bar.className = "pbar"; bar.style.background = prio.color; card.appendChild(bar);
+
+    var chk = document.createElement("div"); chk.className = "ta-chk"; if (t.done) chk.style.background = prio.color, chk.style.borderColor = prio.color;
+    chk.innerHTML = '<span class="msr fill">check</span>';
+    chk.addEventListener("click", function (e) { e.stopPropagation(); taToggle(t, card); });
+    inner.appendChild(chk);
+
+    var body = document.createElement("div"); body.className = "ta-body-c";
+    var title = document.createElement("div"); title.className = "ta-title"; title.textContent = t.title; body.appendChild(title);
+    if (t.desc) { var d = document.createElement("div"); d.className = "ta-desc"; d.textContent = t.desc; body.appendChild(d); }
+    var meta = document.createElement("div"); meta.className = "ta-meta";
+    var cc = document.createElement("span"); cc.className = "ta-chip"; cc.style.color = cat.color; cc.style.background = cat.color + "1F";
+    cc.innerHTML = '<span class="msr">' + cat.icon + '</span>' + cat.label; meta.appendChild(cc);
+    if (t.date) {
+      var tm = document.createElement("span"); tm.className = "ta-time";
+      var overdue = !t.done && t.date < fmt(new Date());
+      if (overdue) tm.classList.add("overdue");
+      tm.innerHTML = '<span class="msr">event</span>' + taDateLabel(t.date) + (t.time ? " · " + taFmtTime(t.time) : "");
+      meta.appendChild(tm);
+    } else if (t.time) {
+      var tm2 = document.createElement("span"); tm2.className = "ta-time";
+      tm2.innerHTML = '<span class="msr">schedule</span>' + taFmtTime(t.time); meta.appendChild(tm2);
+    }
+    var pd = document.createElement("span"); pd.className = "ta-pdot"; pd.style.background = prio.color; pd.title = prio.label; meta.appendChild(pd);
+    body.appendChild(meta);
+    inner.appendChild(body);
+
+    var opts = document.createElement("div"); opts.className = "ta-opts"; opts.innerHTML = '<span class="msr">more_vert</span>';
+    opts.addEventListener("click", function (e) { e.stopPropagation(); taOpenMenu(t.id); });
+    inner.appendChild(opts);
+
+    inner.addEventListener("click", function () { taOpenSheet(t.id); });
+    card.appendChild(inner);
+    return card;
   }
 
-  function p2RenderSide() {
-    var wrap = document.getElementById("p2-lists");
-    wrap.innerHTML = "";
-    p2.lists.forEach(function (L) {
-      var row = document.createElement("div");
-      row.className = "p2-l" + (p2.sel === L.id ? " on" : "");
-      row.style.setProperty("--lc", L.color);
-      var nm = document.createElement("span");
-      nm.className = "nm";
-      nm.textContent = L.name;
-      row.appendChild(nm);
-      if (p2.sel === L.id) {
-        var ed = document.createElement("span");
-        ed.className = "ed";
-        ed.textContent = "✎";
-        ed.title = "تعديل القائمة";
-        ed.addEventListener("click", function (e) { e.stopPropagation(); p2OpenDialog(L); });
-        row.appendChild(ed);
-      }
-      row.addEventListener("click", function () { p2.sel = L.id; p2OpenRow = null; p2Save(); p2RenderAll(); });
-      wrap.appendChild(row);
-    });
-    document.getElementById("p2-all").classList.toggle("on", p2.sel === "__all");
-    document.getElementById("p2-star").classList.toggle("on", p2.sel === "__star");
+  function taToggle(t, card) {
+    if (!t.done) {
+      t.done = true; t.completedAt = Date.now(); taSave();
+      if (card) { card.classList.add("done"); var c = card.querySelector(".ta-chk"); if (c) c.classList.add("completing");
+        card.classList.add("leaving"); setTimeout(function () { taRenderCurrent(); }, 380); }
+      else taRenderCurrent();
+    } else { t.done = false; t.completedAt = null; taSave(); taRenderCurrent(); }
+  }
+  function taRenderCurrent() {
+    if (taView === "ta-home") taRenderHome();
+    else if (taView === "ta-cal") { taRenderCal(); if (taCalSel) taCalSelectDay(taCalSel); }
+    else if (taView === "ta-stats") taRenderStats();
+    if (taSheetId && document.getElementById("ta-sheet").classList.contains("open")) taRenderSheet();
   }
 
-  function p2BuildRow(t) {
-    var frag = document.createDocumentFragment();
-    var row = document.createElement("div");
-    row.className = "p2-row" + (t.done ? " done" : "") + (p2OpenRow === t.id ? " open" : "");
-    var chk = document.createElement("div");
-    chk.className = "p2-chk";
-    chk.title = t.done ? "إلغاء الإنجاز" : "إنجاز";
-    chk.addEventListener("click", function () { t.done = !t.done; p2Save(); p2RenderAll(); });
-
-    var txt = document.createElement("div");
-    txt.className = "p2-txt";
-    if (p2IsAggregate()) {
-      var L0 = p2ListById(t.list);
-      if (L0) {
-        var lbl = document.createElement("div");
-        lbl.className = "p2-listlabel";
-        lbl.textContent = L0.name;
-        lbl.style.color = L0.color;
-        txt.appendChild(lbl);
-      }
-    }
-    var ttl = document.createElement("div");
-    ttl.className = "p2-ttl";
-    ttl.textContent = t.text;
-    txt.appendChild(ttl);
-    if (t.note) {
-      var note = document.createElement("div");
-      note.className = "p2-note";
-      note.textContent = t.note;
-      txt.appendChild(note);
-    }
-    var todayStr = fmt(new Date());
-    if (t.due && t.due < todayStr && !t.done) {
-      var sub = document.createElement("div");
-      sub.className = "p2-sub";
-      sub.textContent = "متأخرة · " + p2ShortDate(t.due);
-      txt.appendChild(sub);
-    }
-    txt.addEventListener("click", function () { p2OpenRow = p2OpenRow === t.id ? null : t.id; p2RenderTasks(); });
-
-    var star = document.createElement("div");
-    star.className = "p2-star-btn" + (t.star ? " on" : "");
-    star.textContent = "★";
-    star.title = t.star ? "إزالة التمييز" : "تمييز كمهم";
-    star.addEventListener("click", function (e) { e.stopPropagation(); t.star = !t.star; p2Save(); p2RenderAll(); });
-
-    var car = document.createElement("div");
-    car.className = "p2-car";
-    car.textContent = "▼";
-    car.addEventListener("click", function () { p2OpenRow = p2OpenRow === t.id ? null : t.id; p2RenderTasks(); });
-
-    // RTL: النص يمينًا ثم النجمة ثم السهم ثم دائرة الإنجاز يسارًا (مطابق للتصميم المرجعي)
-    row.appendChild(txt);
-    row.appendChild(star);
-    row.appendChild(car);
-    row.appendChild(chk);
-    frag.appendChild(row);
-
-    if (p2OpenRow === t.id) {
-      var det = document.createElement("div");
-      det.className = "p2-detail";
-
-      var noteWrap = document.createElement("div");
-      noteWrap.className = "p2-drow";
-      var noteInput = document.createElement("input");
-      noteInput.type = "text";
-      noteInput.className = "p2-dnote";
-      noteInput.placeholder = "ملاحظة (اختياري)...";
-      noteInput.value = t.note || "";
-      noteInput.addEventListener("input", function () { t.note = noteInput.value; });
-      noteInput.addEventListener("change", function () { t.note = noteInput.value; p2Save(); p2RenderTasks(); });
-      noteWrap.appendChild(noteInput);
-      det.appendChild(noteWrap);
-
-      var dateWrap = document.createElement("div");
-      dateWrap.className = "p2-drow";
-      var lab = document.createElement("label");
-      lab.textContent = "📅 التاريخ:";
-      dateWrap.appendChild(lab);
-      // حقل تاريخ ظاهر يُفتح بالضغط عليه مباشرة (موثوق على iOS بدل showPicker)
-      var di = document.createElement("input");
-      di.type = "date";
-      di.className = "p2-dateinput";
-      di.value = t.due || "";
-      di.addEventListener("change", function () { t.due = di.value || null; p2Save(); p2RenderAll(); });
-      dateWrap.appendChild(di);
-      if (t.due) {
-        var clr = document.createElement("button");
-        clr.className = "p2-btn gray";
-        clr.textContent = "بدون تاريخ";
-        clr.addEventListener("click", function () { t.due = null; p2Save(); p2RenderAll(); });
-        dateWrap.appendChild(clr);
-      }
-      det.appendChild(dateWrap);
-
-      var actWrap = document.createElement("div");
-      actWrap.className = "p2-drow p2-dactions";
-      var starBtn = document.createElement("button");
-      starBtn.className = "p2-btn " + (t.star ? "blue" : "gray");
-      starBtn.textContent = t.star ? "★ مهم" : "☆ تمييز كمهم";
-      starBtn.addEventListener("click", function () { t.star = !t.star; p2Save(); p2RenderAll(); });
-      actWrap.appendChild(starBtn);
-      var sp = document.createElement("div");
-      sp.style.flex = "1";
-      actWrap.appendChild(sp);
-      var del = document.createElement("button");
-      del.className = "p2-btn red";
-      del.textContent = "حذف";
-      del.addEventListener("click", function () {
-        if (del.dataset.arm) {
-          p2.tasks = p2.tasks.filter(function (x) { return x.id !== t.id; });
-          p2OpenRow = null; p2Save(); p2RenderAll();
-        } else { del.dataset.arm = "1"; del.textContent = "تأكيد الحذف؟"; }
-      });
-      actWrap.appendChild(del);
-      det.appendChild(actWrap);
-
-      frag.appendChild(det);
-    }
-    return frag;
-  }
-
-  function p2RenderTasks() {
-    var box = document.getElementById("p2-tasks");
-    box.innerHTML = "";
-    var items = p2Visible();
-    if (!items.length) {
-      var em = document.createElement("div");
-      em.className = "p2-empty";
-      em.textContent = p2q ? "لا توجد نتائج مطابقة للبحث" :
-        (p2.sel === "__star" ? "لا توجد مهام مميّزة بعد — ميّز أي مهمة بالنجمة ★" :
-          "لا توجد مهام هنا بعد — اضغط زر ＋ بالأسفل لإضافة أول مهمة");
-      box.appendChild(em);
-      return;
-    }
-    var now = new Date();
+  // ---------- HOME ----------
+  function taRenderHome() {
+    var now = new Date(), h = now.getHours();
+    document.getElementById("ta-greet").textContent = h < 12 ? "صباح الخير،" : (h < 17 ? "طاب يومك،" : "مساء الخير،");
+    try { document.getElementById("ta-today-date").textContent = toAr(now.toLocaleDateString("ar", { weekday: "long", day: "numeric", month: "long" })); } catch (e) {}
     var todayStr = fmt(now);
-    var tomorrowStr = fmt(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
-    var pending = items.filter(function (t) { return !t.done; });
-    var doneList = items.filter(function (t) { return t.done; });
+    var todays = TA.tasks.filter(function (t) { return t.date === todayStr; });
+    var doneToday = todays.filter(function (t) { return t.done; }).length;
+    var pct = todays.length ? (doneToday / todays.length) * 100 : 0;
+    taRing(document.getElementById("ta-ring"), pct, 78, 8, "rgba(255,255,255,0.25)", "#fff", "#fff");
+    document.getElementById("ta-hero-title").textContent = todays.length ? ("مهام اليوم: " + toAr(todays.length)) : "لا مهام لليوم";
+    document.getElementById("ta-hero-sub").textContent = todays.length ? ("أنجزت " + toAr(doneToday) + " من " + toAr(todays.length) + " · تبقّى " + toAr(todays.length - doneToday)) : "استمتع بيومك، أو أضف مهمة جديدة ✦";
 
-    var sections = [];
-    var overdue = pending.filter(function (t) { return t.due && t.due < todayStr; });
-    if (overdue.length) sections.push({ label: "متأخرة", items: overdue.sort(function (a, b) { return a.due < b.due ? -1 : 1; }) });
-    var dated = {};
-    pending.forEach(function (t) {
-      if (!t.due || t.due < todayStr) return;
-      if (!dated[t.due]) dated[t.due] = [];
-      dated[t.due].push(t);
-    });
-    Object.keys(dated).sort().forEach(function (d) {
-      sections.push({ label: p2DateLabel(d, todayStr, tomorrowStr), items: dated[d] });
-    });
-    var noDue = pending.filter(function (t) { return !t.due; });
-    if (noDue.length) sections.push({ label: "بدون تاريخ استحقاق", items: noDue });
-
-    sections.forEach(function (sec) {
-      var h = document.createElement("div");
-      h.className = "p2-sec";
-      var l = document.createElement("span");
-      l.textContent = sec.label;
-      var n = document.createElement("span");
-      n.className = "n";
-      n.textContent = toAr(sec.items.length);
-      h.appendChild(l); h.appendChild(n);
-      box.appendChild(h);
-      sec.items.forEach(function (t) { box.appendChild(p2BuildRow(t)); });
+    var overdue = TA.tasks.filter(function (t) { return !t.done && t.date && t.date < todayStr; }).length;
+    var weekEnd = fmt(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7));
+    var week = TA.tasks.filter(function (t) { return !t.done && t.date && t.date >= todayStr && t.date <= weekEnd; }).length;
+    var doneAll = TA.tasks.filter(function (t) { return t.done; }).length;
+    var stats = [
+      { ic: "today", c: "#2563EB", v: todays.length - doneToday, l: "مهام اليوم" },
+      { ic: "task_alt", c: "#22C55E", v: doneAll, l: "منجزة" },
+      { ic: "warning", c: "#EF4444", v: overdue, l: "متأخرة" },
+      { ic: "date_range", c: "#F59E0B", v: week, l: "هذا الأسبوع" }
+    ];
+    var sr = document.getElementById("ta-home-stats"); sr.innerHTML = "";
+    stats.forEach(function (s) {
+      var c = document.createElement("div"); c.className = "ta-stat";
+      c.innerHTML = '<div class="ic" style="background:' + s.c + '1F;color:' + s.c + '"><span class="msr">' + s.ic + '</span></div>' +
+        '<div><div class="v">' + toAr(s.v) + '</div><div class="l">' + s.l + '</div></div>';
+      sr.appendChild(c);
     });
 
-    if (doneList.length) {
-      var dh = document.createElement("div");
-      dh.className = "p2-sec done-h";
-      var dl = document.createElement("span");
-      dl.textContent = (p2DoneOpen ? "▾ " : "◂ ") + "المنجزة";
-      var dn = document.createElement("span");
-      dn.className = "n";
-      dn.textContent = toAr(doneList.length);
-      dh.appendChild(dl); dh.appendChild(dn);
-      dh.addEventListener("click", function () { p2DoneOpen = !p2DoneOpen; p2RenderTasks(); });
-      box.appendChild(dh);
-      if (p2DoneOpen) doneList.forEach(function (t) { box.appendChild(p2BuildRow(t)); });
-    }
+    var wrap = document.getElementById("ta-home-sections"); wrap.innerHTML = "";
+    var seen = {};
+    function pick(fn, sort) { var a = TA.tasks.filter(function (t) { return !t.done && !seen[t.id] && fn(t); }); if (sort) a.sort(sort); a.forEach(function (t) { seen[t.id] = 1; }); return a; }
+    var overdue = pick(function (t) { return t.date && t.date < todayStr; }, function (a, b) { return a.date < b.date ? -1 : 1; });
+    var urgent = pick(function (t) { return t.priority === "urgent"; });
+    var todayOpen = pick(function (t) { return t.date === todayStr; });
+    var upcoming = pick(function (t) { return t.date && t.date > todayStr; }, function (a, b) { return a.date < b.date ? -1 : 1; });
+    var noDate = pick(function (t) { return !t.date; });
+    if (overdue.length) taSection(wrap, "error", "متأخرة", overdue, "");
+    taSection(wrap, "priority_high", "عاجل جدًا", urgent, "لا مهام عاجلة");
+    taSection(wrap, "wb_sunny", "مهام اليوم", todayOpen, "لا مهام لليوم");
+    if (upcoming.length) taSection(wrap, "upcoming", "القادمة", upcoming, "");
+    if (noDate.length) taSection(wrap, "inbox", "بدون موعد", noDate, "");
+  }
+  function taSection(wrap, icon, title, list, emptyTxt) {
+    var sec = document.createElement("div"); sec.className = "ta-sec";
+    var head = document.createElement("div"); head.className = "ta-sec-h";
+    head.innerHTML = '<div class="t"><span class="msr">' + icon + '</span>' + title + '</div><div class="c">' + toAr(list.length) + '</div>';
+    sec.appendChild(head);
+    if (!list.length) { var e = document.createElement("div"); e.className = "ta-empty"; e.textContent = emptyTxt; sec.appendChild(e); }
+    else list.forEach(function (t) { sec.appendChild(taBuildCard(t)); });
+    wrap.appendChild(sec);
   }
 
-  function p2RenderAll() { p2RenderTop(); p2RenderSide(); p2RenderTasks(); }
+  // ---------- ADD / EDIT ----------
+  function taRenderChips() {
+    var pc = document.getElementById("ta-f-prio"); pc.innerHTML = "";
+    TA_PRIOS.forEach(function (p) {
+      var b = document.createElement("div"); b.className = "ta-opt" + (p.key === taNewPrio ? " on" : "");
+      if (p.key === taNewPrio) { b.style.background = p.color; b.style.borderColor = p.color; }
+      b.innerHTML = '<span class="pd" style="background:' + (p.key === taNewPrio ? "#fff" : p.color) + '"></span>' + p.label;
+      b.addEventListener("click", function () { taNewPrio = p.key; taRenderChips(); });
+      pc.appendChild(b);
+    });
+    var cc = document.getElementById("ta-f-cat"); cc.innerHTML = "";
+    TA_CATS.forEach(function (c) {
+      var b = document.createElement("div"); b.className = "ta-opt ta-cat-opt" + (c.key === taNewCat ? " on" : "");
+      if (c.key === taNewCat) b.style.background = c.color;
+      b.innerHTML = '<span class="msr" style="color:' + (c.key === taNewCat ? "#fff" : c.color) + '">' + c.icon + '</span>' + c.label;
+      b.addEventListener("click", function () { taNewCat = c.key; taRenderChips(); });
+      cc.appendChild(b);
+    });
+    var rc = document.getElementById("ta-f-rep"); rc.innerHTML = "";
+    TA_REPEATS.forEach(function (r) {
+      var b = document.createElement("div"); b.className = "ta-opt" + (r.key === taNewRep ? " on" : "");
+      if (r.key === taNewRep) { b.style.background = "var(--pri)"; b.style.borderColor = "var(--pri)"; b.style.color = "#fff"; }
+      b.textContent = r.label;
+      b.addEventListener("click", function () { taNewRep = r.key; taRenderChips(); });
+      rc.appendChild(b);
+    });
+    document.getElementById("ta-f-remind").classList.toggle("on", taNewRemind);
+  }
+  function taOpenAdd(editId) {
+    taEditId = editId || null;
+    document.getElementById("ta-add-h").textContent = taEditId ? "تعديل المهمة" : "مهمة جديدة";
+    if (taEditId) {
+      var t = taById(taEditId);
+      document.getElementById("ta-f-title").value = t.title;
+      document.getElementById("ta-f-desc").value = t.desc || "";
+      document.getElementById("ta-f-date").value = t.date || "";
+      document.getElementById("ta-f-time").value = t.time || "";
+      document.getElementById("ta-f-notes").value = t.notes || "";
+      taNewPrio = t.priority; taNewCat = t.category; taNewRep = t.repeat || "none"; taNewRemind = !!t.reminder;
+    } else {
+      document.getElementById("ta-f-title").value = ""; document.getElementById("ta-f-desc").value = "";
+      document.getElementById("ta-f-date").value = ""; document.getElementById("ta-f-time").value = "";
+      document.getElementById("ta-f-notes").value = "";
+      taNewPrio = "med"; taNewCat = "home"; taNewRep = "none"; taNewRemind = false;
+    }
+    taRenderChips();
+    taSwitch("ta-add");
+  }
+  function taSaveForm() {
+    var title = document.getElementById("ta-f-title").value.trim();
+    if (!title) { document.getElementById("ta-f-title").focus(); return; }
+    var data = {
+      title: title, desc: document.getElementById("ta-f-desc").value.trim(),
+      date: document.getElementById("ta-f-date").value || null, time: document.getElementById("ta-f-time").value || null,
+      priority: taNewPrio, category: taNewCat, repeat: taNewRep, reminder: taNewRemind,
+      notes: document.getElementById("ta-f-notes").value.trim()
+    };
+    if (taEditId) { var t = taById(taEditId); for (var k in data) t[k] = data[k]; }
+    else {
+      data.id = "k" + (TA.nid++); data.done = false; data.subtasks = []; data.created = Date.now(); data.completedAt = null;
+      TA.tasks.push(data);
+    }
+    taSave(); taEditId = null;
+    taSwitch("ta-home"); taRenderHome();
+  }
 
-  function p2OpenDialog(listOrNull) {
-    p2EditList = listOrNull;
-    p2DColor = listOrNull ? listOrNull.color : P2_COLORS[0];
-    document.getElementById("p2-d-title").textContent = listOrNull ? "تعديل القائمة" : "إضافة قائمة";
-    var nameInput = document.getElementById("p2-d-name");
-    nameInput.value = listOrNull ? listOrNull.name : "";
-    var sw = document.getElementById("p2-d-swatches");
-    sw.innerHTML = "";
-    P2_COLORS.forEach(function (c) {
-      var s = document.createElement("div");
-      s.className = "p2-sw" + (c === p2DColor ? " on" : "");
-      s.style.background = c;
-      s.addEventListener("click", function () {
-        p2DColor = c;
-        Array.prototype.forEach.call(sw.children, function (ch) { ch.classList.remove("on"); });
-        s.classList.add("on");
+  // ---------- OPTIONS MENU ----------
+  function taOpenMenu(id) {
+    taMenuId = id; var t = taById(id);
+    var menu = document.getElementById("ta-menu");
+    menu.innerHTML = '<div class="grip"></div>' +
+      '<div class="ta-menu-i" data-a="open"><span class="msr">open_in_full</span> فتح التفاصيل</div>' +
+      '<div class="ta-menu-i" data-a="edit"><span class="msr">edit</span> تعديل</div>' +
+      '<div class="ta-menu-i" data-a="done"><span class="msr">' + (t.done ? "undo" : "task_alt") + '</span> ' + (t.done ? "إلغاء الإنجاز" : "وضع كمنجزة") + '</div>' +
+      '<div class="ta-menu-i danger" data-a="del"><span class="msr">delete</span> حذف</div>';
+    Array.prototype.forEach.call(menu.querySelectorAll(".ta-menu-i"), function (el) {
+      el.addEventListener("click", function () {
+        var a = el.getAttribute("data-a"); taCloseMenu();
+        if (a === "open") taOpenSheet(id);
+        else if (a === "edit") taOpenAdd(id);
+        else if (a === "done") { var tt = taById(id); tt.done = !tt.done; tt.completedAt = tt.done ? Date.now() : null; taSave(); taRenderCurrent(); }
+        else if (a === "del") { TA.tasks = TA.tasks.filter(function (x) { return x.id !== id; }); taSave(); taRenderCurrent(); }
       });
-      sw.appendChild(s);
     });
-    document.getElementById("p2-overlay").classList.add("open");
-    setTimeout(function () { nameInput.focus(); }, 60);
+    document.getElementById("ta-menu-scrim").classList.add("open");
   }
-  function p2CloseDialog() { document.getElementById("p2-overlay").classList.remove("open"); p2EditList = null; }
+  function taCloseMenu() { document.getElementById("ta-menu-scrim").classList.remove("open"); }
 
-  // ===== التقويم الشهري (هجري + ميلادي) =====
-  var p2CalY, p2CalM;
-  var P2_HIJRI_DAY = null, P2_HIJRI_MY = null;
-  try {
-    P2_HIJRI_DAY = new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", { day: "numeric" });
-    P2_HIJRI_MY = new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", { month: "long", year: "numeric" });
-  } catch (e) {}
+  // ---------- DETAIL SHEET ----------
+  function taOpenSheet(id) { taSheetId = id; taRenderSheet(); document.getElementById("ta-sheet").classList.add("open"); }
+  function taCloseSheet() { document.getElementById("ta-sheet").classList.remove("open"); taSheetId = null; }
+  function taRenderSheet() {
+    var t = taById(taSheetId); if (!t) { taCloseSheet(); return; }
+    var cat = taCat(t.category), prio = taPrio(t.priority);
+    var b = document.getElementById("ta-sheet-body"); b.innerHTML = "";
+    var title = document.createElement("div"); title.className = "ta-d-title" + (t.done ? " done" : ""); title.textContent = t.title; b.appendChild(title);
+    var meta = document.createElement("div"); meta.className = "ta-d-meta";
+    meta.innerHTML = '<span class="ta-chip" style="color:' + cat.color + ';background:' + cat.color + '1F"><span class="msr">' + cat.icon + '</span>' + cat.label + '</span>' +
+      '<span class="ta-chip" style="color:#fff;background:' + prio.color + '"><span class="msr">flag</span>' + prio.label + '</span>' +
+      (t.date ? '<span class="ta-time"><span class="msr">event</span>' + taDateLabel(t.date) + (t.time ? " · " + taFmtTime(t.time) : "") + '</span>' : (t.time ? '<span class="ta-time"><span class="msr">schedule</span>' + taFmtTime(t.time) + '</span>' : '')) +
+      (t.repeat && t.repeat !== "none" ? '<span class="ta-time"><span class="msr">repeat</span>' + (TA_REPEATS.filter(function(r){return r.key===t.repeat;})[0]||{}).label + '</span>' : '');
+    b.appendChild(meta);
 
-  var p2CalSel = null; // اليوم المحدد لعرض مهامه
-  function p2CalTasksOn(ds) {
-    return p2.tasks.filter(function (t) { return t.due === ds; })
-      .sort(function (a, b) { return (a.done === b.done) ? 0 : (a.done ? 1 : -1); });
+    if (t.desc) { var db = document.createElement("div"); db.className = "ta-d-block";
+      db.innerHTML = '<div class="bh"><span class="msr">notes</span> الوصف</div><div class="ta-d-desc"></div>';
+      db.querySelector(".ta-d-desc").textContent = t.desc; b.appendChild(db); }
+
+    // subtasks
+    var sb = document.createElement("div"); sb.className = "ta-d-block";
+    if (!t.subtasks) t.subtasks = [];
+    var doneN = t.subtasks.filter(function (s) { return s.done; }).length;
+    var pctS = t.subtasks.length ? Math.round(doneN / t.subtasks.length * 100) : 0;
+    var head = '<div class="bh"><span class="msr">checklist</span> المهام الفرعية (' + toAr(doneN) + '/' + toAr(t.subtasks.length) + ')</div>';
+    var barHtml = t.subtasks.length ? '<div class="ta-subbar"><span style="width:' + pctS + '%"></span></div>' : '';
+    sb.innerHTML = head + barHtml;
+    t.subtasks.forEach(function (s, idx) {
+      var row = document.createElement("div"); row.className = "ta-sub" + (s.done ? " done" : "");
+      var c = document.createElement("div"); c.className = "sc"; c.addEventListener("click", function () { s.done = !s.done; taSave(); taRenderSheet(); });
+      var st = document.createElement("div"); st.className = "st"; st.textContent = s.text;
+      var x = document.createElement("span"); x.className = "sx msr"; x.textContent = "close";
+      x.addEventListener("click", function () { t.subtasks.splice(idx, 1); taSave(); taRenderSheet(); });
+      row.appendChild(c); row.appendChild(st); row.appendChild(x); sb.appendChild(row);
+    });
+    var addRow = document.createElement("div"); addRow.className = "ta-sub-add";
+    var ai = document.createElement("input"); ai.type = "text"; ai.placeholder = "أضف مهمة فرعية...";
+    ai.addEventListener("keydown", function (e) { if (e.key === "Enter" && ai.value.trim()) { t.subtasks.push({ text: ai.value.trim(), done: false }); taSave(); taRenderSheet(); } });
+    var ab = document.createElement("div"); ab.className = "ta-opts"; ab.innerHTML = '<span class="msr" style="color:var(--pri)">add_circle</span>';
+    ab.addEventListener("click", function () { if (ai.value.trim()) { t.subtasks.push({ text: ai.value.trim(), done: false }); taSave(); taRenderSheet(); } });
+    addRow.appendChild(ai); addRow.appendChild(ab); sb.appendChild(addRow);
+    b.appendChild(sb);
+
+    // notes
+    var nb = document.createElement("div"); nb.className = "ta-d-block";
+    nb.innerHTML = '<div class="bh"><span class="msr">sticky_note_2</span> ملاحظات</div>';
+    var na = document.createElement("textarea"); na.className = "ta-input"; na.style.minHeight = "44px"; na.placeholder = "اكتب ملاحظة..."; na.value = t.notes || "";
+    na.addEventListener("change", function () { t.notes = na.value; taSave(); });
+    nb.appendChild(na); b.appendChild(nb);
+
+    // activity log
+    var lb = document.createElement("div"); lb.className = "ta-d-block";
+    var created = t.created ? new Date(t.created) : null;
+    var logHtml = '<div class="bh"><span class="msr">history</span> سجل النشاط</div><div class="ta-log">';
+    if (created) { try { logHtml += "• أُنشئت: " + toAr(created.toLocaleDateString("ar", { day: "numeric", month: "long" })) + "<br>"; } catch (e) {} }
+    if (t.done && t.completedAt) { try { logHtml += "• اكتملت: " + toAr(new Date(t.completedAt).toLocaleDateString("ar", { day: "numeric", month: "long" })); } catch (e) {} }
+    if (!t.done) logHtml += "• الحالة: قيد التنفيذ";
+    lb.innerHTML = logHtml + "</div>"; b.appendChild(lb);
+
+    // actions
+    var act = document.createElement("div"); act.className = "ta-d-actions";
+    var dn = document.createElement("button"); dn.className = "ta-d-btn done"; dn.style.background = t.done ? "var(--muted)" : "var(--ok)";
+    dn.innerHTML = '<span class="msr">' + (t.done ? "undo" : "task_alt") + '</span>' + (t.done ? "إلغاء الإنجاز" : "إنجاز المهمة");
+    dn.addEventListener("click", function () { t.done = !t.done; t.completedAt = t.done ? Date.now() : null; taSave(); taRenderSheet(); taRenderCurrent(); });
+    var del = document.createElement("button"); del.className = "ta-d-btn del"; del.innerHTML = '<span class="msr">delete</span>';
+    del.addEventListener("click", function () { TA.tasks = TA.tasks.filter(function (x) { return x.id !== t.id; }); taSave(); taCloseSheet(); taRenderCurrent(); });
+    act.appendChild(dn); act.appendChild(del); b.appendChild(act);
   }
-  function p2RenderCal() {
-    var greg = new Date(p2CalY, p2CalM, 1);
-    document.getElementById("p2-cal-greg").textContent = toAr(greg.toLocaleDateString("ar", { month: "long", year: "numeric" }));
-    var hijriEl = document.getElementById("p2-cal-hijri");
-    if (P2_HIJRI_MY) {
-      try {
-        var h1 = P2_HIJRI_MY.format(new Date(p2CalY, p2CalM, 1));
-        var h2 = P2_HIJRI_MY.format(new Date(p2CalY, p2CalM + 1, 0));
-        hijriEl.textContent = (h1 === h2 ? h1 : h1 + " – " + h2);
-      } catch (e) { hijriEl.textContent = ""; }
-    } else hijriEl.textContent = "";
 
-    var grid = document.getElementById("p2-cal-grid");
-    grid.innerHTML = "";
-    var firstCol = (greg.getDay() + 1) % 7; // الأسبوع يبدأ بالسبت (السبت=0)
-    var daysInMonth = new Date(p2CalY, p2CalM + 1, 0).getDate();
-    var todayStr = fmt(new Date());
-
-    for (var b = 0; b < firstCol; b++) {
-      var bl = document.createElement("div");
-      bl.className = "p2-cal-cell blank";
-      grid.appendChild(bl);
-    }
-    for (var d = 1; d <= daysInMonth; d++) {
+  // ---------- CALENDAR ----------
+  function taTasksOn(ds) { return TA.tasks.filter(function (t) { return t.date === ds; }); }
+  function taRenderCal() {
+    var greg = new Date(taCalY, taCalM, 1);
+    document.getElementById("ta-cal-g").textContent = toAr(greg.toLocaleDateString("ar", { month: "long", year: "numeric" }));
+    if (TA_HJ_MY) { try { var a = TA_HJ_MY.format(greg), z = TA_HJ_MY.format(new Date(taCalY, taCalM + 1, 0));
+      document.getElementById("ta-cal-hj").textContent = a === z ? a : a + " – " + z; } catch (e) {} }
+    var grid = document.getElementById("ta-cal-grid"); grid.innerHTML = "";
+    var firstCol = (greg.getDay() + 1) % 7, days = new Date(taCalY, taCalM + 1, 0).getDate(), todayStr = fmt(new Date());
+    for (var b = 0; b < firstCol; b++) { var bl = document.createElement("div"); bl.className = "ta-cell blank"; grid.appendChild(bl); }
+    for (var d = 1; d <= days; d++) {
       (function (d) {
-        var cellDate = new Date(p2CalY, p2CalM, d);
-        var ds = fmt(cellDate);
-        var dayTasks = p2CalTasksOn(ds);
-        var cell = document.createElement("div");
-        cell.className = "p2-cal-cell" + (cellDate.getDay() === 5 ? " fri" : "") +
-          (ds === todayStr ? " today" : "") + (ds === p2CalSel ? " sel" : "");
-        var nums = document.createElement("div");
-        nums.className = "nums";
-        var g = document.createElement("div");
-        g.className = "g"; g.textContent = toAr(d);
-        nums.appendChild(g);
-        if (P2_HIJRI_DAY) {
-          var h = document.createElement("div");
-          h.className = "h";
-          try { h.textContent = P2_HIJRI_DAY.format(cellDate); } catch (e) { h.textContent = ""; }
-          nums.appendChild(h);
+        var cd = new Date(taCalY, taCalM, d), ds = fmt(cd), on = taTasksOn(ds);
+        var cell = document.createElement("div"); cell.className = "ta-cell" + (ds === todayStr ? " today" : "") + (ds === taCalSel ? " sel" : "");
+        var g = '<div class="cg">' + toAr(d) + '</div>';
+        var hj = ""; if (TA_HJ_D) { try { hj = '<div class="ch">' + TA_HJ_D.format(cd) + '</div>'; } catch (e) {} }
+        cell.innerHTML = g + hj;
+        if (on.length) {
+          var dots = document.createElement("div"); dots.className = "dots";
+          var shown = {};
+          on.slice(0, 3).forEach(function (t) { var col = taPrio(t.priority).color; var i = document.createElement("i"); i.style.background = col; dots.appendChild(i); });
+          cell.appendChild(dots);
         }
-        cell.appendChild(nums);
-        if (dayTasks.length) {
-          var chips = document.createElement("div");
-          chips.className = "p2-cal-chips";
-          dayTasks.slice(0, 2).forEach(function (t) {
-            var L = p2ListById(t.list);
-            var chip = document.createElement("div");
-            chip.className = "p2-cal-chip" + (t.done ? " done" : "");
-            var cc = document.createElement("span");
-            cc.className = "cc"; cc.style.background = L ? L.color : "#8A5222";
-            var ct = document.createElement("span");
-            ct.className = "ct"; ct.textContent = t.text;
-            chip.appendChild(cc); chip.appendChild(ct);
-            chips.appendChild(chip);
-          });
-          if (dayTasks.length > 2) {
-            var more = document.createElement("div");
-            more.className = "p2-cal-more";
-            more.textContent = "+" + toAr(dayTasks.length - 2);
-            chips.appendChild(more);
-          }
-          cell.appendChild(chips);
-        }
-        cell.addEventListener("click", function () { p2CalSelectDay(ds); });
+        cell.addEventListener("click", function () { taCalSelectDay(ds); });
         grid.appendChild(cell);
       })(d);
     }
   }
-  function p2CalSelectDay(ds) {
-    p2CalSel = ds;
-    var panel = document.getElementById("p2-cal-daypanel");
-    var titleEl = document.getElementById("p2-cal-dp-title");
-    var listEl = document.getElementById("p2-cal-dp-list");
-    var parts = ds.split("-").map(Number);
-    var dObj = new Date(parts[0], parts[1] - 1, parts[2]);
-    var greg = toAr(dObj.toLocaleDateString("ar", { weekday: "long", day: "numeric", month: "long" }));
-    var hij = "";
-    if (P2_HIJRI_MY && P2_HIJRI_DAY) { try { hij = " — " + P2_HIJRI_DAY.format(dObj) + " " + P2_HIJRI_MY.format(dObj); } catch (e) {} }
-    titleEl.textContent = greg + hij;
-    listEl.innerHTML = "";
-    var dayTasks = p2CalTasksOn(ds);
-    if (!dayTasks.length) {
-      var em = document.createElement("div");
-      em.className = "p2-cal-dp-empty";
-      em.textContent = "لا مهام في هذا اليوم";
-      listEl.appendChild(em);
-    } else {
-      dayTasks.forEach(function (t) {
-        var L = p2ListById(t.list);
-        var row = document.createElement("div");
-        row.className = "p2-cal-dp-row" + (t.done ? " done" : "");
-        var chk = document.createElement("div");
-        chk.className = "p2-cal-dp-chk";
-        chk.addEventListener("click", function () { t.done = !t.done; p2Save(); p2RenderCal(); p2CalSelectDay(ds); p2RenderAll(); });
-        var cc = document.createElement("span");
-        cc.className = "p2-cal-dp-cc"; cc.style.background = L ? L.color : "#8A5222"; cc.title = L ? L.name : "";
-        var txt = document.createElement("div");
-        txt.className = "p2-cal-dp-txt"; txt.textContent = t.text;
-        row.appendChild(chk); row.appendChild(cc); row.appendChild(txt);
-        listEl.appendChild(row);
-      });
-    }
-    panel.classList.add("open");
-    p2RenderCal();
+  function taCalSelectDay(ds) {
+    taCalSel = ds; taRenderCal();
+    var wrap = document.getElementById("ta-cal-day"); wrap.innerHTML = "";
+    var p = ds.split("-").map(Number), dObj = new Date(p[0], p[1] - 1, p[2]);
+    var hd = document.createElement("div"); hd.className = "dh";
+    var hj = ""; if (TA_HJ_D && TA_HJ_MY) { try { hj = " — " + TA_HJ_D.format(dObj) + " " + TA_HJ_MY.format(dObj); } catch (e) {} }
+    try { hd.textContent = toAr(dObj.toLocaleDateString("ar", { weekday: "long", day: "numeric", month: "long" })) + hj; } catch (e) {}
+    wrap.appendChild(hd);
+    var on = taTasksOn(ds);
+    if (!on.length) { var e = document.createElement("div"); e.className = "ta-empty"; e.textContent = "لا مهام في هذا اليوم"; wrap.appendChild(e); }
+    else on.forEach(function (t) { wrap.appendChild(taBuildCard(t)); });
   }
-  function p2OpenCal() {
-    var now = new Date();
-    p2CalY = now.getFullYear(); p2CalM = now.getMonth();
-    p2CalSel = null;
-    document.getElementById("p2-cal-daypanel").classList.remove("open");
-    p2RenderCal();
-    document.getElementById("p2-cal-modal").classList.add("open");
-  }
-  function p2CloseCal() { document.getElementById("p2-cal-modal").classList.remove("open"); }
-  function p2CalShift(delta) {
-    p2CalM += delta;
-    if (p2CalM < 0) { p2CalM = 11; p2CalY--; }
-    else if (p2CalM > 11) { p2CalM = 0; p2CalY++; }
-    p2CalSel = null;
-    document.getElementById("p2-cal-daypanel").classList.remove("open");
-    p2RenderCal();
+  function taCalShift(delta) {
+    taCalM += delta; if (taCalM < 0) { taCalM = 11; taCalY--; } else if (taCalM > 11) { taCalM = 0; taCalY++; }
+    taCalSel = null; document.getElementById("ta-cal-day").innerHTML = ""; taRenderCal();
   }
 
-  function initPlanner2() {
-    var menu = document.getElementById("p2-menu");
-    document.getElementById("p2-menu-btn").addEventListener("click", function (e) {
-      e.stopPropagation();
-      delete document.getElementById("p2-m-delete").dataset.arm;
-      document.getElementById("p2-m-delete").textContent = "حذف القائمة";
-      menu.classList.toggle("open");
-    });
-    document.addEventListener("click", function (e) {
-      if (!menu.contains(e.target) && e.target.id !== "p2-menu-btn") menu.classList.remove("open");
-    });
-    document.getElementById("p2-search-btn").addEventListener("click", function () {
-      var row = document.getElementById("p2-search-row");
-      var open = row.classList.toggle("open");
-      if (open) document.getElementById("p2-search").focus();
-      else { p2q = ""; document.getElementById("p2-search").value = ""; p2RenderAll(); }
-    });
-    document.getElementById("p2-search").addEventListener("input", function () {
-      p2q = this.value.trim();
-      p2RenderTop(); p2RenderTasks();
-    });
-    document.getElementById("p2-all").addEventListener("click", function () {
-      p2.sel = "__all"; p2OpenRow = null; p2Save(); p2RenderAll();
-    });
-    document.getElementById("p2-star").addEventListener("click", function () {
-      p2.sel = "__star"; p2OpenRow = null; p2Save(); p2RenderAll();
-    });
-    document.getElementById("p2-add-list").addEventListener("click", function () { p2OpenDialog(null); });
-    document.getElementById("p2-cal-open").addEventListener("click", p2OpenCal);
-    document.getElementById("p2-cal-close").addEventListener("click", p2CloseCal);
-    document.getElementById("p2-cal-prev").addEventListener("click", function () { p2CalShift(-1); });
-    document.getElementById("p2-cal-next").addEventListener("click", function () { p2CalShift(1); });
-    document.getElementById("p2-cal-today").addEventListener("click", function () {
-      var now = new Date(); p2CalY = now.getFullYear(); p2CalM = now.getMonth();
-      p2CalSel = null; document.getElementById("p2-cal-daypanel").classList.remove("open"); p2RenderCal();
-    });
-    document.getElementById("p2-cal-dp-close").addEventListener("click", function () {
-      p2CalSel = null;
-      document.getElementById("p2-cal-daypanel").classList.remove("open");
-      p2RenderCal();
-    });
-    document.getElementById("p2-d-cancel").addEventListener("click", p2CloseDialog);
-    document.getElementById("p2-overlay").addEventListener("click", function (e) { if (e.target === this) p2CloseDialog(); });
-    document.getElementById("p2-d-save").addEventListener("click", function () {
-      var name = document.getElementById("p2-d-name").value.trim();
-      if (!name) return;
-      if (p2EditList) { p2EditList.name = name; p2EditList.color = p2DColor; }
-      else {
-        var L = { id: "l" + (p2.nid++), name: name, color: p2DColor };
-        p2.lists.push(L);
-        p2.sel = L.id;
-      }
-      p2Save(); p2CloseDialog(); p2RenderAll();
-    });
-    document.getElementById("p2-m-rename").addEventListener("click", function () {
-      menu.classList.remove("open");
-      var L = p2CurList();
-      if (L) p2OpenDialog(L);
-    });
-    document.getElementById("p2-m-clear").addEventListener("click", function () {
-      menu.classList.remove("open");
-      p2.tasks = p2.tasks.filter(function (t) {
-        if (!t.done) return true;
-        if (p2.sel === "__all") return false;
-        if (p2.sel === "__star") return !t.star;
-        return t.list !== p2.sel;
-      });
-      p2Save(); p2RenderAll();
-    });
-    var delBtn = document.getElementById("p2-m-delete");
-    delBtn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      var L = p2CurList();
-      if (!L) return;
-      if (delBtn.dataset.arm) {
-        delete delBtn.dataset.arm;
-        delBtn.textContent = "حذف القائمة";
-        p2.tasks = p2.tasks.filter(function (t) { return t.list !== L.id; });
-        p2.lists = p2.lists.filter(function (x) { return x.id !== L.id; });
-        p2.sel = p2.lists.length ? p2.lists[0].id : "__all";
-        menu.classList.remove("open");
-        p2Save(); p2RenderAll();
-      } else {
-        delBtn.dataset.arm = "1";
-        delBtn.textContent = "اضغط مرة أخرى لتأكيد الحذف";
-      }
+  // ---------- STATS ----------
+  function taRenderStats() {
+    var now = new Date(), todayStr = fmt(now);
+    var todays = TA.tasks.filter(function (t) { return t.date === todayStr; });
+    var doneAll = TA.tasks.filter(function (t) { return t.done; }).length;
+    var overdue = TA.tasks.filter(function (t) { return !t.done && t.date && t.date < todayStr; }).length;
+    var weekEnd = fmt(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7));
+    var week = TA.tasks.filter(function (t) { return t.date && t.date >= todayStr && t.date <= weekEnd; }).length;
+    var cards = [
+      { ic: "today", c: "#2563EB", v: todays.length, l: "مهام اليوم" },
+      { ic: "task_alt", c: "#22C55E", v: doneAll, l: "منجزة" },
+      { ic: "warning", c: "#EF4444", v: overdue, l: "متأخرة" },
+      { ic: "date_range", c: "#F59E0B", v: week, l: "هذا الأسبوع" }
+    ];
+    var g = document.getElementById("ta-stats-cards"); g.innerHTML = "";
+    cards.forEach(function (s) { var c = document.createElement("div"); c.className = "ta-stat";
+      c.innerHTML = '<div class="ic" style="background:' + s.c + '1F;color:' + s.c + '"><span class="msr">' + s.ic + '</span></div><div><div class="v">' + toAr(s.v) + '</div><div class="l">' + s.l + '</div></div>'; g.appendChild(c); });
+
+    var total = TA.tasks.length, done = doneAll, pending = total - done;
+    var el = document.getElementById("ta-donut");
+    var r = 52, c = 2 * Math.PI * r, donePart = total ? c * (done / total) : 0;
+    el.innerHTML = '<svg width="120" height="120" viewBox="0 0 120 120">' +
+      '<circle cx="60" cy="60" r="' + r + '" fill="none" stroke="var(--surface2)" stroke-width="15"/>' +
+      '<circle cx="60" cy="60" r="' + r + '" fill="none" stroke="var(--ok)" stroke-width="15" stroke-linecap="round" stroke-dasharray="' + donePart + ' ' + (c - donePart) + '" style="transition:stroke-dasharray .6s ease"/></svg>' +
+      '<div class="mid"><div class="n">' + toAr(total ? Math.round(done / total * 100) : 0) + '%</div><div class="l">مكتمل</div></div>';
+    document.getElementById("ta-donut-leg").innerHTML =
+      '<div class="ta-leg-i"><span class="d" style="background:var(--ok)"></span> منجزة <b>' + toAr(done) + '</b></div>' +
+      '<div class="ta-leg-i"><span class="d" style="background:var(--surface2)"></span> قيد التنفيذ <b>' + toAr(pending) + '</b></div>' +
+      '<div class="ta-leg-i"><span class="d" style="background:var(--pri)"></span> الإجمالي <b>' + toAr(total) + '</b></div>';
+
+    // weekly bars (last 7 days completed)
+    var bars = document.getElementById("ta-bars"); bars.innerHTML = "";
+    var counts = [], max = 1, labels = [];
+    for (var i = 6; i >= 0; i--) {
+      var day = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+      var dstr = fmt(day);
+      var n = TA.tasks.filter(function (t) { return t.done && t.completedAt && fmt(new Date(t.completedAt)) === dstr; }).length;
+      counts.push(n); if (n > max) max = n;
+      labels.push(toAr(day.toLocaleDateString("ar", { weekday: "narrow" })) || "");
+    }
+    counts.forEach(function (n, i) {
+      var col = document.createElement("div"); col.className = "ta-bar-c";
+      col.innerHTML = '<div class="bv">' + (n ? toAr(n) : "") + '</div><div class="ta-bar" style="height:' + (n / max * 100) + '%"></div><div class="bl">' + labels[i] + '</div>';
+      bars.appendChild(col);
     });
 
-    // ===== المُنشئ (إضافة مهمة) مع تاريخ اختياري =====
-    var composer = document.getElementById("p2-composer");
-    var cDate = document.getElementById("p2-c-date");
-    var cDateClear = document.getElementById("p2-c-dateclear");
-    function p2SyncDateClear() { cDateClear.style.display = cDate.value ? "" : "none"; }
-    cDate.addEventListener("change", p2SyncDateClear);
-    cDateClear.addEventListener("click", function () { cDate.value = ""; p2SyncDateClear(); });
-    document.getElementById("p2-fab").addEventListener("click", function () {
-      var listSel = document.getElementById("p2-c-list");
-      if (p2IsAggregate()) {
-        listSel.style.display = "";
-        listSel.innerHTML = "";
-        p2.lists.forEach(function (L) {
-          var o = document.createElement("option");
-          o.value = L.id; o.textContent = L.name;
-          listSel.appendChild(o);
-        });
-      } else listSel.style.display = "none";
-      cDate.value = "";
-      document.getElementById("p2-c-note").value = "";
-      p2SyncDateClear();
-      composer.classList.add("open");
-      document.getElementById("p2-c-text").focus();
+    // monthly %
+    var mStart = fmt(new Date(now.getFullYear(), now.getMonth(), 1));
+    var mTasks = TA.tasks.filter(function (t) { return t.date && t.date >= mStart && t.date <= fmt(new Date(now.getFullYear(), now.getMonth() + 1, 0)); });
+    var mDone = mTasks.filter(function (t) { return t.done; }).length;
+    var mp = mTasks.length ? Math.round(mDone / mTasks.length * 100) : 0;
+    document.getElementById("ta-month-bar").style.width = mp + "%";
+    document.getElementById("ta-month-txt").textContent = "أنجزت " + toAr(mDone) + " من " + toAr(mTasks.length) + " مهمة هذا الشهر (" + toAr(mp) + "%)";
+  }
+
+  // ---------- nav / switch ----------
+  function taSwitch(view) {
+    taView = view;
+    Array.prototype.forEach.call(document.querySelectorAll(".ta-view"), function (v) { v.classList.toggle("on", v.id === view); });
+    Array.prototype.forEach.call(document.querySelectorAll(".ta-nav-i"), function (n) { n.classList.toggle("on", n.getAttribute("data-view") === view); });
+    document.getElementById("ta-body").scrollTop = 0;
+    if (view === "ta-home") taRenderHome();
+    else if (view === "ta-cal") { if (taCalY === undefined) { var n = new Date(); taCalY = n.getFullYear(); taCalM = n.getMonth(); } taRenderCal(); }
+    else if (view === "ta-stats") taRenderStats();
+  }
+
+  function initTasksApp() {
+    document.getElementById("ta-ver").textContent = "الإصدار " + (typeof APP_VERSION !== "undefined" ? APP_VERSION : "");
+    Array.prototype.forEach.call(document.querySelectorAll(".ta-nav-i"), function (n) {
+      n.addEventListener("click", function () { taSwitch(n.getAttribute("data-view")); });
     });
-    function p2CloseComposer() {
-      composer.classList.remove("open");
-      document.getElementById("p2-c-text").value = "";
-      document.getElementById("p2-c-note").value = "";
-      cDate.value = "";
-      p2SyncDateClear();
+    document.getElementById("ta-nav-add").addEventListener("click", function () { taOpenAdd(null); });
+    document.getElementById("ta-f-save").addEventListener("click", taSaveForm);
+    document.getElementById("ta-f-cancel").addEventListener("click", function () { taEditId = null; taSwitch("ta-home"); });
+    document.getElementById("ta-f-remind").addEventListener("click", function () { taNewRemind = !taNewRemind; this.classList.toggle("on", taNewRemind); });
+    document.getElementById("ta-cal-prev").addEventListener("click", function () { taCalShift(-1); });
+    document.getElementById("ta-cal-next").addEventListener("click", function () { taCalShift(1); });
+    document.getElementById("ta-sheet-back").addEventListener("click", taCloseSheet);
+    document.getElementById("ta-sheet-opts").addEventListener("click", function () { if (taSheetId) taOpenMenu(taSheetId); });
+    document.getElementById("ta-menu-scrim").addEventListener("click", function (e) { if (e.target === this) taCloseMenu(); });
+    document.getElementById("ta-theme-quick").addEventListener("click", function () {
+      TA.theme = (document.getElementById("tasks-app").getAttribute("data-theme") === "dark") ? "light" : "dark"; taSave(); taApplyTheme();
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("#ta-theme-seg button"), function (b) {
+      b.addEventListener("click", function () { TA.theme = b.getAttribute("data-th"); taSave(); taApplyTheme(); });
+    });
+    document.getElementById("ta-set-clear").addEventListener("click", function () {
+      TA.tasks = TA.tasks.filter(function (t) { return !t.done; }); taSave(); taRenderCurrent();
+    });
+    if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { if (TA.theme === "auto") taApplyTheme(); }); } catch (e) {} }
+    var n = new Date(); taCalY = n.getFullYear(); taCalM = n.getMonth();
+    taApplyTheme(); taRenderHome(); taSave();
+    // تدرّج آمن: إن تعذّر تحميل خط أيقونات Material Symbols نُخفي نص الأيقونات بدل ظهوره كنص إنجليزي
+    function taDetectIcons() {
+      var p = document.createElement("span"); p.className = "msr"; p.textContent = "check";
+      p.style.cssText = "position:absolute;visibility:hidden;font-size:24px;top:-999px";
+      document.body.appendChild(p); var w = p.getBoundingClientRect().width; p.parentNode.removeChild(p);
+      document.getElementById("tasks-app").classList.toggle("no-icons", w > 40); // الأيقونة ≈24px، النص «check» أعرض
     }
-    document.getElementById("p2-c-cancel").addEventListener("click", p2CloseComposer);
-    function p2AddTask() {
-      var text = document.getElementById("p2-c-text").value.trim();
-      if (!text) return;
-      var listId = p2IsAggregate() ? document.getElementById("p2-c-list").value : p2.sel;
-      if (!listId && p2.lists.length) listId = p2.lists[0].id;
-      if (!listId) return;
-      var due = cDate.value || null;
-      var note = document.getElementById("p2-c-note").value.trim();
-      p2.tasks.push({ id: "t" + (p2.nid++), list: listId, text: text, note: note, done: false, due: due, star: false });
-      p2Save(); p2CloseComposer(); p2RenderAll();
-    }
-    document.getElementById("p2-c-save").addEventListener("click", p2AddTask);
-    document.getElementById("p2-c-text").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") { e.preventDefault(); document.getElementById("p2-c-note").focus(); }
-    });
-    document.getElementById("p2-c-note").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") { e.preventDefault(); p2AddTask(); }
-    });
-    p2RenderAll();
+    try {
+      if (document.fonts && document.fonts.ready) Promise.resolve(document.fonts.ready).then(taDetectIcons);
+      setTimeout(taDetectIcons, 3500);
+    } catch (e) {}
   }
   var QURAN_BOOKMARK_KEY = "abusaad_quran_bookmark_v1";
   var QURAN_BOOKMARKS_LIST_KEY = "abusaad_quran_bookmarks_list_v1";
@@ -2452,7 +2486,7 @@
   }
 
   // ---------- Init ----------
-  initPlanner2();
+  initTasksApp();
   initQuran();
   initTasbih();
   initPrayerTimes();
@@ -2481,8 +2515,18 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "4.8.1";
+  var APP_VERSION = "5.0.0";
   var RELEASES = [
+    { v: "5.0.0", date: "٢٤ يوليو ٢٠٢٦", items: [
+      ["new", "إعادة تصميم كاملة لتطبيق المهام على طراز أفضل تطبيقات الإنتاجية العالمية: شريط تنقّل سفلي وخمس صفحات (الرئيسية، التقويم، إضافة، الإحصائيات، الإعدادات)"],
+      ["new", "الرئيسية: تحية اليوم، حلقة إنجاز، بطاقات إحصائية، وأقسام (متأخرة/عاجل جدًا/اليوم/القادمة/بدون موعد) ببطاقات مهام حديثة"],
+      ["new", "بطاقة مهمة غنية: أولوية ملوّنة، تصنيف بأيقونة، وقت وتاريخ، زر إنجاز بحركة، وقائمة خيارات"],
+      ["new", "صفحة تفاصيل المهمة: مهام فرعية بمؤشر تقدّم، ملاحظات، وسجل نشاط"],
+      ["new", "أولويات ملوّنة (عاجل جدًا/عالي/متوسط/منخفض) وتصنيفات (المنزل/العمل/شخصي/مالية/الصحة/الدراسة/السفر)"],
+      ["new", "لوحة إحصائيات: مخطط دائري، أعمدة الإنتاجية الأسبوعية، ونسبة الإنجاز الشهرية"],
+      ["new", "وضع فاتح وداكن (وتلقائي)، خط IBM Plex Sans Arabic، وأيقونات Material Symbols Rounded"],
+      ["imp", "نُقلت مهامك السابقة تلقائيًا إلى التطبيق الجديد مع تحويل القوائم إلى تصنيفات وأولويات"]
+    ]},
     { v: "4.8.1", date: "٢٣ يوليو ٢٠٢٦", items: [
       ["fix", "التراجع عن ألوان التقويم الداكنة وإعادة التنسيق الفاتح السابق (خلفية عاجية ورأس بُنّي)"]
     ]},
