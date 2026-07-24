@@ -21,8 +21,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.aladhan.com">
 <!-- تحميل الخطوط بدون حجب الرسم الأول: تُطبق فور جهوزها والنص يظهر فورًا بخط النظام -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Tajawal:wght@400;500;700&family=Space+Mono:wght@400;700&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet"></noscript>
 <style>
   html, body { margin:0; background:#141312; overflow-x:hidden; }
   html { -webkit-text-size-adjust:100%; }
@@ -243,7 +243,7 @@
   .p2-side-label { font-size:11px; font-weight:800; letter-spacing:0.08em; color:#4A2C0E; padding:8px 14px 4px 8px; }
   .p2-side-label + .p2-side-label { margin-top:8px; }
   .p2-lists { display:flex; flex-direction:column; }
-  .p2-l { position:relative; display:flex; align-items:center; gap:6px; min-height:40px; padding:4px 12px 4px 16px; color:#3A2208; font-size:14.5px; font-weight:600; cursor:pointer; user-select:none; }
+  .p2-l { position:relative; display:flex; align-items:center; gap:6px; min-height:40px; padding:4px 12px 4px 16px; color:#3A2208; font-family:'Almarai','Tajawal',sans-serif; font-size:14.5px; font-weight:800; cursor:pointer; user-select:none; }
   .p2-l::before { content:''; position:absolute; left:0; top:0; bottom:0; width:7px; background:var(--lc); }
   .p2-l.on { background:var(--lc); font-weight:800; color:#FFFFFF; }
   .p2-l .nm { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -2481,8 +2481,11 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "4.6.1";
+  var APP_VERSION = "4.7.0";
   var RELEASES = [
+    { v: "4.7.0", date: "٢٣ يوليو ٢٠٢٦", items: [
+      ["imp", "خط أسماء القوائم في المخطط أصبح «Almarai» العريض ليكون أوضح وأبرز"]
+    ]},
     { v: "4.6.1", date: "٢٣ يوليو ٢٠٢٦", items: [
       ["new", "إضافة أدعية إلى عدّاد المسبحة: دعاء الهم والحزن، «ربنا آتنا في الدنيا حسنة»، دعاء الكرب، والصلاة الإبراهيمية — اخترها من أزرار المسبحة وعُدّها بالعدّاد"]
     ]},
