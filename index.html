@@ -1010,6 +1010,11 @@
               <div class="th-btn" id="ta-visitors-refresh" title="تحديث"><span class="msr">refresh</span></div>
             </div>
             <div class="ta-set-i">
+              <div class="ic"><span class="msr">person_off</span></div>
+              <div class="tx"><div class="t">لا تحسب زياراتي</div><div class="s" id="ta-skip-s">استثنِ هذا الجهاز — فيصبح العدّاد لغيرك فقط</div></div>
+              <div class="ta-toggle" id="ta-skip-count"></div>
+            </div>
+            <div class="ta-set-i">
               <div class="ic"><span class="msr">info</span></div>
               <div class="tx"><div class="t">تطبيق المهام</div><div class="s" id="ta-ver"></div></div>
             </div>
@@ -1862,6 +1867,23 @@
       TA.tasks = TA.tasks.filter(function (t) { return !t.done; }); taSave(); taRenderCurrent();
     });
     document.getElementById("ta-visitors-refresh").addEventListener("click", function () { taLoadVisitors(true); });
+    // «لا تحسب زياراتي» — يمنع تحميل عدّاد الزوّار من هذا الجهاز
+    var skipEl = document.getElementById("ta-skip-count");
+    function taSkipRead() { try { return localStorage.getItem("abusaad_skip_count") === "1"; } catch (e) { return false; } }
+    function taSkipPaint() {
+      var on = taSkipRead();
+      skipEl.classList.toggle("on", on);
+      document.getElementById("ta-skip-s").textContent = on
+        ? "هذا الجهاز مستثنى ✓ — الأرقام تعود لغيرك"
+        : "استثنِ هذا الجهاز — فيصبح العدّاد لغيرك فقط";
+    }
+    skipEl.addEventListener("click", function () {
+      var on = !taSkipRead();
+      try { on ? localStorage.setItem("abusaad_skip_count", "1") : localStorage.removeItem("abusaad_skip_count"); } catch (e) {}
+      taSkipPaint();
+      if (on) document.getElementById("ta-skip-s").textContent = "هذا الجهاز مستثنى ✓ — يسري من الفتحة القادمة";
+    });
+    taSkipPaint();
     document.getElementById("ta-export").addEventListener("click", taExportBackup);
     document.getElementById("ta-import-btn").addEventListener("click", function () { document.getElementById("ta-import-file").click(); });
     document.getElementById("ta-import-file").addEventListener("change", function () {
@@ -2692,8 +2714,11 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "5.3.0";
+  var APP_VERSION = "5.4.0";
   var RELEASES = [
+    { v: "5.4.0", date: "٢٥ يوليو ٢٠٢٦", items: [
+      ["new", "مفتاح «لا تحسب زياراتي» في الإعدادات: يستثني جهازك من عدّاد الزوّار تمامًا، فيصبح كل رقم تراه لأشخاص غيرك"]
+    ]},
     { v: "5.3.0", date: "٢٥ يوليو ٢٠٢٦", items: [
       ["imp", "توحيد هوية تطبيق المهام مع هوية الموقع: ألوان ذهبية وخضراء دافئة بدل الأزرق — في الوضعين الفاتح (ورق عاجي) والداكن (أخضر عميق)، فصار الموقع قطعة واحدة متناسقة"]
     ]},
@@ -2920,7 +2945,16 @@
 })();
 </script>
 <!-- إحصاءات الزوّار (GoatCounter) — مجهّلة، بلا كوكيز ولا بيانات شخصية -->
-<script data-goatcounter="https://abusaad.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+<script>
+/* لا يُحمَّل العدّاد إطلاقًا إذا فعّل المالك «لا تحسب زياراتي» على هذا الجهاز */
+(function () {
+  try { if (localStorage.getItem("abusaad_skip_count") === "1") return; } catch (e) {}
+  var s = document.createElement("script");
+  s.async = true;
+  s.setAttribute("data-goatcounter", "https://abusaad.goatcounter.com/count");
+  s.src = "//gc.zgo.at/count.js";
+  document.body.appendChild(s);
+})();
+</script>
 </body>
 </html>
