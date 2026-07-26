@@ -42,10 +42,10 @@
   .shell { max-width:1180px; margin:0 auto; background:#1A1917; padding:24px; border-radius:30px; box-shadow:0 40px 90px -50px rgba(0,0,0,0.8); }
 
   #app { display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
-    grid-template-areas:'hero hero time time' 'hero hero adhkar adhkar' 'planner planner planner planner' 'quran quran quran quran' 'live live live live' 'tasbih tasbih tasbih tasbih' 'about about about about' 'social social social social'; }
+    grid-template-areas:'hero hero time time' 'hero hero adhkar adhkar' 'prayer prayer prayer prayer' 'planner planner planner planner' 'quran quran quran quran' 'live live live live' 'tasbih tasbih tasbih tasbih' 'about about about about' 'social social social social'; }
   @media (max-width:820px){
     #app { grid-template-columns:repeat(2,1fr);
-      grid-template-areas:'hero hero' 'time time' 'adhkar adhkar' 'planner planner' 'quran quran' 'live live' 'tasbih tasbih' 'about about' 'social social'; }
+      grid-template-areas:'hero hero' 'prayer prayer' 'time time' 'adhkar adhkar' 'planner planner' 'quran quran' 'live live' 'tasbih tasbih' 'about about' 'social social'; }
     #hero-name { font-size:40px !important; }
     .shell { padding:16px !important; border-radius:22px !important; }
     .quran-book { flex-direction:column; max-width:100%; }
@@ -53,7 +53,7 @@
   }
   @media (max-width:520px){
     #app { grid-template-columns:1fr;
-      grid-template-areas:'hero' 'time' 'adhkar' 'planner' 'quran' 'live' 'tasbih' 'about' 'social'; }
+      grid-template-areas:'hero' 'prayer' 'time' 'adhkar' 'planner' 'quran' 'live' 'tasbih' 'about' 'social'; }
     #hero-name { font-size:36px !important; }
     #social-row { flex-direction:column; align-items:center; }
     .clock-wrap { max-width:280px; }
@@ -205,6 +205,27 @@
   #quote .eyebrow { color:#FFFFFF; }
   #quote .quote-text { font-size:18px; font-weight:500; color:#FFFFFF; line-height:1.6; }
   #quote .quote-en { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:#FFFFFF; text-align:right; }
+
+  /* PRAYER — الصلاة القادمة */
+  #prayer { grid-area:prayer; background:radial-gradient(circle at 82% -25%,rgba(201,169,106,0.17),transparent 55%),linear-gradient(160deg,#0E3B24,#0A2B1A 60%,#081F13); border:1px solid rgba(201,169,106,0.22); box-shadow:inset 0 1px 0 rgba(255,238,200,0.06),0 20px 46px -30px rgba(0,0,0,0.75); padding:22px 20px; display:flex; flex-direction:column; gap:15px; }
+  #prayer .pr-top { display:flex; align-items:center; justify-content:space-between; gap:14px; }
+  #prayer .pr-lbl { font-size:11.5px; font-weight:700; letter-spacing:0.04em; color:#8FAE9B; }
+  #prayer .pr-name { font-family:'Aref Ruqaa',serif; font-size:30px; font-weight:700; color:#F0DCA8; line-height:1.25; margin-top:3px; }
+  #prayer .pr-at { font-size:13px; color:#C9A96A; margin-top:4px; font-weight:600; }
+  #prayer .pr-cd-wrap { text-align:center; flex-shrink:0; }
+  #prayer .pr-cd { font-family:'Space Mono',monospace; font-size:27px; font-weight:700; color:#FFFFFF; direction:ltr; line-height:1.1; text-shadow:0 2px 10px rgba(201,169,106,0.25); }
+  #prayer .pr-cd-l { font-size:10.5px; color:#8FAE9B; margin-top:5px; font-weight:600; }
+  #prayer .pr-bar { height:6px; border-radius:20px; background:rgba(255,255,255,0.07); overflow:hidden; }
+  #prayer .pr-bar span { display:block; height:100%; width:0; background:linear-gradient(90deg,#A98243,#E4C687); border-radius:20px; transition:width 1s linear; }
+  #prayer .pr-list { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+  #prayer .pr-i { text-align:center; padding:9px 3px; border-radius:12px; background:rgba(255,255,255,0.04); border:1px solid transparent; transition:background .25s ease, border-color .25s ease; }
+  #prayer .pr-i .n { font-size:11.5px; color:#A8BCAF; font-weight:600; }
+  #prayer .pr-i .t { font-size:12.5px; color:#EDE7DA; font-weight:700; margin-top:3px; direction:ltr; }
+  #prayer .pr-i.past { opacity:0.42; }
+  #prayer .pr-i.on { background:rgba(201,169,106,0.18); border-color:rgba(201,169,106,0.5); box-shadow:0 6px 16px -10px rgba(201,169,106,0.7); }
+  #prayer .pr-i.on .n { color:#E4C687; }
+  #prayer .pr-i.on .t { color:#F5E4B8; }
+  @media (max-width:400px){ #prayer .pr-name { font-size:26px; } #prayer .pr-cd { font-size:23px; } #prayer .pr-i .t { font-size:11.5px; } }
 
   /* ADHKAR CARD */
   #adhkar { grid-area:adhkar; background:radial-gradient(circle at 20% -10%,rgba(201,169,106,0.12),transparent 55%),linear-gradient(160deg,#1B2A3B,#101B28 60%,#0A131C); border:1px solid rgba(201,169,106,0.22); padding:22px 24px; display:flex; flex-direction:column; gap:12px; min-height:200px; }
@@ -442,6 +463,10 @@
   .ta-seg { display:flex; background:var(--surface2); border-radius:12px; padding:3px; gap:2px; }
   .ta-seg button { border:none; background:transparent; font-family:inherit; font-size:12.5px; font-weight:700; color:var(--muted); padding:7px 12px; border-radius:9px; cursor:pointer; }
   .ta-seg button.on { background:var(--surface); color:var(--pri); box-shadow:var(--shadow-sm); }
+  .ta-bk-btns { display:flex; gap:6px; flex-shrink:0; }
+  .ta-mini { border:none; border-radius:11px; padding:10px 14px; min-height:42px; font-family:inherit; font-size:12.5px; font-weight:800; cursor:pointer; background:var(--pri); color:#fff; }
+  .ta-mini.alt { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+  .ta-mini:active { transform:scale(.95); }
 
   @media (max-width:400px){ .ta-stats-row { grid-template-columns:repeat(2,1fr); } .ta-nav-i .lb { font-size:9px; } }
   #live { grid-area:live; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:26px; display:flex; flex-direction:column; gap:16px; }
@@ -823,6 +848,23 @@
 
 
 
+      <!-- PRAYER -->
+      <div id="prayer" class="card">
+        <div class="pr-top">
+          <div>
+            <div class="pr-lbl">الصلاة القادمة</div>
+            <div class="pr-name" id="pr-name">…</div>
+            <div class="pr-at" id="pr-at">--:--</div>
+          </div>
+          <div class="pr-cd-wrap">
+            <div class="pr-cd" id="pr-cd">--:--:--</div>
+            <div class="pr-cd-l">المتبقّي</div>
+          </div>
+        </div>
+        <div class="pr-bar"><span id="pr-bar"></span></div>
+        <div class="pr-list" id="pr-list"></div>
+      </div>
+
       <!-- ADHKAR -->
       <div id="adhkar" class="card">
         <div class="head">
@@ -951,6 +993,15 @@
               <div class="ic"><span class="msr">mop</span></div>
               <div class="tx"><div class="t">مسح المهام المنجزة</div><div class="s">حذف كل المهام المكتملة</div></div>
               <span class="msr" style="color:var(--faint)">chevron_left</span>
+            </div>
+            <div class="ta-set-i">
+              <div class="ic"><span class="msr">backup</span></div>
+              <div class="tx"><div class="t">نسخة احتياطية</div><div class="s" id="ta-backup-s">لكل بيانات الموقع — احفظها في ملف</div></div>
+              <div class="ta-bk-btns">
+                <button class="ta-mini" id="ta-export">تصدير</button>
+                <button class="ta-mini alt" id="ta-import-btn">استيراد</button>
+              </div>
+              <input type="file" id="ta-import-file" accept="application/json,.json" style="display:none">
             </div>
             <div class="ta-set-i">
               <div class="ic"><span class="msr">groups</span></div>
@@ -1725,6 +1776,49 @@
     else if (view === "ta-settings") taLoadVisitors();
   }
 
+  // ---------- نسخة احتياطية: تصدير/استيراد كل بيانات الموقع ----------
+  function taBackupMsg(txt) { var el = document.getElementById("ta-backup-s"); if (el) el.textContent = txt; }
+  function taExportBackup() {
+    var data = {}, n = 0;
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf("abusaad_") === 0) { data[k] = localStorage.getItem(k); n++; }
+      }
+    } catch (e) { taBackupMsg("تعذّر قراءة البيانات"); return; }
+    var payload = { app: "abu-saad", version: (typeof APP_VERSION !== "undefined" ? APP_VERSION : ""), exported: new Date().toISOString(), data: data };
+    try {
+      var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = "abu-saad-backup-" + fmt(new Date()) + ".json";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+      taBackupMsg("تم تصدير " + toAr(n) + " عنصرًا ✓");
+    } catch (e) { taBackupMsg("تعذّر إنشاء الملف"); }
+  }
+  function taImportBackup(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var payload = null;
+      try { payload = JSON.parse(e.target.result); } catch (err) {}
+      if (!payload || !payload.data || typeof payload.data !== "object") { taBackupMsg("الملف غير صالح — اختر ملف نسخة احتياطية"); return; }
+      var keys = Object.keys(payload.data).filter(function (k) { return k.indexOf("abusaad_") === 0; });
+      if (!keys.length) { taBackupMsg("لا توجد بيانات في هذا الملف"); return; }
+      var when = "";
+      try { when = new Date(payload.exported).toLocaleDateString("ar", { day: "numeric", month: "long", year: "numeric" }); } catch (err) {}
+      if (!window.confirm("سيتم استبدال بياناتك الحالية بنسخة " + (when ? toAr(when) : "الملف") + " (" + toAr(keys.length) + " عنصرًا).\nهل تريد المتابعة؟")) { taBackupMsg("أُلغي الاستيراد"); return; }
+      try {
+        keys.forEach(function (k) { localStorage.setItem(k, payload.data[k]); });
+      } catch (err) { taBackupMsg("تعذّر حفظ البيانات"); return; }
+      taBackupMsg("تم الاستيراد ✓ جارٍ إعادة التحميل…");
+      setTimeout(function () { location.reload(); }, 900);
+    };
+    reader.onerror = function () { taBackupMsg("تعذّر قراءة الملف"); };
+    reader.readAsText(file);
+  }
+
   // عدّاد الزوّار من GoatCounter (نقطة عامة بلا رموز سرية)
   var taVisitorsLoaded = false;
   function taLoadVisitors(force) {
@@ -1767,6 +1861,12 @@
       TA.tasks = TA.tasks.filter(function (t) { return !t.done; }); taSave(); taRenderCurrent();
     });
     document.getElementById("ta-visitors-refresh").addEventListener("click", function () { taLoadVisitors(true); });
+    document.getElementById("ta-export").addEventListener("click", taExportBackup);
+    document.getElementById("ta-import-btn").addEventListener("click", function () { document.getElementById("ta-import-file").click(); });
+    document.getElementById("ta-import-file").addEventListener("change", function () {
+      if (this.files && this.files[0]) taImportBackup(this.files[0]);
+      this.value = "";
+    });
     if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { if (TA.theme === "auto") taApplyTheme(); }); } catch (e) {} }
     var n = new Date(); taCalY = n.getFullYear(); taCalM = n.getMonth();
     taApplyTheme(); taRenderHome(); taSave();
@@ -2407,22 +2507,73 @@
       .catch(function () { done(null); });
   }
 
+  var PRAYER_ORDER = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+  function prayerDate(hhmm, dayOffset) {
+    var p = String(hhmm).split(":");
+    var d = new Date();
+    if (dayOffset) d.setDate(d.getDate() + dayOffset);
+    d.setHours(parseInt(p[0], 10), parseInt(p[1], 10), 0, 0);
+    return d;
+  }
+  function prayerClock(hhmm) {
+    var p = String(hhmm).split(":");
+    var hh = parseInt(p[0], 10);
+    var h12 = hh % 12 === 0 ? 12 : hh % 12;
+    return { txt: toAr(pad(h12) + ":" + p[1]), ap: hh < 12 ? "ص" : "م" };
+  }
+
   function updateNextPrayer() {
     if (!prayerTimings) return;
-    var order = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
-    var now = new Date();
-    var nowM = now.getHours() * 60 + now.getMinutes();
-    var next = null;
-    for (var i = 0; i < order.length; i++) {
-      var p = prayerTimings[order[i]].split(":");
-      if (parseInt(p[0], 10) * 60 + parseInt(p[1], 10) > nowM) { next = order[i]; break; }
+    var now = new Date(), nextKey = null, nextAt = null, prevAt = null;
+    for (var i = 0; i < PRAYER_ORDER.length; i++) {
+      var d = prayerDate(prayerTimings[PRAYER_ORDER[i]]);
+      if (d > now) {
+        nextKey = PRAYER_ORDER[i]; nextAt = d;
+        prevAt = i > 0 ? prayerDate(prayerTimings[PRAYER_ORDER[i - 1]]) : prayerDate(prayerTimings.Isha, -1);
+        break;
+      }
     }
-    if (!next) next = "Fajr";
-    var t = prayerTimings[next].split(":");
-    var hh = parseInt(t[0], 10);
-    var h12 = hh % 12 === 0 ? 12 : hh % 12;
-    document.getElementById("next-prayer-name").textContent = PRAYER_NAMES_AR[next];
-    document.getElementById("next-prayer-time").textContent = toAr(pad(h12) + ":" + t[1]);
+    if (!nextKey) { // بعد العشاء: التالية فجر الغد
+      nextKey = "Fajr"; nextAt = prayerDate(prayerTimings.Fajr, 1); prevAt = prayerDate(prayerTimings.Isha);
+    }
+
+    var c = prayerClock(prayerTimings[nextKey]);
+    var nameEl = document.getElementById("next-prayer-name");
+    if (nameEl) nameEl.textContent = PRAYER_NAMES_AR[nextKey];
+    var timeEl = document.getElementById("next-prayer-time");
+    if (timeEl) timeEl.textContent = c.txt;
+
+    var prName = document.getElementById("pr-name");
+    if (!prName) return;
+    prName.textContent = PRAYER_NAMES_AR[nextKey];
+    document.getElementById("pr-at").textContent = "الأذان " + c.txt + " " + c.ap;
+
+    var left = Math.max(0, nextAt - now);
+    var totalSec = Math.floor(left / 1000);
+    var hh = Math.floor(totalSec / 3600), mm = Math.floor((totalSec % 3600) / 60), ss = totalSec % 60;
+    document.getElementById("pr-cd").textContent = toAr(pad(hh) + ":" + pad(mm) + ":" + pad(ss));
+
+    var span = nextAt - prevAt;
+    var pct = span > 0 ? Math.min(100, Math.max(0, ((now - prevAt) / span) * 100)) : 0;
+    document.getElementById("pr-bar").style.width = pct + "%";
+
+    var list = document.getElementById("pr-list");
+    if (list.childElementCount !== PRAYER_ORDER.length) {
+      list.innerHTML = "";
+      PRAYER_ORDER.forEach(function (k) {
+        var it = document.createElement("div");
+        it.className = "pr-i"; it.setAttribute("data-k", k);
+        it.innerHTML = '<div class="n">' + PRAYER_NAMES_AR[k] + '</div><div class="t"></div>';
+        list.appendChild(it);
+      });
+    }
+    Array.prototype.forEach.call(list.children, function (it) {
+      var k = it.getAttribute("data-k");
+      it.querySelector(".t").textContent = prayerClock(prayerTimings[k]).txt;
+      var passed = prayerDate(prayerTimings[k]) <= now;
+      it.classList.toggle("on", k === nextKey);
+      it.classList.toggle("past", passed && k !== nextKey);
+    });
   }
 
   function initPrayerTimes() {
@@ -2430,7 +2581,7 @@
       var cached = JSON.parse(localStorage.getItem(PRAYER_CACHE_KEY) || "null");
       if (cached && cached.date === fmt(new Date()) && cached.timings) {
         applyPrayerTimings(cached.timings);
-        setInterval(updateNextPrayer, 30000);
+        setInterval(updateNextPrayer, 1000);
         return;
       }
     } catch (e) {}
@@ -2460,7 +2611,7 @@
     } else {
       fallbackRiyadh();
     }
-    setInterval(updateNextPrayer, 30000);
+    setInterval(updateNextPrayer, 1000);
   }
 
   // ---------- Adhkar ----------
@@ -2540,8 +2691,12 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "5.1.0";
+  var APP_VERSION = "5.2.0";
   var RELEASES = [
+    { v: "5.2.0", date: "٢٥ يوليو ٢٠٢٦", items: [
+      ["new", "بطاقة «الصلاة القادمة» أعلى الصفحة: اسم الصلاة ووقتها مع عدّاد تنازلي حيّ للمتبقّي، وشريط تقدّم بين الأذانين، وكل مواقيت اليوم الخمسة مع تمييز القادمة"],
+      ["new", "نسخة احتياطية لكل بيانات الموقع من الإعدادات: «تصدير» يحفظ ملفًا واحدًا (المهام، المسبحة، علامات القرآن، الإعدادات)، و«استيراد» يستعيدها — حماية من فقدان البيانات"]
+    ]},
     { v: "5.1.0", date: "٢٤ يوليو ٢٠٢٦", items: [
       ["new", "عرض «عدد زوّار الموقع» داخل صفحة الإعدادات — يُقرأ مباشرة من عدّاد GoatCounter مع زر تحديث"]
     ]},
