@@ -250,15 +250,16 @@
 
   /* ===== TASKS APP — إعادة تصميم كاملة (Material 3 + Apple touch) ===== */
   #planner { grid-area:planner; padding:0; border:none; background:transparent; box-shadow:none; }
-  .ta { --pri:#2563EB; --pri-soft:rgba(37,99,235,0.12); --ok:#22C55E; --warn:#F59E0B; --danger:#EF4444;
-    --bg:#F1F5F9; --surface:#FFFFFF; --surface2:#F8FAFC; --text:#0F172A; --muted:#64748B; --faint:#94A3B8; --border:#E7EDF3;
-    --shadow:0 6px 22px -10px rgba(15,23,42,0.18); --shadow-sm:0 2px 8px -3px rgba(15,23,42,0.12);
+  .ta { --pri:#A5793A; --pri-deep:#6E4A18; --pri-soft:rgba(165,121,58,0.13); --ok:#3E8E2E; --warn:#D98324; --danger:#B03A34;
+    --bg:#F3EDE2; --surface:#FFFDF8; --surface2:#F7F1E6; --text:#2A2418; --muted:#7A6A52; --faint:#A8977B; --border:#E6DBC7;
+    --shadow:0 6px 22px -10px rgba(74,52,20,0.20); --shadow-sm:0 2px 8px -3px rgba(74,52,20,0.14);
     --p-urgent:#EF4444; --p-high:#F59E0B; --p-med:#EAB308; --p-low:#22C55E;
     position:relative; height:clamp(600px,86vh,820px); border-radius:26px; overflow:hidden;
     background:var(--bg); color:var(--text); display:flex; flex-direction:column;
-    font-family:'IBM Plex Sans Arabic','Cairo','Tajawal',sans-serif; box-shadow:0 30px 60px -34px rgba(0,0,0,0.7); isolation:isolate; }
-  .ta[data-theme="dark"] { --pri:#3B82F6; --pri-soft:rgba(59,130,246,0.18); --bg:#0B1220; --surface:#151E2E; --surface2:#1B2536;
-    --text:#F1F5F9; --muted:#94A3B8; --faint:#64748B; --border:#25324A; --shadow:0 10px 30px -12px rgba(0,0,0,0.7); --shadow-sm:0 3px 10px -4px rgba(0,0,0,0.55); }
+    font-family:'Tajawal','IBM Plex Sans Arabic',sans-serif; box-shadow:0 30px 60px -34px rgba(0,0,0,0.7); isolation:isolate; }
+  .ta[data-theme="dark"] { --pri:#C9A96A; --pri-deep:#8A5F22; --pri-soft:rgba(201,169,106,0.18); --ok:#4FAE58; --warn:#E0A040; --danger:#D6584E;
+    --bg:#0A1710; --surface:#122018; --surface2:#18291F; --text:#F1EEE6; --muted:#9DB0A2; --faint:#6E8074; --border:#22392C;
+    --shadow:0 10px 30px -12px rgba(0,0,0,0.75); --shadow-sm:0 3px 10px -4px rgba(0,0,0,0.6); }
   .ta * { box-sizing:border-box; }
   .ta .msr { font-family:'Material Symbols Rounded'; font-weight:normal; font-style:normal; line-height:1; letter-spacing:normal; text-transform:none; display:inline-block; white-space:nowrap; direction:ltr; font-feature-settings:'liga'; -webkit-font-feature-settings:'liga'; font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24; user-select:none; }
   .ta .msr.fill { font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 24; }
@@ -278,7 +279,7 @@
   .ta-hd .th-btn:active { transform:scale(.92); }
 
   /* Hero progress card */
-  .ta-hero { background:linear-gradient(150deg,var(--pri),#1E40AF); border-radius:22px; padding:20px; color:#fff; display:flex; align-items:center; gap:18px; box-shadow:0 16px 34px -16px rgba(37,99,235,0.6); margin-bottom:16px; position:relative; overflow:hidden; }
+  .ta-hero { background:radial-gradient(circle at 85% -20%,rgba(201,169,106,0.28),transparent 55%),linear-gradient(150deg,#0E3B24,#082516); border-radius:22px; padding:20px; color:#F5E9CE; display:flex; align-items:center; gap:18px; box-shadow:0 16px 34px -16px rgba(10,40,25,0.75); margin-bottom:16px; position:relative; overflow:hidden; }
   .ta-hero::after { content:''; position:absolute; top:-40%; left:-10%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.09); }
   .ta-ring { position:relative; width:78px; height:78px; flex-shrink:0; }
   .ta-ring svg { transform:rotate(-90deg); }
@@ -342,7 +343,7 @@
   .ta-nav-i.on .msr { transform:translateY(-2px); }
   .ta-nav-i.on .msr { font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 24; }
   .ta-nav-add { flex:0 0 auto; }
-  .ta-nav-add .fab { width:56px; height:56px; border-radius:20px; background:linear-gradient(150deg,var(--pri),#1E40AF); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 12px 26px -8px rgba(37,99,235,0.65); margin-top:-24px; transition:transform .25s cubic-bezier(.34,1.56,.64,1); }
+  .ta-nav-add .fab { width:56px; height:56px; border-radius:20px; background:linear-gradient(150deg,#E4C687,#A5793A); color:#2A2010; display:flex; align-items:center; justify-content:center; box-shadow:0 12px 26px -8px rgba(140,100,40,0.6); margin-top:-24px; transition:transform .25s cubic-bezier(.34,1.56,.64,1); }
   .ta-nav-add .fab .msr { font-size:30px; }
   .ta-nav-add:active .fab { transform:scale(.9) rotate(90deg); }
 
@@ -367,7 +368,7 @@
   .ta-toggle.on { background:var(--pri); }
   .ta-toggle.on::after { transform:translateX(-20px); }
   .ta-field.row { display:flex; align-items:center; justify-content:space-between; }
-  .ta-save { width:100%; padding:16px; border:none; border-radius:18px; background:linear-gradient(150deg,var(--pri),#1E40AF); color:#fff; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 14px 30px -12px rgba(37,99,235,0.6); margin-top:4px; }
+  .ta-save { width:100%; padding:16px; border:none; border-radius:18px; background:linear-gradient(150deg,#B2833F,#6E4A18); color:#FFF6E4; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 14px 30px -12px rgba(110,74,24,0.6); margin-top:4px; }
   .ta-save:active { transform:scale(.98); }
   .ta-cancel { width:100%; padding:13px; border:none; border-radius:16px; background:transparent; color:var(--muted); font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; margin-top:6px; }
 
@@ -450,7 +451,7 @@
   .ta-leg-i b { margin-inline-start:auto; font-weight:800; }
   .ta-bars { display:flex; align-items:flex-end; justify-content:space-between; gap:7px; height:130px; padding-top:10px; }
   .ta-bar-c { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end; }
-  .ta-bar { width:100%; max-width:26px; border-radius:8px 8px 4px 4px; background:linear-gradient(180deg,var(--pri),#1E40AF); min-height:4px; transition:height .5s cubic-bezier(.22,.61,.36,1); }
+  .ta-bar { width:100%; max-width:26px; border-radius:8px 8px 4px 4px; background:linear-gradient(180deg,#C9A96A,#8A5F22); min-height:4px; transition:height .5s cubic-bezier(.22,.61,.36,1); }
   .ta-bar-c .bl { font-size:10.5px; color:var(--muted); font-weight:700; }
   .ta-bar-c .bv { font-size:10px; color:var(--faint); font-weight:700; }
 
@@ -1470,10 +1471,10 @@
     var week = TA.tasks.filter(function (t) { return !t.done && t.date && t.date >= todayStr && t.date <= weekEnd; }).length;
     var doneAll = TA.tasks.filter(function (t) { return t.done; }).length;
     var stats = [
-      { ic: "today", c: "#2563EB", v: todays.length - doneToday, l: "مهام اليوم" },
-      { ic: "task_alt", c: "#22C55E", v: doneAll, l: "منجزة" },
-      { ic: "warning", c: "#EF4444", v: overdue, l: "متأخرة" },
-      { ic: "date_range", c: "#F59E0B", v: week, l: "هذا الأسبوع" }
+      { ic: "today", c: "#A5793A", v: todays.length - doneToday, l: "مهام اليوم" },
+      { ic: "task_alt", c: "#3E8E2E", v: doneAll, l: "منجزة" },
+      { ic: "warning", c: "#B03A34", v: overdue, l: "متأخرة" },
+      { ic: "date_range", c: "#C08A2E", v: week, l: "هذا الأسبوع" }
     ];
     var sr = document.getElementById("ta-home-stats"); sr.innerHTML = "";
     stats.forEach(function (s) {
@@ -1718,10 +1719,10 @@
     var weekEnd = fmt(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7));
     var week = TA.tasks.filter(function (t) { return t.date && t.date >= todayStr && t.date <= weekEnd; }).length;
     var cards = [
-      { ic: "today", c: "#2563EB", v: todays.length, l: "مهام اليوم" },
-      { ic: "task_alt", c: "#22C55E", v: doneAll, l: "منجزة" },
-      { ic: "warning", c: "#EF4444", v: overdue, l: "متأخرة" },
-      { ic: "date_range", c: "#F59E0B", v: week, l: "هذا الأسبوع" }
+      { ic: "today", c: "#A5793A", v: todays.length, l: "مهام اليوم" },
+      { ic: "task_alt", c: "#3E8E2E", v: doneAll, l: "منجزة" },
+      { ic: "warning", c: "#B03A34", v: overdue, l: "متأخرة" },
+      { ic: "date_range", c: "#C08A2E", v: week, l: "هذا الأسبوع" }
     ];
     var g = document.getElementById("ta-stats-cards"); g.innerHTML = "";
     cards.forEach(function (s) { var c = document.createElement("div"); c.className = "ta-stat";
@@ -2691,8 +2692,11 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "5.2.0";
+  var APP_VERSION = "5.3.0";
   var RELEASES = [
+    { v: "5.3.0", date: "٢٥ يوليو ٢٠٢٦", items: [
+      ["imp", "توحيد هوية تطبيق المهام مع هوية الموقع: ألوان ذهبية وخضراء دافئة بدل الأزرق — في الوضعين الفاتح (ورق عاجي) والداكن (أخضر عميق)، فصار الموقع قطعة واحدة متناسقة"]
+    ]},
     { v: "5.2.0", date: "٢٥ يوليو ٢٠٢٦", items: [
       ["new", "بطاقة «الصلاة القادمة» أعلى الصفحة: اسم الصلاة ووقتها مع عدّاد تنازلي حيّ للمتبقّي، وشريط تقدّم بين الأذانين، وكل مواقيت اليوم الخمسة مع تمييز القادمة"],
       ["new", "نسخة احتياطية لكل بيانات الموقع من الإعدادات: «تصدير» يحفظ ملفًا واحدًا (المهام، المسبحة، علامات القرآن، الإعدادات)، و«استيراد» يستعيدها — حماية من فقدان البيانات"]
