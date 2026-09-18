@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>برومو نهائي أفريقيا · ٦٥ ثانية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Tajawal:wght@400;500;700&family=Aref+Ruqaa:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== أساسيات ===== */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --bg:#0A0908; --panel:#1A1917; --line:rgba(201,169,106,0.14);
+    --gold:#C9A96A; --ink:#F1EEE6; --dim:#9A9488;
+    --accent:#C8102E;            /* أحمر الأهلي — يتبدّل من زر الهوية */
+    --accent-soft:rgba(200,16,46,0.34);
+    --ar:9/16;                   /* نسبة الإطار */
+  }
+  body{ font-family:'Tajawal',sans-serif; background:
+      radial-gradient(1100px 600px at 80% -10%,rgba(201,169,106,0.07),transparent 60%),var(--bg);
+    color:var(--ink); min-height:100vh; padding:20px 14px 40px;
+    -webkit-tap-highlight-color:transparent; }
+  .shell{ max-width:1080px; margin:0 auto; }
+
+  /* ===== الترويسة ===== */
+  .head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+  .head h1{ font-family:'Almarai',sans-serif; font-weight:800; font-size:20px; letter-spacing:-.2px; }
+  .head .en{ font-family:'Space Mono',monospace; font-size:11px; color:var(--dim); }
+
+  /* ===== المسرح ===== */
+  .stage-wrap{ display:flex; justify-content:center; }
+  #stage{ position:relative; width:100%; max-width:calc((100vh - 280px) * (var(--ar))); aspect-ratio:var(--ar);
+    background:#000; border-radius:18px; overflow:hidden; border:1px solid var(--line);
+    box-shadow:0 30px 70px -40px #000, inset 0 1px 0 rgba(255,238,200,0.05); cursor:pointer;
+    contain:paint; }
+  #stage.wide{ max-width:min(100%,900px); }
+  #media-layer,#fx-canvas,#text-layer,#overlay,#grain{ position:absolute; inset:0; }
+  #media-layer img,#media-layer video{ width:100%; height:100%; object-fit:cover; display:block; }
+  #fx-canvas{ width:100%; height:100%; }
+  #text-layer{ display:flex; align-items:flex-end; justify-content:center; padding:0 7% 12%; pointer-events:none; }
+
+  .line{ font-family:'Almarai',sans-serif; font-weight:800; text-align:center; line-height:1.55;
+    text-shadow:0 6px 28px rgba(0,0,0,0.9),0 1px 0 rgba(0,0,0,0.6); will-change:transform,opacity; }
+  .line .seg{ display:inline-block; }
+  .line .hot{ color:var(--gold); }
+  #kicker{ position:absolute; top:7%; right:0; left:0; text-align:center; font-family:'Space Mono',monospace;
+    font-size:11px; letter-spacing:2px; color:rgba(241,238,230,0.55); pointer-events:none; }
+
+  /* طبقات التأثير */
+  #flash{ position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; }
+  #vignette{ position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 45%,transparent 38%,rgba(0,0,0,0.72) 100%); }
+  #leak{ position:absolute; inset:-20%; pointer-events:none; opacity:0; mix-blend-mode:screen;
+    background:radial-gradient(45% 60% at 18% 30%,rgba(255,196,120,0.75),transparent 62%),
+               radial-gradient(38% 52% at 84% 72%,rgba(255,120,90,0.5),transparent 60%); }
+  #grain{ pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.55'/></svg>"); }
+  #bars{ position:absolute; inset:0; pointer-events:none; opacity:0;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,0.5) 0 2px,transparent 2px 5px); }
+
+  /* دليل الإخراج فوق الصورة */
+  #director{ position:absolute; inset:auto 0 0 0; padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    background:linear-gradient(0deg,rgba(0,0,0,0.82),transparent); font-size:11px; color:rgba(241,238,230,0.82);
+    display:none; gap:4px; flex-direction:column; pointer-events:none; }
+  #stage.show-director #director{ display:flex; }
+  #director b{ color:var(--gold); font-weight:700; }
+  #director .row{ display:flex; gap:6px; align-items:flex-start; }
+  #tc{ position:absolute; top:10px; left:12px; font-family:'Space Mono',monospace; font-size:11px;
+    color:rgba(241,238,230,0.5); letter-spacing:1px; pointer-events:none; direction:ltr; }
+  #big-play{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    transition:opacity .18s ease; }
+  #stage:not(.at-start) #big-play{ opacity:0; pointer-events:none; }
+  #big-play .btn{ width:72px; height:72px; border-radius:50%; background:rgba(10,9,8,0.55);
+    border:1px solid rgba(201,169,106,0.4); backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center; }
+  #big-play svg{ width:26px; height:26px; fill:var(--gold); transform:scaleX(-1); }
+
+
+  /* ===== شريط التحكم ===== */
+  .controls{ max-width:100%; margin:14px auto 0; }
+  #scrub{ position:relative; height:26px; display:flex; align-items:center; cursor:pointer; touch-action:none; }
+  #scrub .track{ position:absolute; right:0; left:0; height:5px; border-radius:99px; background:rgba(237,233,224,0.1); }
+  #scrub .fill{ position:absolute; right:0; height:5px; border-radius:99px;
+    background:linear-gradient(270deg,var(--accent),var(--gold)); width:0; }
+  #scrub .tick{ position:absolute; top:3px; width:1px; height:11px; background:rgba(10,9,8,0.75); }
+  #scrub .knob{ position:absolute; width:13px; height:13px; border-radius:50%; background:var(--ink);
+    box-shadow:0 2px 8px rgba(0,0,0,0.6); transform:translateX(50%); }
+  .btns{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px; }
+  button{ font-family:'Tajawal',sans-serif; font-size:13px; color:var(--ink); cursor:pointer;
+    background:rgba(237,233,224,0.05); border:1px solid var(--line); border-radius:11px;
+    padding:8px 13px; transition:background .15s ease,border-color .15s ease; }
+  button:hover{ background:rgba(201,169,106,0.12); border-color:rgba(201,169,106,0.35); }
+  button.on{ background:rgba(201,169,106,0.16); border-color:rgba(201,169,106,0.45); color:var(--gold); }
+  button.primary{ background:var(--accent-soft); border-color:var(--accent); min-width:104px; }
+  .spacer{ flex:1; }
+  .hint{ font-size:11px; color:var(--dim); margin-top:8px; line-height:1.9; }
+  kbd{ font-family:'Space Mono',monospace; font-size:10px; background:rgba(237,233,224,0.07);
+    border:1px solid var(--line); border-radius:5px; padding:1px 5px; }
+
+  /* ===== لوحة السيناريو ===== */
+  .board{ margin-top:22px; background:linear-gradient(158deg,#272320,#211E1B 52%,#191715);
+    border:1px solid var(--line); border-radius:20px; padding:18px; }
+  .board h2{ font-family:'Almarai',sans-serif; font-weight:800; font-size:16px; margin-bottom:4px; }
+  .board .sub{ font-size:12px; color:var(--dim); margin-bottom:14px; }
+  .sc{ display:grid; grid-template-columns:76px 1fr auto; gap:12px; align-items:start;
+    padding:12px 10px; border-radius:14px; border:1px solid transparent; cursor:pointer; }
+  .sc:hover{ background:rgba(237,233,224,0.035); }
+  .sc.active{ background:rgba(201,169,106,0.08); border-color:rgba(201,169,106,0.28); }
+  .sc .time{ font-family:'Space Mono',monospace; font-size:11px; color:var(--gold); padding-top:3px; line-height:1.7; }
+  .sc .txt{ font-family:'Almarai',sans-serif; font-weight:700; font-size:14px; margin-bottom:5px; }
+  .sc .meta{ font-size:11.5px; color:var(--dim); line-height:1.95; }
+  .sc .meta b{ color:rgba(241,238,230,0.75); font-weight:500; }
+  .sc .slot{ display:flex; flex-direction:column; gap:5px; align-items:stretch; }
+  .sc .slot button{ padding:6px 10px; font-size:11px; border-radius:9px; white-space:nowrap; }
+  .sc .slot .name{ font-size:10px; color:var(--dim); max-width:110px; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap; direction:ltr; text-align:left; }
+  .board .foot{ margin-top:12px; padding-top:12px; border-top:1px solid var(--line);
+    font-size:11.5px; color:var(--dim); line-height:2; }
+
+  @media (max-width:560px){
+    body{ padding:14px 12px 32px; }
+    #stage{ max-width:100%; }
+    .sc{ grid-template-columns:62px 1fr; }
+    .sc .slot{ grid-column:1 / -1; flex-direction:row; align-items:center; }
+    .board{ padding:14px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="head">
+    <h1>برومو نهائي أفريقيا — ٦٥ ثانية</h1>
+    <div class="en">STORYBOARD · PREVIEW</div>
+  </div>
+
+  <div class="stage-wrap">
+    <div id="stage">
+      <div id="media-layer"></div>
+      <canvas id="fx-canvas"></canvas>
+      <div id="leak"></div>
+      <div id="bars"></div>
+      <div id="vignette"></div>
+      <div id="grain"></div>
+      <div id="kicker"></div>
+      <div id="text-layer"><div class="line" id="line"></div></div>
+      <div id="flash"></div>
+      <div id="tc">00:00 / 01:05</div>
+      <div id="director">
+        <div class="row"><b>صوت:</b><span id="d-sfx"></span></div>
+        <div class="row"><b>تأثير:</b><span id="d-fx"></span></div>
+        <div class="row"><b>مشهد:</b><span id="d-shot"></span></div>
+      </div>
+      <div id="big-play"><div class="btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div id="scrub">
+      <div class="track"></div><div class="fill"></div><div class="knob"></div>
+    </div>
+    <div class="btns">
+      <button id="btn-play" class="primary">تشغيل</button>
+      <button id="btn-restart">من البداية</button>
+      <button id="btn-sound" class="on">الصوت</button>
+      <button id="btn-director">دليل الإخراج</button>
+      <div class="spacer"></div>
+      <button id="btn-ratio">٩:١٦</button>
+      <button id="btn-theme">الهوية: أحمر</button>
+    </div>
+    <div class="hint">
+      <kbd>مسافة</kbd> تشغيل/إيقاف · <kbd>R</kbd> إعادة · <kbd>M</kbd> الصوت · <kbd>←</kbd> <kbd>→</kbd> تنقّل بين المشاهد ·
+      اسحب أي مقطع أو صورة وأفلته على الإطار ليحلّ محل رسم المشهد الحالي.
+    </div>
+  </div>
+
+  <div class="board">
+    <h2>لوحة السيناريو</h2>
+    <div class="sub">ثمانية مشاهد · اضغط أي مشهد للانتقال إليه · «مادة» لإسناد لقطة حقيقية مكان الرسم التمهيدي.</div>
+    <div id="board-list"></div>
+    <div class="foot">
+      الرسوم هنا تمهيدية (Animatic) تُظهر الإيقاع والنص والتأثير قبل المونتاج — استبدلها بلقطاتك من زر «مادة».
+      الصوت مُركّب داخل الصفحة (طبلة، نبضة، هدير، صافرة)؛ التعليق العربي والهتافات تُضاف في المونتاج النهائي كما هو مكتوب في عمود الصوت.
+      المواد المُسندة تبقى خلال الجلسة فقط ولا تُرفع إلى المستودع.
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ============ أدوات ============ */
+  function toAr(s){ return String(s).replace(/[0-9]/g, function(d){ return "٠١٢٣٤٥٦٧٨٩"[+d]; }); }
+  function clamp(v,a,b){ return v<a?a:v>b?b:v; }
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function easeOut(t){ return 1-Math.pow(1-t,3); }
+  function easeInOut(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  /* عشوائية مُبذّرة: كل رسم دالة في الزمن فقط، فيبقى التمرير على الشريط مطابقًا للتشغيل */
+  function rnd(i){ var x=Math.sin(i*127.1+311.7)*43758.5453; return x-Math.floor(x); }
+  function fmt(t){ var m=Math.floor(t/60), s=Math.floor(t%60);
+    return toAr((m<10?"0":"")+m+":"+(s<10?"0":"")+s); }
+  function win(t,a,b,fade){ /* نافذة ظهور بين a وb مع تلاشٍ عند الطرفين */
+    fade = fade||0.3;
+    return clamp(Math.min((t-a)/fade,(b-t)/fade),0,1);
+  }
+
+  /* ============ المشاهد ============ */
+  var SCENES = [
+    { t:0,  d:5,
+      kicker:"", shot:"شاشة سوداء → يظهر الشعار بجزيئات ذهبية",
+      text:"في السعودية… لون واحد فقط",
+      sfx:"طبلة منخفضة + نبضة قلب واحدة", fx:"Particles Build", filter:"none" },
+    { t:5,  d:7,
+      kicker:"MONTAGE", shot:"مونتاج سريع — أهداف إيفان توني (٣–٤ أهداف، كل هدف نصف ثانية)",
+      text:"توني… <span class='hot'>القاتل</span>",
+      sfx:"تعليق عربي «توني… هدف!» + هدير الجماهير", fx:"Speed Ramp + Flash Cut", filter:"none" },
+    { t:12, d:8,
+      kicker:"2025 · JEDDAH", shot:"نهائي ٢٠٢٥ — ركلة جزاء توني (١-١) ثم هدفا ماييلي (٧١′، ٧٥′)",
+      text:"العام الماضي… في جدة… <span class='hot'>ضاع اللقب</span>",
+      sfx:"هدير الجماهير ينخفض + تنهيدة", fx:"Desaturate + Slow Motion + طبقة تشققات", filter:"gray" },
+    { t:20, d:8,
+      kicker:"NOW", shot:"وميض أبيض → الحاضر: حافلة الفريق + تدريبات + الوصول إلى بريتوريا",
+      text:"هذه السنة… <span class='hot'>لا</span>",
+      sfx:"الطبلة تتسارع + شعارات «الأهلي»", fx:"Flash Transition + Warm Tone", filter:"warm" },
+    { t:28, d:10,
+      kicker:"90+3", shot:"تدخلات دفاعية + تصدٍّ + هدف أبو الشامات في مرمى أوكلاند",
+      text:"٩٠+٣… <span class='hot'>رجالنا ما ركعوا</span>",
+      sfx:"تعليق «أبو الشامات! هدف التأهل!» + انفجار جماهيري", fx:"Shake + Zoom Punch", filter:"none" },
+    { t:38, d:10,
+      kicker:"2024 · CAIRO", shot:"نهائي ٢٠٢٤ — ٣-٠ (٣٢′، ٥٥′، ٩٠+٣′) + رفع الكأس وقصاصات ملوّنة",
+      text:"فعلناها من قبل… <span class='hot'>في القاهرة</span>",
+      sfx:"شعارات «الأهلي… الأهلي…»", fx:"Slow Motion + Light Leak", filter:"warm" },
+    { t:48, d:7,
+      kicker:"", shot:"لقطة قريبة لتوني مع اهتزاز خفيف للصورة",
+      text:"باقي مباراة واحدة… في أرض أفريقيا… <span class='hot'>نرجع الاسم</span>",
+      sfx:"الطبلة بأقصى قوة + هدير يتصاعد للذروة", fx:"Camera Shake + Contrast Boost", filter:"punch" },
+    { t:55, d:10,
+      kicker:"", shot:"فلاش → الشعار → توني → الكأس → ملعب لوفتس فيرسفيلد ليلًا → أسود",
+      text:"<span class='seg'>السبت.</span> <span class='seg'>بريتوريا.</span> <span class='seg hot'>الأهلي.</span>",
+      sfx:"تتوقف الأصوات فجأة → صافرة واحدة → نهاية", fx:"Hard Cut to Black", filter:"none" }
+  ];
+  var DUR = 65;
+
+  /* ============ عناصر ============ */
+  var stage=document.getElementById("stage"), cv=document.getElementById("fx-canvas"), ctx=cv.getContext("2d"),
+      lineEl=document.getElementById("line"), kickerEl=document.getElementById("kicker"),
+      flashEl=document.getElementById("flash"), leakEl=document.getElementById("leak"),
+      barsEl=document.getElementById("bars"), mediaLayer=document.getElementById("media-layer"),
+      tcEl=document.getElementById("tc"), fillEl=document.querySelector("#scrub .fill"),
+      knobEl=document.querySelector("#scrub .knob"), scrubEl=document.getElementById("scrub"),
+      boardList=document.getElementById("board-list");
+
+  var T=0, playing=false, lastFrame=0, curScene=-1, W=0, H=0, DPR=1;
+  var media=[];   /* مادة لكل مشهد: {el, type} */
+
+  function sceneAt(t){
+    for(var i=SCENES.length-1;i>=0;i--) if(t>=SCENES[i].t) return i;
+    return 0;
+  }
+
+  /* ============ قياس اللوحة ============ */
+  function resize(){
+    var r=stage.getBoundingClientRect();
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    W=r.width; H=r.height;
+    cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    render(T);
+  }
+  window.addEventListener("resize",resize);
+
+  /* ============ رسوم المشاهد (كلها دوال في الزمن) ============ */
+  var GOLD="#C9A96A";
+  function accent(){ return getComputedStyle(document.documentElement).getPropertyValue("--accent").trim(); }
+
+  function bg(c1,c2){
+    var g=ctx.createRadialGradient(W*0.5,H*0.42,0,W*0.5,H*0.42,Math.max(W,H)*0.8);
+    g.addColorStop(0,c1); g.addColorStop(1,c2);
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  }
+
+
+  /* ظلّ لاعب: أطراف بأطراف دائرية تقرأ كصورة ظلية حقيقية لا ككتل */
+  function figure(x,baseY,h,pose,t,seed){
+    seed=seed||0;
+    var lw=h*0.105, hip=baseY-h*0.44, sho=baseY-h*0.76, hr=h*0.088;
+    ctx.save(); ctx.lineWidth=lw; ctx.lineCap="round"; ctx.lineJoin="round";
+    ctx.strokeStyle=ctx.fillStyle;
+    function limb(x1,y1,x2,y2){ ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); }
+    function head(hx,hy){ ctx.beginPath(); ctx.arc(hx,hy,hr,0,6.283); ctx.fill(); }
+    if(pose==="celebrate"){
+      var sw=Math.sin(t*3+seed)*h*0.03;
+      limb(x,hip,x+sw*0.4,sho);
+      limb(x+sw*0.4,sho,x-h*0.30+sw,sho-h*0.26);
+      limb(x+sw*0.4,sho,x+h*0.30+sw,sho-h*0.26);
+      limb(x,hip,x-h*0.17,baseY); limb(x,hip,x+h*0.17,baseY);
+      head(x+sw*0.5,sho-hr*2.0);
+    } else if(pose==="walk"){
+      var ph=Math.sin(t*5.2+seed);
+      limb(x,hip,x,sho);
+      limb(x,sho,x-h*0.09-h*0.10*ph,sho+h*0.24); limb(x,sho,x+h*0.09+h*0.10*ph,sho+h*0.24);
+      limb(x,hip,x+h*0.08+h*0.13*ph,baseY); limb(x,hip,x-h*0.08-h*0.13*ph,baseY);
+      head(x,sho-hr*1.45);
+    } else if(pose==="kneel"){
+      var k=baseY-h*0.30;
+      limb(x,k,x,k-h*0.34);
+      limb(x,k-h*0.34,x-h*0.20,k-h*0.44); limb(x,k-h*0.34,x+h*0.20,k-h*0.44);
+      limb(x,k,x-h*0.22,baseY); limb(x,k,x+h*0.16,baseY-h*0.02);
+      head(x,k-h*0.34-hr*1.25);
+    } else if(pose==="slide"){
+      ctx.translate(x,baseY); ctx.rotate(-0.62*(seed?-1:1)); ctx.translate(-x,-baseY);
+      limb(x,hip,x,sho);
+      limb(x,sho,x-h*0.26,sho-h*0.06); limb(x,sho,x+h*0.20,sho+h*0.14);
+      limb(x,hip,x+h*0.30,baseY-h*0.06); limb(x,hip,x-h*0.10,baseY);
+      head(x,sho-hr*1.3);
+    } else if(pose==="dive"){
+      ctx.translate(x,baseY); ctx.rotate(-1.15); ctx.translate(-x,-baseY);
+      limb(x,hip,x,sho);
+      limb(x,sho,x-h*0.30,sho-h*0.12); limb(x,sho,x-h*0.26,sho+h*0.10);
+      limb(x,hip,x+h*0.22,baseY); limb(x,hip,x+h*0.14,baseY-h*0.10);
+      head(x,sho-hr*1.3);
+    }
+    ctx.restore();
+  }
+
+  /* مدرّج مزدحم: صفوف متدرّجة + ومضات كاميرات */
+  function crowd(topY,botY,t,warm){
+    ctx.save();
+    var h=botY-topY;
+    var g=ctx.createLinearGradient(0,topY,0,botY);
+    g.addColorStop(0,warm?"rgba(26,17,10,0.98)":"rgba(9,10,13,0.98)");
+    g.addColorStop(1,warm?"rgba(38,25,14,0.98)":"rgba(15,17,21,0.98)");
+    ctx.fillStyle=g; ctx.fillRect(0,topY,W,h);
+    /* خطوط الصفوف */
+    ctx.strokeStyle=warm?"rgba(201,169,106,0.07)":"rgba(160,175,200,0.06)";
+    ctx.lineWidth=1;
+    for(var r=1;r<7;r++){
+      var y=topY+h*(r/7);
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+    }
+    /* الجمهور */
+    for(var i=0;i<320;i++){
+      var row=Math.floor(rnd(i)*7);
+      var x=rnd(i+41)*W, y=topY+h*((row+0.45+rnd(i+9)*0.35)/7);
+      var fl=((t*2.2+rnd(i+13)*6)%6)<0.12;
+      var sz=1.4+rnd(i+5)*1.3;
+      ctx.fillStyle= fl ? "rgba(255,255,255,0.9)"
+        : (warm?"rgba(206,160,104,":"rgba(140,152,170,")+(0.06+rnd(i+3)*0.12).toFixed(3)+")";
+      ctx.fillRect(x,y,fl?2.4:sz,fl?2.4:sz);
+    }
+    /* حافة السقف */
+    ctx.fillStyle="rgba(0,0,0,0.85)"; ctx.fillRect(0,topY,W,h*0.055);
+    ctx.restore();
+  }
+
+  /* درع + كلمة «الأهلي» تتجمّع من جزيئات ذهبية */
+  function shieldPath(cx,cy,w,h){
+    ctx.beginPath();
+    ctx.moveTo(cx-w/2,cy-h/2);
+    ctx.lineTo(cx+w/2,cy-h/2);
+    ctx.lineTo(cx+w/2,cy+h*0.12);
+    ctx.quadraticCurveTo(cx+w/2,cy+h/2,cx,cy+h/2);
+    ctx.quadraticCurveTo(cx-w/2,cy+h/2,cx-w/2,cy+h*0.12);
+    ctx.closePath();
+  }
+  function drawScene1(ts,p){
+    bg("#12100E","#000");
+    var cx=W/2, cy=H*0.42, s=Math.min(W,H)*0.30;
+    var build=easeOut(clamp((ts-0.4)/2.4,0,1));
+    /* جزيئات تتقارب على محيط الدرع */
+    var N=150;
+    for(var i=0;i<N;i++){
+      var a=rnd(i)*Math.PI*2, rr=0.55+rnd(i+91)*0.9;
+      var tx=cx+Math.cos(a)*s*0.62, ty=cy+Math.sin(a)*s*0.72;
+      var sx=cx+Math.cos(a)*s*rr*4.2, sy=cy+Math.sin(a)*s*rr*4.2;
+      var d=clamp(build*1.25-rnd(i+7)*0.25,0,1); d=easeOut(d);
+      var x=lerp(sx,tx,d), y=lerp(sy,ty,d);
+      var al=clamp(d*1.4,0,1)*(0.35+rnd(i+33)*0.65);
+      ctx.fillStyle="rgba(201,169,106,"+al.toFixed(3)+")";
+      ctx.beginPath(); ctx.arc(x,y,0.7+rnd(i+5)*1.7,0,6.283); ctx.fill();
+    }
+    /* الدرع */
+    if(build>0.45){
+      var o=clamp((build-0.45)/0.55,0,1);
+      ctx.save(); ctx.globalAlpha=o;
+      var g=ctx.createLinearGradient(cx,cy-s*0.8,cx,cy+s*0.8);
+      g.addColorStop(0,"rgba(230,206,160,0.95)"); g.addColorStop(1,"rgba(150,118,62,0.85)");
+      ctx.strokeStyle=g; ctx.lineWidth=Math.max(1.6,s*0.035);
+      shieldPath(cx,cy,s*1.12,s*1.4); ctx.stroke();
+      ctx.fillStyle="rgba(200,16,46,0.10)"; ctx.fill();
+      ctx.fillStyle=accent(); ctx.globalAlpha=o*0.9;
+      ctx.fillRect(cx-s*0.56,cy-s*0.14,s*1.12,s*0.06);
+      ctx.globalAlpha=o;
+      ctx.fillStyle="#EFE7D4"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.direction="rtl";
+      ctx.font="800 "+(s*0.30).toFixed(0)+"px Almarai, Tajawal, sans-serif";
+      ctx.fillText("الأهلي",cx,cy+s*0.16);
+      ctx.restore();
+    }
+    /* نبضة قلب واحدة: حلقتان تتمددان */
+    [0.6,1.3].forEach(function(bt){
+      var q=(ts-bt)/1.5; if(q<0||q>1) return;
+      ctx.strokeStyle="rgba(200,16,46,"+((1-q)*0.4).toFixed(3)+")";
+      ctx.lineWidth=2; ctx.beginPath();
+      ctx.arc(cx,cy,s*(0.5+q*2.4),0,6.283); ctx.stroke();
+    });
+    return { shake:0, zoom:1+0.04*(1-easeOut(clamp(ts/4,0,1))) };
+  }
+
+  /* مونتاج أهداف: قطع كل ٠٫٥ ثانية مع تسارع */
+  function goalFrame(seed,k){
+    var c=accent();
+    bg("#1B1512","#050404");
+    /* شبكة المرمى */
+    ctx.strokeStyle="rgba(255,255,255,0.10)"; ctx.lineWidth=1;
+    var gap=Math.max(10,W*0.045), off=(seed*13)%gap;
+    for(var x=-off;x<W;x+=gap){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x+H*0.12,H); ctx.stroke(); }
+    for(var y=-off;y<H;y+=gap){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y+W*0.05); ctx.stroke(); }
+    /* انفجار الهدف */
+    var cx=W*(0.3+rnd(seed)*0.4), cy=H*(0.32+rnd(seed+4)*0.24), R=Math.min(W,H)*(0.16+k*0.5);
+    var g=ctx.createRadialGradient(cx,cy,0,cx,cy,R*2.1);
+    g.addColorStop(0,"rgba(255,255,255,"+(0.9-k*0.4).toFixed(2)+")");
+    g.addColorStop(0.25,c); g.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*2.1,0,6.283); ctx.fill();
+    /* خطوط سرعة */
+    ctx.strokeStyle="rgba(255,255,255,"+(0.5*(1-k)).toFixed(2)+")";
+    for(var i=0;i<14;i++){
+      var a=rnd(seed*7+i)*6.283, l=R*(1.1+rnd(i+seed)*1.6);
+      ctx.lineWidth=1+rnd(i)*1.6; ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(a)*R*0.7,cy+Math.sin(a)*R*0.7);
+      ctx.lineTo(cx+Math.cos(a)*l,cy+Math.sin(a)*l); ctx.stroke();
+    }
+    /* ظلّ المحتفل في المقدمة */
+    ctx.fillStyle="rgba(0,0,0,0.88)";
+    figure(W*(0.58-rnd(seed+2)*0.20), H*1.02, H*0.32, "celebrate", seed*1.7+k*2, seed);
+  }
+  function drawScene2(ts,p){
+    /* Speed ramp: القطع يتسارع من ٠٫٦ث إلى ٠٫٣ث */
+    var acc=0, cut=0, len;
+    while(acc<ts && cut<40){ len=lerp(0.62,0.30,clamp(acc/6.5,0,1)); if(acc+len>ts) break; acc+=len; cut++; }
+    goalFrame(cut+1, clamp((ts-acc)/(len||0.5),0,1));
+    return { shake:(cut%2?1:-1)*0.004, zoom:1.02+0.05*clamp((ts-acc)/(len||0.5),0,1), flashCut:(ts-acc)<0.07 };
+  }
+
+  /* نهائي ٢٠٢٥: بطيء، بلا لون، مع تشققات */
+  function drawScene3(ts,p){
+    bg("#151515","#040404");
+    var cx=W/2, cy=H*0.38, w=Math.min(W*0.72,H*0.42), h=w*0.34;
+    ctx.fillStyle="rgba(255,255,255,0.05)";
+    ctx.strokeStyle="rgba(255,255,255,0.16)"; ctx.lineWidth=1.2;
+    ctx.beginPath(); ctx.rect(cx-w/2,cy-h/2,w,h); ctx.fill(); ctx.stroke();
+    ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.direction="ltr";
+    ctx.fillStyle="rgba(240,240,240,0.9)";
+    ctx.font="700 "+(h*0.52).toFixed(0)+"px 'Space Mono', monospace";
+    var score = ts<3.2 ? "1 - 1" : ts<5 ? "1 - 2" : "1 - 3";
+    ctx.fillText(score,cx,cy);
+    ctx.font="400 "+(h*0.20).toFixed(0)+"px 'Space Mono', monospace";
+    ctx.fillStyle="rgba(200,200,200,0.55)";
+    ctx.fillText(ts<3.2?"PEN":(ts<5?"71'":"75'"),cx,cy+h*0.72);
+    /* تشققات تزحف من الوسط */
+    var cr=clamp((ts-2.6)/4,0,1);
+    ctx.strokeStyle="rgba(255,255,255,"+(0.22*cr).toFixed(3)+")";
+    for(var i=0;i<9;i++){
+      var a=rnd(i)*6.283, x=cx, y=cy, seg=Math.min(W,H)*0.09;
+      ctx.lineWidth=1.4-rnd(i+2)*0.7; ctx.beginPath(); ctx.moveTo(x,y);
+      for(var s=0;s<6*cr;s++){
+        a+=(rnd(i*11+s)-0.5)*0.9;
+        x+=Math.cos(a)*seg; y+=Math.sin(a)*seg;
+        ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    }
+    /* لاعبون على الرُّكب في المقدمة */
+    var kn=clamp((ts-1.2)/2.2,0,1);
+    if(kn>0){
+      ctx.globalAlpha=easeOut(kn)*0.95; ctx.fillStyle="rgba(0,0,0,0.9)";
+      figure(W*0.26,H*0.97,H*0.34,"kneel",ts,1);
+      figure(W*0.72,H*0.99,H*0.30,"kneel",ts,2);
+      ctx.globalAlpha=1;
+    }
+    /* غبار هابط بطيء */
+    for(var j=0;j<40;j++){
+      var dy=((ts*8+rnd(j)*H)%H);
+      ctx.fillStyle="rgba(255,255,255,"+(0.05+rnd(j+3)*0.06).toFixed(3)+")";
+      ctx.fillRect(rnd(j+50)*W,dy,1,2+rnd(j)*3);
+    }
+    return { shake:0, zoom:1.06-0.04*p };
+  }
+
+  /* الحاضر: وصول الحافلة ثم نزول الفريق — خطوط حركة دافئة */
+  function drawScene4(ts,p){
+    bg("#2A1B10","#0A0705");
+    var ground=H*0.74;
+    /* خطوط سرعة دافئة */
+    var speed=lerp(0.35,1.5,easeOut(clamp(ts/5,0,1)));
+    for(var i=0;i<46;i++){
+      var y=(rnd(i)*H+ts*H*speed*(0.25+rnd(i+9)*0.5))%H;
+      var len=W*(0.12+rnd(i+2)*0.45), x=(W+rnd(i+5)*W - ts*W*speed*(0.4+rnd(i)*0.6))%(W*2)-W*0.5;
+      ctx.fillStyle="rgba(255,"+(160+Math.floor(rnd(i)*70))+",90,"+(0.05+rnd(i+1)*0.13).toFixed(3)+")";
+      ctx.fillRect(x,y,len,1+rnd(i+4)*2.5);
+    }
+    /* وهج أرضي (خلف كل شيء) */
+    var g=ctx.createLinearGradient(0,H,0,H*0.35);
+    g.addColorStop(0,"rgba(255,170,80,0.26)"); g.addColorStop(1,"rgba(255,170,80,0)");
+    ctx.fillStyle=g; ctx.fillRect(0,H*0.35,W,H*0.65);
+    /* الملعب في الأفق + برجا إنارة */
+    ctx.save();
+    ctx.fillStyle="rgba(14,10,7,0.92)";
+    ctx.beginPath();
+    ctx.moveTo(-W*0.1,ground);
+    ctx.quadraticCurveTo(W*0.5,ground-H*0.20,W*1.1,ground);
+    ctx.closePath(); ctx.fill();
+    [0.18,0.82].forEach(function(fx,i){
+      var x=W*fx, top=ground-H*(0.28+i*0.02);
+      ctx.fillStyle="rgba(18,13,9,0.95)"; ctx.fillRect(x-W*0.005,top,W*0.01,H*0.28);
+      ctx.fillStyle="rgba(255,214,150,0.75)"; ctx.fillRect(x-W*0.042,top-H*0.028,W*0.084,H*0.03);
+      var fgl=ctx.createRadialGradient(x,top,0,x,top,W*0.26);
+      fgl.addColorStop(0,"rgba(255,220,160,0.22)"); fgl.addColorStop(1,"rgba(255,220,160,0)");
+      ctx.fillStyle=fgl; ctx.beginPath(); ctx.arc(x,top,W*0.26,0,6.283); ctx.fill();
+    });
+    ctx.restore();
+    /* الحافلة تدخل من اليمين وتقف */
+    var bw=Math.min(W*0.86,H*0.46), bh=bw*0.31;
+    var bx=lerp(W*1.6,W*0.54,easeOut(clamp(ts/2.6,0,1))), by=ground-bh;
+    ctx.save();
+    var bg2=ctx.createLinearGradient(0,by,0,ground);
+    bg2.addColorStop(0,"#2A2723"); bg2.addColorStop(1,"#0D0B09");
+    ctx.fillStyle=bg2;
+    ctx.beginPath();
+    if(ctx.roundRect) ctx.roundRect(bx-bw/2,by,bw,bh,bh*0.20); else ctx.rect(bx-bw/2,by,bw,bh);
+    ctx.fill();
+    ctx.strokeStyle="rgba(201,169,106,0.35)"; ctx.lineWidth=1.2; ctx.stroke();
+    /* نوافذ مضاءة */
+    for(var k=0;k<6;k++){
+      ctx.fillStyle="rgba(255,196,120,"+(0.16+rnd(k+2)*0.22).toFixed(2)+")";
+      ctx.fillRect(bx-bw*0.42+k*bw*0.145,by+bh*0.22,bw*0.115,bh*0.30);
+    }
+    ctx.fillStyle="rgba(200,16,46,0.55)";
+    ctx.fillRect(bx-bw*0.44,by+bh*0.66,bw*0.88,bh*0.055);
+    ctx.fillStyle="#0A0908";
+    [-0.30,0.30].forEach(function(o){
+      ctx.beginPath(); ctx.arc(bx+bw*o,ground-bh*0.02,bh*0.17,0,6.283); ctx.fill();
+    });
+    /* كشافات أمامية */
+    var lg=ctx.createRadialGradient(bx-bw*0.5,by+bh*0.6,0,bx-bw*0.5,by+bh*0.6,W*0.42);
+    lg.addColorStop(0,"rgba(255,225,170,0.32)"); lg.addColorStop(1,"rgba(255,225,170,0)");
+    ctx.fillStyle=lg; ctx.beginPath(); ctx.arc(bx-bw*0.5,by+bh*0.6,W*0.42,0,6.283); ctx.fill();
+    ctx.restore();
+    /* الفريق ينزل ويمشي في المقدمة */
+    var n=5;
+    for(var j=0;j<n;j++){
+      var prog=clamp((ts-2.5-j*0.5)/2.6,0,1);
+      if(prog<=0) continue;
+      var px=lerp(bx-bw*0.20,W*(0.80-j*0.17),easeOut(prog));
+      var hh=H*(0.155+(j%2)*0.012);
+      ctx.globalAlpha=clamp(prog*3,0,1); ctx.fillStyle="rgba(0,0,0,0.94)";
+      figure(px,H*0.955,hh,"walk",ts+j*0.4,j*2.1);
+      ctx.globalAlpha=1;
+    }
+    return { shake:0.0015*Math.sin(ts*11), zoom:1.0+0.05*p };
+  }
+
+  /* ٩٠+٣: تدخلات + تصدٍّ + هدف التأهل */
+  function drawScene5(ts,p){
+    var c=accent();
+    bg(ts>6.2?"#2A0A12":"#141210","#020202");
+    /* سماء الليل + كشافات */
+    ctx.save();
+    ctx.fillStyle="rgba(4,5,7,0.98)"; ctx.fillRect(0,0,W,H*0.20);
+    [0.22,0.78].forEach(function(fx){
+      var x=W*fx, y=H*0.10;
+      ctx.fillStyle="rgba(20,22,26,0.95)"; ctx.fillRect(x-W*0.004,y,W*0.008,H*0.12);
+      ctx.fillStyle="rgba(255,250,230,0.8)"; ctx.fillRect(x-W*0.05,y-H*0.012,W*0.10,H*0.016);
+      var fgl=ctx.createRadialGradient(x,y,0,x,y,W*0.34);
+      fgl.addColorStop(0,"rgba(220,235,255,0.20)"); fgl.addColorStop(1,"rgba(220,235,255,0)");
+      ctx.fillStyle=fgl; ctx.beginPath(); ctx.arc(x,y,W*0.34,0,6.283); ctx.fill();
+    });
+    ctx.restore();
+    /* المدرّج */
+    crowd(H*0.20,H*0.50,ts,false);
+    /* الملعب */
+    ctx.save();
+    var pg=ctx.createLinearGradient(0,H*0.50,0,H);
+    pg.addColorStop(0,"rgba(26,54,30,0.96)"); pg.addColorStop(1,"rgba(12,28,15,0.96)");
+    ctx.fillStyle=pg; ctx.fillRect(0,H*0.50,W,H*0.50);
+    ctx.strokeStyle="rgba(255,255,255,0.13)"; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(0,H*0.575); ctx.lineTo(W,H*0.575); ctx.stroke();
+    ctx.beginPath(); ctx.arc(W*0.5,H*0.575,W*0.20,0,3.1416); ctx.stroke();
+    var fg=ctx.createLinearGradient(0,H*0.50,0,H*0.92);
+    fg.addColorStop(0,"rgba(220,235,255,0.10)"); fg.addColorStop(1,"rgba(220,235,255,0)");
+    ctx.fillStyle=fg; ctx.fillRect(0,H*0.50,W,H*0.42);
+    ctx.restore();
+    if(ts<6.2){
+      /* أربع دفعات: تدخل، تدخل معاكس، تصدٍّ، تشتيت */
+      var beat=Math.floor(ts/1.55), q=(ts/1.55)%1;
+      var dir=beat%2?1:-1;
+      ctx.fillStyle="rgba(0,0,0,0.94)";
+      if(beat===2){
+        /* تصدّي الحارس: الكرة تأتي من اليسار والحارس يطير نحوها */
+        var bx=lerp(W*0.08,W*0.58,easeOut(q)), by=H*0.60-Math.sin(q*3.14)*H*0.05;
+        figure(W*0.72,H*0.80,H*0.17,"dive",ts,0);
+        ctx.fillStyle="#EFEFEF";
+        ctx.beginPath(); ctx.arc(bx,by,Math.min(W,H)*0.016,0,6.283); ctx.fill();
+        ctx.strokeStyle="rgba(255,255,255,0.25)"; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.moveTo(bx-W*0.10,by+H*0.012); ctx.lineTo(bx,by); ctx.stroke();
+      } else {
+        /* مهاجم واقف + مدافع ينزلق نحوه */
+        var tx=W*(0.5+dir*0.18);
+        figure(tx,H*0.78,H*0.16,"walk",ts*0.8,beat);
+        var x=lerp(W*(0.5-dir*0.58),tx-dir*W*0.24,easeOut(q));
+        figure(x,H*0.80,H*0.15,"slide",ts,dir>0?0:1);
+        /* غبار الارتطام عند الالتقاء */
+        var dq=clamp((q-0.45)/0.5,0,1);
+        if(dq>0){
+          ctx.fillStyle="rgba(255,255,255,"+(0.4*(1-dq)).toFixed(2)+")";
+          for(var i=0;i<14;i++){
+            var a=rnd(beat*9+i)*6.283, r=H*0.03*(1+rnd(i)*2.4)*dq;
+            ctx.fillRect(tx+Math.cos(a)*r, H*0.80+Math.sin(a)*r*0.5, 2,2);
+          }
+        }
+      }
+    } else {
+      /* الهدف: انفجار + شباك تهتز */
+      var q2=clamp((ts-6.2)/3.8,0,1);
+      var cx=W*0.5, cy=H*0.38, R=Math.min(W,H)*(0.2+q2*1.4);
+      var g=ctx.createRadialGradient(cx,cy,0,cx,cy,R);
+      g.addColorStop(0,"rgba(255,255,255,"+(0.95*(1-q2)).toFixed(2)+")");
+      g.addColorStop(0.3,c); g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R,0,6.283); ctx.fill();
+      ctx.strokeStyle="rgba(255,255,255,0.18)"; ctx.lineWidth=1;
+      var gap=Math.max(9,W*0.05);
+      for(var gx=0;gx<W;gx+=gap){
+        ctx.beginPath(); ctx.moveTo(gx,0);
+        ctx.lineTo(gx+Math.sin(ts*22+gx)*6*(1-q2),H*0.56); ctx.stroke();
+      }
+      ctx.fillStyle="rgba(0,0,0,0.9)";
+      figure(W*0.50,H*0.86,H*0.28,"celebrate",ts*1.4,3);
+      /* شرارات الجماهير */
+      for(var s=0;s<70;s++){
+        var sy=H*0.56-((ts*60+rnd(s)*H)%(H*0.7));
+        ctx.fillStyle="rgba(255,"+(180+Math.floor(rnd(s)*60))+",120,"+(0.5*(1-q2)+0.1).toFixed(2)+")";
+        ctx.fillRect(rnd(s+21)*W,sy,2,2);
+      }
+    }
+    var punch = ts>6.2 ? 1+0.20*Math.exp(-(ts-6.2)*2.2) : 1.03;
+    var sh = ts>6.2 ? 0.010*Math.exp(-(ts-6.2)*1.4) : 0.004;
+    return { shake:sh*Math.sin(ts*47), zoom:punch };
+  }
+
+  /* نهائي ٢٠٢٤: الكأس + القصاصات */
+  function drawScene6(ts,p){
+    bg("#2B1C0E","#080604");
+    crowd(H*0.08,H*0.52,ts,true);
+    var cx=W/2, base=H*0.72, s=Math.min(W,H)*0.26;
+    var rise=easeOut(clamp((ts-0.6)/3.2,0,1));
+    var cy=base-rise*H*0.16;
+    /* النتيجة تتلاشى */
+    var so=win(ts,0.2,3.4,0.6);
+    if(so>0){
+      ctx.globalAlpha=so; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.direction="ltr";
+      ctx.fillStyle="rgba(240,235,220,0.85)";
+      ctx.font="700 "+(s*0.40).toFixed(0)+"px 'Space Mono', monospace";
+      ctx.fillText("3 - 0",cx,H*0.30);
+      ctx.globalAlpha=1;
+    }
+    /* الكأس */
+    ctx.save(); ctx.globalAlpha=clamp(rise*1.2,0,1);
+    var g=ctx.createLinearGradient(cx-s*0.4,cy-s,cx+s*0.4,cy+s*0.3);
+    g.addColorStop(0,"#F2DFAE"); g.addColorStop(0.5,GOLD); g.addColorStop(1,"#8C6C33");
+    ctx.fillStyle=g;
+    ctx.beginPath();
+    ctx.moveTo(cx-s*0.34,cy-s*0.62);
+    ctx.quadraticCurveTo(cx-s*0.34,cy+s*0.06,cx,cy+s*0.10);
+    ctx.quadraticCurveTo(cx+s*0.34,cy+s*0.06,cx+s*0.34,cy-s*0.62);
+    ctx.closePath(); ctx.fill();
+    ctx.fillRect(cx-s*0.07,cy+s*0.08,s*0.14,s*0.22);
+    ctx.fillRect(cx-s*0.24,cy+s*0.28,s*0.48,s*0.10);
+    ctx.lineWidth=s*0.05; ctx.strokeStyle=g;
+    ctx.beginPath(); ctx.arc(cx-s*0.40,cy-s*0.34,s*0.14,-0.6,2.4); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx+s*0.40,cy-s*0.34,s*0.14,0.75,3.8); ctx.stroke();
+    /* بريق */
+    var sp=(ts*0.55)%1;
+    ctx.globalAlpha=clamp(rise,0,1)*(1-Math.abs(sp*2-1))*0.8;
+    ctx.fillStyle="#FFF9E8";
+    ctx.fillRect(cx-s*0.34+sp*s*0.68,cy-s*0.62,s*0.05,s*0.7);
+    ctx.restore();
+    /* قصاصات ملوّنة */
+    var cols=["#C8102E","#C9A96A","#F1EEE6","#8C6C33"];
+    for(var i=0;i<110;i++){
+      var sp2=0.12+rnd(i)*0.30, y=((ts*H*sp2+rnd(i+3)*H*1.4)%(H*1.3))-H*0.15;
+      var x=rnd(i+11)*W+Math.sin(ts*1.6+i)*W*0.03;
+      var a=ts*(1+rnd(i)*3)+i;
+      ctx.save(); ctx.translate(x,y); ctx.rotate(a);
+      ctx.fillStyle=cols[i%4]; ctx.globalAlpha=0.55+rnd(i+6)*0.4;
+      ctx.fillRect(-2.5,-4.5,5,9); ctx.restore();
+    }
+    return { shake:0, zoom:1.10-0.08*easeInOut(p), leak:win(ts,1.5,9,1.8)*0.55 };
+  }
+
+  /* لقطة قريبة: تباين عالٍ + اهتزاز يد */
+  function drawScene7(ts,p){
+    bg("#1A0A0D","#000");
+    var cx=W*0.5, cy=H*0.44, r=Math.min(W,H)*0.30;
+    /* هالة خلفية */
+    var g=ctx.createRadialGradient(cx,cy,r*0.2,cx,cy,r*2.4);
+    g.addColorStop(0,"rgba(200,16,46,0.30)"); g.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    /* ظلّ وجه/كتفين */
+    ctx.fillStyle="rgba(0,0,0,0.92)";
+    ctx.beginPath(); ctx.ellipse(cx,cy,r*0.62,r*0.78,0,0,6.283); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx-r*1.5,H); ctx.quadraticCurveTo(cx,cy+r*0.72,cx+r*1.5,H); ctx.closePath(); ctx.fill();
+    /* حافة ضوء */
+    ctx.strokeStyle="rgba(255,225,180,"+(0.35+0.25*Math.sin(ts*2)).toFixed(2)+")";
+    ctx.lineWidth=Math.max(2,r*0.035);
+    ctx.beginPath(); ctx.ellipse(cx,cy,r*0.62,r*0.78,0,-2.5,-0.4); ctx.stroke();
+    /* أنفاس ضوئية من الملعب */
+    for(var i=0;i<26;i++){
+      var y=H-((ts*40+rnd(i)*H)%H);
+      ctx.fillStyle="rgba(255,200,150,"+(0.04+rnd(i)*0.08).toFixed(3)+")";
+      ctx.fillRect(rnd(i+3)*W,y,1.5,3+rnd(i)*5);
+    }
+    var amp=lerp(0.002,0.008,easeOut(p));
+    return { shake:amp*Math.sin(ts*31)+amp*0.5*Math.sin(ts*13.7), zoom:1.0+0.10*easeOut(p) };
+  }
+
+  /* الخاتمة: فلاشات متتابعة ثم أسود */
+  function drawScene8(ts,p){
+    var slot=[0,0.9,1.9,2.9,4.6];   /* شعار · لاعب · كأس · ملعب · النص */
+    var idx = ts<slot[1]?0 : ts<slot[2]?1 : ts<slot[3]?2 : ts<slot[4]?3 : 4;
+    if(ts>=7.4){ ctx.fillStyle="#000"; ctx.fillRect(0,0,W,H); return { shake:0, zoom:1 }; }
+    var cx=W/2, cy=H*0.42, s=Math.min(W,H)*0.26;
+    if(idx===0){
+      bg("#15110D","#000");
+      ctx.strokeStyle=GOLD; ctx.lineWidth=Math.max(1.6,s*0.035);
+      shieldPath(cx,cy,s*1.05,s*1.32); ctx.stroke();
+      ctx.fillStyle="rgba(200,16,46,0.12)"; ctx.fill();
+      ctx.fillStyle="#EFE7D4"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.direction="rtl";
+      ctx.font="800 "+(s*0.28).toFixed(0)+"px Almarai, Tajawal, sans-serif";
+      ctx.fillText("الأهلي",cx,cy+s*0.15);
+    } else if(idx===1){
+      bg("#1E0C10","#000");
+      ctx.fillStyle="rgba(0,0,0,0.92)";
+      ctx.beginPath(); ctx.ellipse(cx,cy,s*0.52,s*0.66,0,0,6.283); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx-s*1.3,H); ctx.quadraticCurveTo(cx,cy+s*0.62,cx+s*1.3,H); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle="rgba(255,220,170,0.55)"; ctx.lineWidth=Math.max(2,s*0.03);
+      ctx.beginPath(); ctx.ellipse(cx,cy,s*0.52,s*0.66,0,-2.5,-0.4); ctx.stroke();
+    } else if(idx===2){
+      bg("#241708","#000");
+      var g=ctx.createLinearGradient(cx-s*0.4,cy-s,cx+s*0.4,cy+s*0.3);
+      g.addColorStop(0,"#F2DFAE"); g.addColorStop(0.5,GOLD); g.addColorStop(1,"#8C6C33");
+      ctx.fillStyle=g;
+      ctx.beginPath(); ctx.moveTo(cx-s*0.30,cy-s*0.55);
+      ctx.quadraticCurveTo(cx-s*0.30,cy+s*0.05,cx,cy+s*0.09);
+      ctx.quadraticCurveTo(cx+s*0.30,cy+s*0.05,cx+s*0.30,cy-s*0.55);
+      ctx.closePath(); ctx.fill();
+      ctx.fillRect(cx-s*0.06,cy+s*0.07,s*0.12,s*0.20);
+      ctx.fillRect(cx-s*0.21,cy+s*0.25,s*0.42,s*0.09);
+    } else if(idx===3){
+      /* لوفتس فيرسفيلد ليلًا: مدرّج + أربعة أبراج إنارة */
+      bg("#0B1016","#000");
+      crowd(H*0.52,H*0.80,ts,false);
+      ctx.save();
+      /* حافة المدرّج */
+      ctx.fillStyle="rgba(8,11,15,0.96)";
+      ctx.beginPath();
+      ctx.moveTo(-W*0.1,H*0.80);
+      ctx.quadraticCurveTo(W*0.5,H*0.68,W*1.1,H*0.80);
+      ctx.lineTo(W*1.1,H); ctx.lineTo(-W*0.1,H); ctx.closePath(); ctx.fill();
+      [0.14,0.36,0.64,0.86].forEach(function(fx,i){
+        var x=W*fx, top=H*(0.24+(i%2)*0.035), lw2=W*0.085, lh=H*0.030;
+        /* الصاري حتى حافة المدرّج */
+        ctx.fillStyle="rgba(16,20,26,0.95)";
+        ctx.fillRect(x-W*0.0045,top,W*0.009,H*0.56-top+H*0.02);
+        /* لوحة المصابيح */
+        ctx.fillStyle="rgba(240,238,225,0.55)";
+        ctx.fillRect(x-lw2/2,top-lh,lw2,lh);
+        ctx.fillStyle="rgba(255,252,238,0.95)";
+        for(var c=0;c<4;c++) for(var r2=0;r2<2;r2++)
+          ctx.fillRect(x-lw2/2+c*lw2/4+lw2*0.03, top-lh+r2*lh/2+lh*0.08, lw2*0.19, lh*0.34);
+        var g2=ctx.createRadialGradient(x,top,0,x,top,W*0.26);
+        g2.addColorStop(0,"rgba(255,245,215,0.26)"); g2.addColorStop(1,"rgba(255,245,215,0)");
+        ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(x,top,W*0.26,0,6.283); ctx.fill();
+      });
+      ctx.restore();
+      for(var i=0;i<200;i++){   /* ومضات كاميرات الجمهور */
+        var ph=(ts*3+rnd(i)*4)%4;
+        if(ph>0.18) continue;
+        ctx.fillStyle="rgba(255,255,255,"+(1-ph/0.18).toFixed(2)+")";
+        ctx.fillRect(rnd(i+5)*W, H*0.54+rnd(i+9)*H*0.24, 2,2);
+      }
+    } else {
+      bg("#100C09","#000");
+      var fade=clamp((7.4-ts)/1.2,0,1);
+      /* أفق الملعب باهتًا خلف النص */
+      ctx.globalAlpha=fade*0.55;
+      var hg=ctx.createLinearGradient(0,H*0.62,0,H);
+      hg.addColorStop(0,"rgba(255,220,170,0)"); hg.addColorStop(1,"rgba(255,220,170,0.12)");
+      ctx.fillStyle=hg; ctx.fillRect(0,H*0.62,W,H*0.38);
+      for(var e=0;e<46;e++){   /* جمرات تصعد ببطء */
+        var ey=H-((ts*26+rnd(e)*H)%H);
+        ctx.fillStyle="rgba(201,169,106,"+(0.10+rnd(e+2)*0.18).toFixed(3)+")";
+        ctx.fillRect(rnd(e+7)*W,ey,1.6,1.6);
+      }
+      ctx.globalAlpha=fade*0.22;
+      ctx.strokeStyle=GOLD; ctx.lineWidth=1;
+      shieldPath(cx,H*0.30,s*0.9,s*1.13); ctx.stroke();
+      ctx.globalAlpha=1;
+    }
+    return { shake:idx<4?0.003*Math.sin(ts*40):0, zoom:idx<4?1.02+0.05*((ts-slot[idx])/0.9):1.0,
+             flashCut: idx<4 && (ts-slot[idx])<0.10 };
+  }
+
+  var DRAW=[drawScene1,drawScene2,drawScene3,drawScene4,drawScene5,drawScene6,drawScene7,drawScene8];
+
+  /* ============ النص ============ */
+  function paintText(i,ts,d){
+    var sc=SCENES[i];
+    var inT = i===7 ? 4.8 : (i===1?0.35:0.55);
+    var outT = i===7 ? 7.5 : d-0.45;
+    var a=clamp((ts-inT)/0.55,0,1), b=clamp((outT-ts)/0.45,0,1);
+    var o=Math.min(easeOut(a),b);
+    if(i===7 && ts>=7.4) o=0;    /* Hard cut to black */
+    lineEl.style.opacity=o;
+    var big = i===7;
+    var base = big ? Math.min(W*0.115,H*0.075) : Math.min(W*0.082,H*0.055);
+    lineEl.style.fontSize=base.toFixed(1)+"px";
+    var rise = (1-easeOut(a))*(big?18:12);
+    var sc2 = big ? lerp(0.90,1,easeOut(a)) : lerp(0.97,1,easeOut(a));
+    lineEl.style.transform="translateY("+rise.toFixed(2)+"px) scale("+sc2.toFixed(3)+")";
+    lineEl.style.letterSpacing = big ? (lerp(6,0,easeOut(a)).toFixed(2)+"px") : "0";
+  }
+
+  /* ============ الرسم الكامل ============ */
+  function render(t){
+    var i=sceneAt(t), sc=SCENES[i], ts=t-sc.t;
+    if(i!==curScene){ enterScene(i); curScene=i; }
+
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    ctx.clearRect(0,0,W,H);
+    var st=DRAW[i](ts,clamp(ts/sc.d,0,1))||{};
+
+    /* اهتزاز + زووم يطبّقان على الطبقات كلها */
+    var sx=(st.shake||0)*W, sy=(st.shake||0)*H*0.6, z=st.zoom||1;
+    var tr="translate("+sx.toFixed(2)+"px,"+sy.toFixed(2)+"px) scale("+z.toFixed(4)+")";
+    cv.style.transform=tr; mediaLayer.style.transform=tr;
+
+    /* الفلاتر اللونية حسب المشهد */
+    var f = sc.filter==="gray" ? "grayscale(0.92) contrast(1.06) brightness(0.86)"
+          : sc.filter==="warm" ? "saturate(1.18) sepia(0.18) contrast(1.05)"
+          : sc.filter==="punch"? "contrast(1.35) saturate(1.2)"
+          : "none";
+    cv.style.filter=f; mediaLayer.style.filter=f;
+
+    /* الوميض: انتقالات المشاهد ٤ و٨ + قطعات المونتاج */
+    var fl=0;
+    if(i===3) fl=Math.max(fl,clamp(1-(ts/0.45),0,1));
+    if(i===7) fl=Math.max(fl,clamp(1-(ts/0.30),0,1));
+    if(st.flashCut) fl=Math.max(fl,0.45);
+    if(i===7 && ts>=7.4) fl=0;
+    flashEl.style.opacity=fl.toFixed(3);
+    leakEl.style.opacity=(st.leak||0).toFixed(3);
+    barsEl.style.opacity = (i===2? (0.25+0.15*Math.sin(t*9)).toFixed(3) : 0);
+
+    paintText(i,ts,sc.d);
+    tcEl.textContent=fmt(t)+" / "+fmt(DUR);
+    stage.classList.toggle("at-start",!playing && t<0.12);
+    var pr=t/DUR;
+    fillEl.style.width=(pr*100).toFixed(2)+"%";
+    knobEl.style.right="calc("+(pr*100).toFixed(2)+"% - 6px)";
+    syncMedia(i,ts);
+  }
+
+  function enterScene(i){
+    var sc=SCENES[i];
+    lineEl.innerHTML=sc.text;
+    kickerEl.textContent=sc.kicker;
+    document.getElementById("d-sfx").textContent=sc.sfx;
+    document.getElementById("d-fx").textContent=sc.fx;
+    document.getElementById("d-shot").textContent=sc.shot;
+    [].forEach.call(boardList.children,function(el,k){ el.classList.toggle("active",k===i); });
+    showMedia(i);
+  }
+
+  /* ============ المادة المُسندة ============ */
+  function showMedia(i){
+    mediaLayer.innerHTML="";
+    var m=media[i]; if(!m) return;
+    mediaLayer.appendChild(m.el);
+    if(m.type==="video"){ try{ m.el.currentTime=0; }catch(e){} }
+  }
+  function syncMedia(i,ts){
+    var m=media[i]; if(!m||m.type!=="video") return;
+    var v=m.el;
+    if(playing){ if(v.paused) v.play().catch(function(){}); }
+    else if(!v.paused) v.pause();
+    if(v.duration && Math.abs(v.currentTime-Math.min(ts,v.duration-0.05))>0.35){
+      try{ v.currentTime=Math.min(ts,Math.max(0,v.duration-0.05)); }catch(e){}
+    }
+  }
+  function setMedia(i,file){
+    if(!file) return;
+    var url=URL.createObjectURL(file), el, type;
+    if(/^video\//.test(file.type)){
+      el=document.createElement("video"); el.src=url; el.muted=true; el.playsInline=true;
+      el.loop=true; type="video";
+    } else if(/^image\//.test(file.type)){
+      el=document.createElement("img"); el.src=url; type="image";
+    } else return;
+    media[i]={ el:el, type:type, name:file.name };
+    var nameEl=boardList.children[i].querySelector(".name");
+    if(nameEl) nameEl.textContent=file.name;
+    if(i===curScene) showMedia(i);
+  }
+
+  /* ============ الصوت (مركّب بالكامل) ============ */
+  var AC=null, master=null, muted=false, evs=[], evIdx=0;
+  function buildEvents(){
+    var e=[];
+    function kicks(from,to,fromGap,toGap,gain){
+      var t=from, k=0;
+      while(t<to){ e.push({t:t,type:"kick",g:gain});
+        t+=lerp(fromGap,toGap,clamp((t-from)/(to-from),0,1)); if(++k>400) break; }
+    }
+    /* ١ — طبلة منخفضة + نبضة قلب */
+    e.push({t:0.05,type:"sub",g:0.9},{t:0.6,type:"heart",g:0.8},{t:1.3,type:"heart",g:0.7},{t:3.1,type:"sub",g:0.6});
+    /* ٢ — المونتاج: هدير + ضربات مع كل قطع */
+    e.push({t:5.0,type:"roar",g:0.5,d:7.0});
+    kicks(5.0,12,0.62,0.30,1.0);
+    /* ٣ — الهبوط: هدير ينخفض + تنهيدة */
+    e.push({t:12.0,type:"downer",g:0.8},{t:12.2,type:"roar",g:0.22,d:4.5});
+    kicks(12.6,19.4,1.7,1.7,0.42);
+    /* ٤ — التسارع + هتاف */
+    e.push({t:20.0,type:"swoosh",g:1.0});
+    kicks(20.2,28,0.80,0.42,0.85);
+    e.push({t:22.5,type:"chant",g:0.5},{t:25.0,type:"chant",g:0.6});
+    /* ٥ — التدخلات ثم الهدف */
+    kicks(28,34.2,0.42,0.34,0.95);
+    e.push({t:29.4,type:"hit",g:0.8},{t:31.0,type:"hit",g:0.85},{t:32.6,type:"hit",g:0.9});
+    e.push({t:34.2,type:"boom",g:1.0},{t:34.2,type:"roar",g:0.95,d:4.0});
+    kicks(34.6,38,0.36,0.36,0.9);
+    /* ٦ — القاهرة: هتافات */
+    kicks(38,48,0.52,0.46,0.8);
+    [39.2,41.0,42.8,44.6,46.4].forEach(function(ct){ e.push({t:ct,type:"chant",g:0.62}); });
+    e.push({t:38.2,type:"roar",g:0.45,d:9.0});
+    /* ٧ — الذروة */
+    kicks(48,55,0.34,0.16,1.0);
+    e.push({t:48.0,type:"roar",g:0.6,d:7.0},{t:52.0,type:"roar",g:0.9,d:3.0});
+    /* ٨ — الخاتمة: ضربات الفلاش ثم صمت ثم صافرة */
+    e.push({t:55.0,type:"boom",g:1.0},{t:55.0,type:"roar",g:0.85,d:6.6});
+    [55.9,56.9,57.9,59.6].forEach(function(ft){ e.push({t:ft,type:"hit",g:0.75}); });
+    e.push({t:62.4,type:"whistle",g:0.9});
+    e.sort(function(a,b){ return a.t-b.t; });
+    return e;
+  }
+  function audioInit(){
+    if(AC) return;
+    var C=window.AudioContext||window.webkitAudioContext; if(!C) return;
+    AC=new C(); master=AC.createGain(); master.gain.value=muted?0:0.9; master.connect(AC.destination);
+  }
+  function noiseBuf(sec){
+    var n=Math.floor(AC.sampleRate*sec), b=AC.createBuffer(1,n,AC.sampleRate), d=b.getChannelData(0);
+    for(var i=0;i<n;i++) d[i]=Math.random()*2-1;
+    return b;
+  }
+  function play(ev,when){
+    var g=ev.g||1;
+    if(ev.type==="kick"||ev.type==="sub"||ev.type==="boom"){
+      var o=AC.createOscillator(), gn=AC.createGain();
+      var f0=ev.type==="sub"?90:ev.type==="boom"?150:130, f1=ev.type==="sub"?32:42;
+      var dur=ev.type==="sub"?1.1:ev.type==="boom"?1.5:0.42;
+      o.type="sine"; o.frequency.setValueAtTime(f0,when);
+      o.frequency.exponentialRampToValueAtTime(f1,when+dur*0.8);
+      gn.gain.setValueAtTime(0.0001,when);
+      gn.gain.exponentialRampToValueAtTime(0.75*g,when+0.012);
+      gn.gain.exponentialRampToValueAtTime(0.0001,when+dur);
+      o.connect(gn); gn.connect(master); o.start(when); o.stop(when+dur+0.05);
+      if(ev.type!=="sub"){   /* طقطقة الجلد */
+        var s=AC.createBufferSource(), f=AC.createBiquadFilter(), sg=AC.createGain();
+        s.buffer=noiseBuf(0.05); f.type="bandpass"; f.frequency.value=1800;
+        sg.gain.setValueAtTime(0.18*g,when); sg.gain.exponentialRampToValueAtTime(0.0001,when+0.05);
+        s.connect(f); f.connect(sg); sg.connect(master); s.start(when); s.stop(when+0.06);
+      }
+    } else if(ev.type==="heart"){
+      play({type:"kick",g:g*0.8},when); play({type:"kick",g:g*0.55},when+0.19);
+    } else if(ev.type==="roar"){
+      var d=ev.d||3, s2=AC.createBufferSource(), f2=AC.createBiquadFilter(), g2=AC.createGain();
+      s2.buffer=noiseBuf(d); s2.loop=false;
+      f2.type="bandpass"; f2.frequency.setValueAtTime(420,when);
+      f2.frequency.linearRampToValueAtTime(900,when+d*0.5);
+      f2.Q.value=0.8;
+      g2.gain.setValueAtTime(0.0001,when);
+      g2.gain.linearRampToValueAtTime(0.16*g,when+Math.min(0.8,d*0.25));
+      g2.gain.linearRampToValueAtTime(0.10*g,when+d*0.7);
+      g2.gain.exponentialRampToValueAtTime(0.0001,when+d);
+      s2.connect(f2); f2.connect(g2); g2.connect(master); s2.start(when); s2.stop(when+d);
+    } else if(ev.type==="chant"){
+      /* نبضات هتاف: ثلاث دفعات ضجيج مُرشَّحة */
+      [0,0.34,0.68].forEach(function(o2,k){
+        var s3=AC.createBufferSource(), f3=AC.createBiquadFilter(), g3=AC.createGain();
+        s3.buffer=noiseBuf(0.28); f3.type="bandpass"; f3.frequency.value=k===2?760:560; f3.Q.value=2.2;
+        g3.gain.setValueAtTime(0.0001,when+o2);
+        g3.gain.linearRampToValueAtTime(0.12*g,when+o2+0.05);
+        g3.gain.exponentialRampToValueAtTime(0.0001,when+o2+0.28);
+        s3.connect(f3); f3.connect(g3); g3.connect(master); s3.start(when+o2); s3.stop(when+o2+0.3);
+      });
+    } else if(ev.type==="hit"||ev.type==="swoosh"){
+      var s4=AC.createBufferSource(), f4=AC.createBiquadFilter(), g4=AC.createGain();
+      var dd=ev.type==="swoosh"?0.5:0.16;
+      s4.buffer=noiseBuf(dd); f4.type="highpass";
+      f4.frequency.setValueAtTime(ev.type==="swoosh"?300:900,when);
+      f4.frequency.linearRampToValueAtTime(ev.type==="swoosh"?5000:2400,when+dd);
+      g4.gain.setValueAtTime(0.22*g,when); g4.gain.exponentialRampToValueAtTime(0.0001,when+dd);
+      s4.connect(f4); f4.connect(g4); g4.connect(master); s4.start(when); s4.stop(when+dd+0.02);
+    } else if(ev.type==="downer"){
+      var o5=AC.createOscillator(), g5=AC.createGain();
+      o5.type="sawtooth"; o5.frequency.setValueAtTime(220,when);
+      o5.frequency.exponentialRampToValueAtTime(48,when+2.2);
+      g5.gain.setValueAtTime(0.0001,when);
+      g5.gain.linearRampToValueAtTime(0.09*g,when+0.15);
+      g5.gain.exponentialRampToValueAtTime(0.0001,when+2.4);
+      o5.connect(g5); g5.connect(master); o5.start(when); o5.stop(when+2.5);
+    } else if(ev.type==="whistle"){
+      [2150,2850].forEach(function(fr,k){
+        var o6=AC.createOscillator(), g6=AC.createGain();
+        o6.type="square"; o6.frequency.setValueAtTime(fr,when);
+        g6.gain.setValueAtTime(0.0001,when);
+        g6.gain.linearRampToValueAtTime(0.06*g,when+0.02);
+        g6.gain.setValueAtTime(0.06*g,when+0.5);
+        g6.gain.exponentialRampToValueAtTime(0.0001,when+0.62);
+        o6.connect(g6); g6.connect(master); o6.start(when); o6.stop(when+0.65);
+      });
+    }
+  }
+  function audioSeek(t){ evIdx=0; while(evIdx<evs.length && evs[evIdx].t<t) evIdx++; }
+  function audioTick(t){
+    if(!AC||muted) return;
+    var look=t+0.25;
+    while(evIdx<evs.length && evs[evIdx].t<look){
+      var ev=evs[evIdx++];
+      play(ev, AC.currentTime+Math.max(0,ev.t-t));
+    }
+  }
+
+  /* ============ التشغيل ============ */
+  function frame(now){
+    if(playing){
+      var dt=(now-lastFrame)/1000;
+      if(dt>0 && dt<0.5){ T+=dt; audioTick(T); }
+      if(T>=DUR){ T=DUR; setPlaying(false); }
+    }
+    lastFrame=now;
+    render(T);
+    requestAnimationFrame(frame);
+  }
+  function setPlaying(v){
+    playing=v;
+    stage.classList.toggle("playing",v);
+    document.getElementById("btn-play").textContent=v?"إيقاف":"تشغيل";
+    if(v){
+      if(T>=DUR-0.01) seek(0);
+      audioInit();
+      if(AC && AC.state==="suspended") AC.resume();
+      audioSeek(T);
+    } else if(media[curScene] && media[curScene].type==="video"){
+      media[curScene].el.pause();
+    }
+  }
+  function seek(t){
+    T=clamp(t,0,DUR); audioSeek(T); render(T);
+  }
+
+  /* ============ الواجهة ============ */
+  function buildBoard(){
+    SCENES.forEach(function(sc,i){
+      var row=document.createElement("div"); row.className="sc";
+      row.innerHTML=
+        '<div class="time">'+fmt(sc.t)+'<br>'+fmt(sc.t+sc.d)+'</div>'+
+        '<div><div class="txt">'+sc.text+'</div>'+
+        '<div class="meta"><b>المشهد:</b> '+sc.shot+'<br>'+
+        '<b>الصوت:</b> '+sc.sfx+'<br><b>التأثير:</b> '+sc.fx+'</div></div>'+
+        '<div class="slot"><button type="button">مادة</button><span class="name"></span></div>';
+      row.addEventListener("click",function(e){
+        if(e.target.tagName==="BUTTON") return;
+        seek(sc.t);
+      });
+      row.querySelector("button").addEventListener("click",function(){
+        var inp=document.createElement("input");
+        inp.type="file"; inp.accept="image/*,video/*";
+        inp.addEventListener("change",function(){ setMedia(i,inp.files[0]); });
+        inp.click();
+      });
+      boardList.appendChild(row);
+    });
+  }
+
+  document.getElementById("btn-play").addEventListener("click",function(){ setPlaying(!playing); });
+  stage.addEventListener("click",function(){ setPlaying(!playing); });
+  document.getElementById("btn-restart").addEventListener("click",function(){ seek(0); setPlaying(true); });
+  document.getElementById("btn-sound").addEventListener("click",function(){
+    muted=!muted; this.classList.toggle("on",!muted);
+    this.textContent=muted?"كتم":"الصوت";
+    if(master) master.gain.value=muted?0:0.9;
+    if(!muted) audioSeek(T);
+  });
+  document.getElementById("btn-director").addEventListener("click",function(){
+    stage.classList.toggle("show-director"); this.classList.toggle("on");
+  });
+  document.getElementById("btn-ratio").addEventListener("click",function(){
+    var wide=stage.classList.toggle("wide");
+    document.documentElement.style.setProperty("--ar", wide?"16/9":"9/16");
+    this.textContent = wide?"١٦:٩":"٩:١٦";
+    requestAnimationFrame(resize);
+  });
+  document.getElementById("btn-theme").addEventListener("click",function(){
+    var green=document.documentElement.style.getPropertyValue("--accent").trim()==="#007A3D";
+    document.documentElement.style.setProperty("--accent", green?"#C8102E":"#007A3D");
+    document.documentElement.style.setProperty("--accent-soft", green?"rgba(200,16,46,0.34)":"rgba(0,122,61,0.34)");
+    this.textContent = "الهوية: "+(green?"أحمر":"أخضر");
+  });
+
+  /* التمرير على الشريط */
+  var dragging=false;
+  function scrubTo(clientX){
+    var r=scrubEl.getBoundingClientRect();
+    var p=1-((clientX-r.left)/r.width);   /* الاتجاه من اليمين لليسار */
+    seek(clamp(p,0,1)*DUR);
+  }
+  scrubEl.addEventListener("pointerdown",function(e){ dragging=true; scrubEl.setPointerCapture(e.pointerId); scrubTo(e.clientX); });
+  scrubEl.addEventListener("pointermove",function(e){ if(dragging) scrubTo(e.clientX); });
+  scrubEl.addEventListener("pointerup",function(){ dragging=false; });
+  scrubEl.addEventListener("pointercancel",function(){ dragging=false; });
+
+  /* لوحة المفاتيح */
+  document.addEventListener("keydown",function(e){
+    if(e.target.tagName==="INPUT") return;
+    if(e.code==="Space"){ e.preventDefault(); setPlaying(!playing); }
+    else if(e.key==="r"||e.key==="R"){ seek(0); setPlaying(true); }
+    else if(e.key==="m"||e.key==="M"){ document.getElementById("btn-sound").click(); }
+    else if(e.key==="ArrowLeft"){ var n=sceneAt(T)+1; seek(n<SCENES.length?SCENES[n].t:DUR); }
+    else if(e.key==="ArrowRight"){
+      var c=sceneAt(T);
+      seek(T-SCENES[c].t>0.6 ? SCENES[c].t : (c>0?SCENES[c-1].t:0));
+    }
+  });
+
+  /* إفلات مادة على الإطار */
+  ["dragover","drop"].forEach(function(ev){
+    stage.addEventListener(ev,function(e){
+      e.preventDefault();
+      if(ev==="drop" && e.dataTransfer.files[0]) setMedia(sceneAt(T),e.dataTransfer.files[0]);
+    });
+  });
+
+  /* ============ إقلاع ============ */
+  evs=buildEvents();
+  buildBoard();
+  resize();
+  seek(0);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
