@@ -249,7 +249,8 @@
   #about .about-sign .dot { width:6px; height:6px; border-radius:50%; background:#C9A96A; box-shadow:0 0 8px rgba(201,169,106,0.6); }
 
   /* ===== TASKS APP — إعادة تصميم كاملة (Material 3 + Apple touch) ===== */
-  #planner { grid-area:planner; padding:0; border:none; background:transparent; box-shadow:none; }
+  /* min-width:0 يمنع محتوى التطبيق من توسيع خانة الشبكة خارج عرض الشاشة */
+  #planner { grid-area:planner; padding:0; border:none; background:transparent; box-shadow:none; min-width:0; }
   .ta { --pri:#A5793A; --pri-deep:#6E4A18; --pri-soft:rgba(165,121,58,0.13); --ok:#3E8E2E; --warn:#D98324; --danger:#B03A34;
     --bg:#F3EDE2; --surface:#FFFDF8; --surface2:#F7F1E6; --text:#2A2418; --muted:#7A6A52; --faint:#A8977B; --border:#E6DBC7;
     --shadow:0 6px 22px -10px rgba(74,52,20,0.20); --shadow-sm:0 2px 8px -3px rgba(74,52,20,0.14);
@@ -265,8 +266,8 @@
   .ta .msr.fill { font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 24; }
   .ta.no-icons .msr { display:none; }
 
-  .ta-body { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:thin; }
-  .ta-view { display:none; padding:20px 16px 26px; animation:taFade .32s cubic-bezier(.22,.61,.36,1); }
+  .ta-body { flex:1; min-width:0; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:thin; }
+  .ta-view { display:none; min-width:0; padding:20px 16px 26px; animation:taFade .32s cubic-bezier(.22,.61,.36,1); }
   .ta-view.on { display:block; }
   @keyframes taFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
 
@@ -275,6 +276,7 @@
   .ta-hd .greet { font-size:14px; color:var(--muted); font-weight:600; }
   .ta-hd .name { font-size:24px; font-weight:800; color:var(--text); line-height:1.25; margin-top:2px; }
   .ta-hd .date { font-size:12.5px; color:var(--faint); margin-top:3px; }
+  .ta-hd .hd-btns { display:flex; align-items:center; gap:8px; flex-shrink:0; }
   .ta-hd .th-btn { width:44px; height:44px; border-radius:14px; background:var(--surface); border:1px solid var(--border); color:var(--muted); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow-sm); flex-shrink:0; }
   .ta-hd .th-btn:active { transform:scale(.92); }
 
@@ -330,9 +332,60 @@
   .ta-pdot { display:none; }
   .ta-opts { width:30px; height:30px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--faint); cursor:pointer; flex-shrink:0; margin-top:-2px; }
   .ta-opts:active { background:var(--surface2); }
-  .ta-swipe-bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; padding:0 20px; z-index:0; }
-  .ta-swipe-bg .s-ok { color:var(--ok); } .ta-swipe-bg .s-del { color:var(--danger); }
-  .ta-swipe-bg .msr { font-size:24px; }
+  /* Swipe actions on task rows */
+  .ta-swipe-bg { position:absolute; inset:0; z-index:0; pointer-events:none; background:var(--surface2); }
+  .ta-swipe-bg .sw { position:absolute; top:0; bottom:0; display:flex; align-items:center; gap:5px; font-size:11.5px; font-weight:800; opacity:0; transition:opacity .14s; }
+  .ta-swipe-bg .sw .msr { font-size:21px; }
+  .ta-swipe-bg .sw-a { left:18px; color:var(--ok); }
+  .ta-swipe-bg .sw-b { right:18px; color:var(--warn); }
+  .ta-card.sw-r .sw-a, .ta-card.sw-l .sw-b { opacity:1; }
+  .ta-card.swiping .ta-card-in { transition:none; }
+  .ta-sec.collapsed .ta-sec-b { display:none; }
+  .ta-sec-h.tap { cursor:pointer; }
+  .ta-sec-h .cx { display:flex; align-items:center; gap:6px; }
+  .ta-sec-h .cx .msr { font-size:18px; color:var(--faint); transition:transform .25s; }
+  .ta-sec.collapsed .ta-sec-h .cx .msr { transform:rotate(90deg); }
+
+  /* Smart quick-add */
+  .ta-qa { background:var(--surface); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow-sm); padding:2px 10px 2px 6px; margin-bottom:11px; transition:border-color .2s, box-shadow .2s, padding .2s; }
+  .ta-qa.focus { border-color:var(--pri); box-shadow:0 0 0 3px var(--pri-soft); padding-bottom:6px; }
+  .ta-qa-row { display:flex; align-items:center; gap:8px; }
+  .ta-qa-row .lead { color:var(--pri); display:flex; align-items:center; flex-shrink:0; }
+  .ta-qa-row .lead .msr { font-size:20px; }
+  .ta-qa-in { flex:1; min-width:0; border:none; background:transparent; outline:none; font-family:inherit; font-size:16px; color:var(--text); padding:12px 0; }
+  .ta-qa-in::placeholder { color:var(--faint); font-size:13.5px; }
+  .ta-qa-go { width:38px; height:38px; border-radius:13px; border:none; background:linear-gradient(150deg,#B2833F,#6E4A18); color:#FFF6E4; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; opacity:.35; pointer-events:none; transition:opacity .2s, transform .2s; }
+  .ta-qa-go .msr { font-size:21px; }
+  .ta-qa-go.on { opacity:1; pointer-events:auto; }
+  .ta-qa-go:active { transform:scale(.9); }
+  .ta-qa-pv { display:flex; gap:6px; flex-wrap:wrap; padding:0 2px 4px; }
+  .ta-qa-pv:empty { display:none; }
+  .ta-qa-hint { display:none; font-size:10.5px; color:var(--faint); line-height:1.7; padding:0 2px 2px; }
+  .ta-qa.focus .ta-qa-hint { display:block; }
+  .ta-chip.pri { color:var(--pri); background:var(--pri-soft); }
+
+  /* Search + quick filters */
+  .ta-search { display:none; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:0 13px; margin-bottom:12px; box-shadow:var(--shadow-sm); animation:taFade .24s ease; }
+  .ta-search.on { display:flex; }
+  .ta-search .msr { font-size:19px; color:var(--faint); flex-shrink:0; }
+  .ta-search input { flex:1; min-width:0; border:none; background:transparent; outline:none; font-family:inherit; font-size:16px; color:var(--text); padding:12px 0; }
+  .ta-search input::placeholder { color:var(--faint); }
+  .ta-search .clr { cursor:pointer; padding:6px; margin:-6px; }
+  .ta-filters { display:flex; min-width:0; gap:7px; overflow-x:auto; padding:1px 2px 12px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .ta-filters::-webkit-scrollbar { display:none; }
+  .ta-fl { flex:0 0 auto; display:inline-flex; align-items:center; gap:5px; padding:8px 13px; border-radius:20px; border:1px solid var(--border); background:var(--surface); color:var(--muted); font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; transition:background .18s, color .18s, border-color .18s; }
+  .ta-fl .msr { font-size:15px; }
+  .ta-fl .n { font-size:10.5px; opacity:.75; font-weight:800; }
+  .ta-fl.on { background:var(--pri); border-color:var(--pri); color:#fff; }
+  .ta-fl:active { transform:scale(.96); }
+
+  /* Snackbar (undo) */
+  .ta-snack { position:absolute; left:14px; right:14px; bottom:calc(86px + env(safe-area-inset-bottom)); z-index:30; display:flex; align-items:center; gap:8px; background:#1D2A22; color:#F3EEE2; border-radius:16px; padding:11px 14px; box-shadow:0 18px 38px -14px rgba(0,0,0,0.65); transform:translateY(150%); opacity:0; transition:transform .34s cubic-bezier(.22,.61,.36,1), opacity .28s; pointer-events:none; }
+  .ta-snack.on { transform:none; opacity:1; pointer-events:auto; }
+  .ta-snack .msg { flex:1; min-width:0; font-size:13px; font-weight:700; line-height:1.55; }
+  .ta-snack .undo { flex-shrink:0; background:transparent; border:none; color:#E4C687; font-family:inherit; font-size:13px; font-weight:800; cursor:pointer; padding:7px 9px; border-radius:10px; }
+  .ta-snack .undo:active { background:rgba(255,255,255,0.12); }
+  .ta-snack .sx { flex-shrink:0; color:rgba(255,255,255,0.5); cursor:pointer; font-size:19px; }
 
   /* Bottom navigation */
   .ta-nav { flex-shrink:0; display:flex; align-items:center; justify-content:space-around; background:var(--surface); border-top:1px solid var(--border); padding:8px 6px calc(8px + env(safe-area-inset-bottom)); position:relative; box-shadow:0 -6px 20px -12px rgba(15,23,42,0.2); }
@@ -891,7 +944,15 @@
                 <div class="name" id="ta-name">أبو سعد</div>
                 <div class="date" id="ta-today-date"></div>
               </div>
-              <div class="th-btn" id="ta-theme-quick" title="الوضع"><span class="msr">dark_mode</span></div>
+              <div class="hd-btns">
+                <div class="th-btn" id="ta-search-btn" title="بحث"><span class="msr">search</span></div>
+                <div class="th-btn" id="ta-theme-quick" title="الوضع"><span class="msr">dark_mode</span></div>
+              </div>
+            </div>
+            <div class="ta-search" id="ta-search">
+              <span class="msr">search</span>
+              <input type="text" id="ta-search-in" placeholder="ابحث في المهام والملاحظات…">
+              <span class="msr clr" id="ta-search-clr">close</span>
             </div>
             <div class="ta-hero">
               <div class="ta-ring" id="ta-ring"></div>
@@ -901,6 +962,16 @@
               </div>
             </div>
             <div class="ta-stats-row" id="ta-home-stats"></div>
+            <div class="ta-qa" id="ta-qa">
+              <div class="ta-qa-row">
+                <span class="lead msr">bolt</span>
+                <input type="text" class="ta-qa-in" id="ta-qa-in" placeholder="إضافة سريعة… مثال: اجتماع غدًا ٥ م عاجل">
+                <button class="ta-qa-go" id="ta-qa-go" title="إضافة"><span class="msr">arrow_upward</span></button>
+              </div>
+              <div class="ta-qa-pv" id="ta-qa-pv"></div>
+              <div class="ta-qa-hint">يفهم تلقائيًا: اليوم · غدًا · بعد غد · الأحد · ٥ م · ٧:٣٠ مساءً · عاجل · مهم · ‎#العمل · يوميًا</div>
+            </div>
+            <div class="ta-filters" id="ta-filters"></div>
             <div id="ta-home-sections"></div>
           </section>
 
@@ -1044,6 +1115,13 @@
         <!-- Options bottom sheet -->
         <div class="ta-menu-scrim" id="ta-menu-scrim">
           <div class="ta-menu" id="ta-menu"></div>
+        </div>
+
+        <!-- Undo snackbar -->
+        <div class="ta-snack" id="ta-snack">
+          <div class="msg"></div>
+          <button class="undo" type="button">تراجع</button>
+          <span class="sx msr" id="ta-snack-x">close</span>
         </div>
 
        </div>
@@ -1359,6 +1437,7 @@
   }
   var TA = taLoad();
   var taView = "ta-home", taEditId = null, taSheetId = null, taMenuId = null;
+  var taFilter = "all", taQuery = "";
   var taCalY, taCalM, taCalSel = null;
   var taNewPrio = "med", taNewCat = "home", taNewRep = "none", taNewRemind = false;
 
@@ -1377,6 +1456,177 @@
     if (d === todayStr) return "اليوم"; if (d === tom) return "غدًا";
     var p = d.split("-").map(Number);
     try { return toAr(new Date(p[0], p[1] - 1, p[2]).toLocaleDateString("ar", { day: "numeric", month: "short" })); } catch (e) { return toAr(d); }
+  }
+  function taShort(s, n) { s = String(s || ""); n = n || 24; return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+  var TA_PRANK = { urgent: 0, high: 1, med: 2, low: 3 };
+  function taSort(a, b) {
+    var ad = a.date || "9999-99-99", bd = b.date || "9999-99-99";
+    if (ad !== bd) return ad < bd ? -1 : 1;
+    var at = a.time || "99:99", bt = b.time || "99:99";
+    if (at !== bt) return at < bt ? -1 : 1;
+    return (TA_PRANK[a.priority] === undefined ? 9 : TA_PRANK[a.priority]) - (TA_PRANK[b.priority] === undefined ? 9 : TA_PRANK[b.priority]);
+  }
+
+  // ---------- شريط التنبيه مع التراجع ----------
+  var taSnackT = null;
+  function taHideSnack() { var el = document.getElementById("ta-snack"); if (el) el.classList.remove("on"); if (taSnackT) { clearTimeout(taSnackT); taSnackT = null; } }
+  function taSnack(msg, undoFn) {
+    var el = document.getElementById("ta-snack"); if (!el) return;
+    el.querySelector(".msg").textContent = msg;
+    var u = el.querySelector(".undo");
+    u.style.display = undoFn ? "" : "none";
+    u.onclick = function () { taHideSnack(); if (undoFn) undoFn(); };
+    el.classList.add("on");
+    if (taSnackT) clearTimeout(taSnackT);
+    taSnackT = setTimeout(taHideSnack, undoFn ? 5400 : 3000);
+  }
+  /* ينفّذ تعديلاً على المهام مع لقطة تسمح بالتراجع عنه بالكامل */
+  function taAct(msg, fn) {
+    var snap = JSON.stringify(TA.tasks), nid = TA.nid;
+    fn(); taSave(); taRenderCurrent();
+    taSnack(msg, function () {
+      try { TA.tasks = JSON.parse(snap); } catch (e) { return; }
+      TA.nid = nid; taSave(); taRenderCurrent();
+    });
+  }
+
+  // ---------- التكرار: توليد النسخة التالية عند الإنجاز ----------
+  function taNextRepeatDate(ds, rep) {
+    var d;
+    if (ds) { var p = ds.split("-").map(Number); d = new Date(p[0], p[1] - 1, p[2]); }
+    else { d = new Date(); d.setHours(0, 0, 0, 0); }
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var guard = 0;
+    do {
+      if (rep === "daily") d.setDate(d.getDate() + 1);
+      else if (rep === "weekly") d.setDate(d.getDate() + 7);
+      else if (rep === "monthly") d.setMonth(d.getMonth() + 1);
+      else return null;
+      guard++;
+    } while (d.getTime() <= today.getTime() && guard < 400);
+    return fmt(d);
+  }
+  function taSpawnRepeat(t) {
+    if (!t.repeat || t.repeat === "none") return null;
+    var nd = taNextRepeatDate(t.date, t.repeat); if (!nd) return null;
+    var copy = {
+      id: "k" + (TA.nid++), title: t.title, desc: t.desc || "", done: false, date: nd, time: t.time || null,
+      priority: t.priority, category: t.category, repeat: t.repeat, reminder: !!t.reminder, notes: t.notes || "",
+      subtasks: (t.subtasks || []).map(function (s) { return { text: s.text, done: false }; }),
+      created: Date.now(), completedAt: null
+    };
+    TA.tasks.push(copy); return copy;
+  }
+
+  // ---------- التأجيل ----------
+  function taSnoozeDate(t, days) {
+    var base = new Date(); base.setHours(0, 0, 0, 0);
+    if (t.date) { var p = t.date.split("-").map(Number); var d = new Date(p[0], p[1] - 1, p[2]); if (d.getTime() > base.getTime()) base = d; }
+    base.setDate(base.getDate() + days); return fmt(base);
+  }
+  function taSnooze(id, days) {
+    var t = taById(id); if (!t) return;
+    var nd = taSnoozeDate(t, days);
+    taAct("أُجّلت «" + taShort(t.title, 18) + "» إلى " + taDateLabel(nd), function () { var x = taById(id); if (x) x.date = nd; });
+  }
+
+  // ---------- الإدخال الذكي بالعربية ----------
+  var TA_QK_DAYS = ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعه", "السبت"]; // ترتيب getDay()
+  var TA_QK_CAT = [
+    { k: "work", w: ["العمل", "عمل", "الشغل", "شغل", "الدوام", "دوام"] },
+    { k: "home", w: ["المنزل", "منزل", "البيت", "بيت"] },
+    { k: "personal", w: ["شخصي", "الشخصي"] },
+    { k: "finance", w: ["ماليه", "الماليه", "فلوس", "راتب", "فاتوره", "بنك"] },
+    { k: "health", w: ["الصحه", "صحه", "رياضه", "طبيب", "دواء", "مستشفي"] },
+    { k: "study", w: ["الدراسه", "دراسه", "مذاكره", "اختبار", "جامعه", "محاضره"] },
+    { k: "travel", w: ["السفر", "سفر", "رحله", "طيران", "مطار", "حجز"] }
+  ];
+  /* يزيل التشكيل والتطويل، ثم يوحّد الأرقام والألف والياء والتاء المربوطة مع الحفاظ على الطول */
+  function taNorm(s) {
+    return String(s || "")
+      .replace(/[ً-ْٰـ]/g, "")
+      .replace(/[٠-٩]/g, function (d) { return String.fromCharCode(d.charCodeAt(0) - 1584); })
+      .replace(/[۰-۹]/g, function (d) { return String.fromCharCode(d.charCodeAt(0) - 1728); })
+      .replace(/[أإآٱ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه");
+  }
+  function taParseQuick(raw) {
+    var src = String(raw || "").replace(/[ً-ْٰـ]/g, "");
+    if (!src.trim()) return null;
+    var norm = taNorm(src); // نفس طول src بعد إزالة التشكيل
+    var cuts = [], out = { title: "", date: null, time: null, priority: null, category: null, repeat: null };
+    function take(re, fn) {
+      re.lastIndex = 0; var m = re.exec(norm); if (!m) return false;
+      if (fn(m) === false) return false;
+      cuts.push([m.index, m.index + m[0].length]); return true;
+    }
+    var d0 = new Date(); d0.setHours(0, 0, 0, 0);
+    function plus(n) { var x = new Date(d0); x.setDate(x.getDate() + n); return fmt(x); }
+
+    // التاريخ (الأطول أولًا)
+    take(/(^|\s)بعد\s*غدا?(?=\s|$)/, function () { out.date = plus(2); }) ||
+    take(/(^|\s)(?:بعد\s*اسبوعين)(?=\s|$)/, function () { out.date = plus(14); }) ||
+    take(/(^|\s)(?:بعد\s*اسبوع|الاسبوع\s*(?:القادم|الجاي|المقبل))(?=\s|$)/, function () { out.date = plus(7); }) ||
+    take(/(^|\s)بعد\s*(\d{1,3})\s*(?:يوم|ايام)(?=\s|$)/, function (m) { out.date = plus(parseInt(m[2], 10)); }) ||
+    take(/(^|\s)(?:يوم\s*)?(الاحد|الاثنين|الثلاثاء|الاربعاء|الخميس|الجمعه|السبت)(?=\s|$)/, function (m) {
+      var t = TA_QK_DAYS.indexOf(m[2]); if (t < 0) return false;
+      var diff = (t - d0.getDay() + 7) % 7; if (diff === 0) diff = 7; out.date = plus(diff);
+    }) ||
+    take(/(^|\s)(?:غدا|غد|بكره|بكرا)(?=\s|$)/, function () { out.date = plus(1); }) ||
+    take(/(^|\s)اليوم(?=\s|$)/, function () { out.date = plus(0); }) ||
+    take(/(^|\s)(\d{1,2})[\/\-](\d{1,2})(?=\s|$)/, function (m) {
+      var dd = parseInt(m[2], 10), mm = parseInt(m[3], 10);
+      if (dd < 1 || dd > 31 || mm < 1 || mm > 12) return false;
+      var y = d0.getFullYear(), c = new Date(y, mm - 1, dd);
+      if (c.getTime() < d0.getTime()) c = new Date(y + 1, mm - 1, dd);
+      out.date = fmt(c);
+    });
+
+    // الوقت
+    take(/(^|\s)(?:الساعه\s*)?(\d{1,2})(?::(\d{2}))?\s*(صباحا|مساء|ظهرا|عصرا|ليلا|ص|م)(?=\s|$)/, function (m) {
+      var h = parseInt(m[2], 10), mi = m[3] ? parseInt(m[3], 10) : 0, ap = m[4];
+      if (h > 12 || mi > 59) return false;
+      if (ap === "ص" || ap === "صباحا") h = h % 12;
+      else { h = h % 12; h += 12; if (ap === "ظهرا" && m[2] === "12") h = 12; }
+      out.time = pad(h) + ":" + pad(mi);
+    }) ||
+    take(/(^|\s)الساعه\s*(\d{1,2})(?::(\d{2}))?(?=\s|$)/, function (m) {
+      var h = parseInt(m[2], 10), mi = m[3] ? parseInt(m[3], 10) : 0;
+      if (h > 23 || mi > 59) return false;
+      if (h >= 1 && h <= 7) h += 12; // ١–٧ تُفهم مساءً في العادة
+      out.time = pad(h) + ":" + pad(mi);
+    });
+
+    // الأولوية
+    take(/(^|\s)(?:عاجل\s*جدا|عاجل|مستعجل|طارئ)(?=\s|$)/, function () { out.priority = "urgent"; }) ||
+    take(/(^|\s)(?:مهم\s*جدا|مهم|عالي)(?=\s|$)/, function () { out.priority = "high"; }) ||
+    take(/(^|\s)(?:منخفض|بسيط|لاحقا|وقت\s*فراغ)(?=\s|$)/, function () { out.priority = "low"; });
+
+    // التكرار
+    take(/(^|\s)(?:كل\s*يوم|يوميا)(?=\s|$)/, function () { out.repeat = "daily"; }) ||
+    take(/(^|\s)(?:كل\s*اسبوع|اسبوعيا)(?=\s|$)/, function () { out.repeat = "weekly"; }) ||
+    take(/(^|\s)(?:كل\s*شهر|شهريا)(?=\s|$)/, function () { out.repeat = "monthly"; });
+
+    // التصنيف: وسم #… يُحذف من العنوان، والكلمة المجرّدة تُفهم دون حذفها
+    take(/(^|\s)#(\S+)/, function (m) {
+      var w = m[2];
+      for (var i = 0; i < TA_QK_CAT.length; i++) if (TA_QK_CAT[i].w.indexOf(w) >= 0) { out.category = TA_QK_CAT[i].k; return; }
+      for (var j = 0; j < TA_CATS.length; j++) if (taNorm(TA_CATS[j].label) === w) { out.category = TA_CATS[j].key; return; }
+      return false;
+    });
+    if (!out.category) {
+      var words = norm.split(/[\s،,.؛:!؟()]+/).filter(Boolean);
+      words = words.concat(words.map(function (w) { return w.indexOf("ال") === 0 ? w.slice(2) : w; }));
+      for (var a = 0; a < TA_QK_CAT.length && !out.category; a++)
+        for (var b = 0; b < TA_QK_CAT[a].w.length; b++)
+          if (words.indexOf(TA_QK_CAT[a].w[b]) >= 0) { out.category = TA_QK_CAT[a].k; break; }
+    }
+
+    // بناء العنوان بعد حذف المقاطع المفهومة
+    cuts.sort(function (x, y) { return y[0] - x[0]; });
+    var title = src;
+    cuts.forEach(function (c) { title = title.slice(0, c[0]) + " " + title.slice(c[1]); });
+    out.title = title.replace(/\s+/g, " ").trim();
+    return out;
   }
 
   // ---------- theme ----------
@@ -1438,18 +1688,72 @@
     opts.addEventListener("click", function (e) { e.stopPropagation(); taOpenMenu(t.id); });
     inner.appendChild(opts);
 
-    inner.addEventListener("click", function () { taOpenSheet(t.id); });
+    var sw = document.createElement("div"); sw.className = "ta-swipe-bg";
+    sw.innerHTML = '<span class="sw sw-a"><span class="msr">task_alt</span>' + (t.done ? "إلغاء" : "إنجاز") + '</span>' +
+      '<span class="sw sw-b"><span class="msr">event_upcoming</span>تأجيل</span>';
+    card.appendChild(sw);
     card.appendChild(inner);
+    taAttachSwipe(card, inner, t);
     return card;
   }
 
+  /* سحب الصف أفقيًا: يمينًا = إنجاز، يسارًا = تأجيل ليوم */
+  function taAttachSwipe(card, inner, t) {
+    var x0 = 0, y0 = 0, dx = 0, lock = null, active = false, ate = false;
+    inner.addEventListener("click", function () { if (ate) { ate = false; return; } taOpenSheet(t.id); });
+    if (!("ontouchstart" in window)) return;
+    inner.addEventListener("touchstart", function (e) {
+      if (e.touches.length !== 1) return;
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+      dx = 0; lock = null; active = true; ate = false;
+      card.classList.add("swiping");
+    }, { passive: true });
+    inner.addEventListener("touchmove", function (e) {
+      if (!active) return;
+      var cx = e.touches[0].clientX - x0, cy = e.touches[0].clientY - y0;
+      if (lock === null) {
+        if (Math.abs(cx) > 10 && Math.abs(cx) > Math.abs(cy) + 4) lock = "x";
+        else if (Math.abs(cy) > 10) lock = "y";
+      }
+      if (lock !== "x") return;
+      e.preventDefault();
+      dx = Math.max(-110, Math.min(110, cx));
+      inner.style.transform = "translateX(" + dx + "px)";
+      card.classList.toggle("sw-r", dx > 14);
+      card.classList.toggle("sw-l", dx < -14);
+    }, { passive: false });
+    function end() {
+      if (!active) return; active = false;
+      card.classList.remove("swiping", "sw-r", "sw-l");
+      inner.style.transform = "";
+      var d = dx; dx = 0;
+      if (lock !== "x") return;
+      if (Math.abs(d) > 6) ate = true;
+      if (d >= 72) taToggle(taById(t.id) || t, card);
+      else if (d <= -72) taSnooze(t.id, 1);
+    }
+    inner.addEventListener("touchend", end);
+    inner.addEventListener("touchcancel", end);
+  }
+
   function taToggle(t, card) {
+    var snap = JSON.stringify(TA.tasks), nid = TA.nid, msg;
     if (!t.done) {
-      t.done = true; t.completedAt = Date.now(); taSave();
-      if (card) { card.classList.add("done"); var c = card.querySelector(".ta-chk"); if (c) c.classList.add("completing");
-        card.classList.add("leaving"); setTimeout(function () { taRenderCurrent(); }, 380); }
-      else taRenderCurrent();
-    } else { t.done = false; t.completedAt = null; taSave(); taRenderCurrent(); }
+      t.done = true; t.completedAt = Date.now();
+      var next = taSpawnRepeat(t);
+      msg = next ? "أُنجزت ✓ — التالية في " + taDateLabel(next.date) : "أُنجزت ✓ " + taShort(t.title, 20);
+      taSave();
+      if (card) {
+        card.classList.add("done", "completing", "leaving");
+        setTimeout(function () { taRenderCurrent(); }, 380);
+      } else taRenderCurrent();
+    } else {
+      t.done = false; t.completedAt = null; msg = "أُلغي الإنجاز"; taSave(); taRenderCurrent();
+    }
+    taSnack(msg, function () {
+      try { TA.tasks = JSON.parse(snap); } catch (e) { return; }
+      TA.nid = nid; taSave(); taRenderCurrent();
+    });
   }
   function taRenderCurrent() {
     if (taView === "ta-home") taRenderHome();
@@ -1489,28 +1793,137 @@
       sr.appendChild(c);
     });
 
+    taRenderFilters(todayStr);
     var wrap = document.getElementById("ta-home-sections"); wrap.innerHTML = "";
+
+    if (taFilter !== "all" || taQuery) {
+      var F = taFilterDef(taFilter);
+      var base = (taQuery && taFilter === "all") ? TA.tasks.slice() : TA.tasks.filter(function (t) { return F.fn(t, todayStr); });
+      var res = base.filter(taMatch).sort(taSort);
+      taSection(wrap, taQuery ? "search" : F.icon, taQuery ? "نتائج البحث" : F.label, res,
+        taQuery ? "لا نتائج مطابقة لبحثك" : "لا مهام في هذا التصنيف");
+      return;
+    }
+
     var seen = {};
-    function pick(fn, sort) { var a = TA.tasks.filter(function (t) { return !t.done && !seen[t.id] && fn(t); }); if (sort) a.sort(sort); a.forEach(function (t) { seen[t.id] = 1; }); return a; }
-    var overdue = pick(function (t) { return t.date && t.date < todayStr; }, function (a, b) { return a.date < b.date ? -1 : 1; });
+    function pick(fn) { var a = TA.tasks.filter(function (t) { return !t.done && !seen[t.id] && fn(t); }); a.sort(taSort); a.forEach(function (t) { seen[t.id] = 1; }); return a; }
+    var late = pick(function (t) { return t.date && t.date < todayStr; });
     var urgent = pick(function (t) { return t.priority === "urgent"; });
     var todayOpen = pick(function (t) { return t.date === todayStr; });
-    var upcoming = pick(function (t) { return t.date && t.date > todayStr; }, function (a, b) { return a.date < b.date ? -1 : 1; });
+    var upcoming = pick(function (t) { return t.date && t.date > todayStr; });
     var noDate = pick(function (t) { return !t.date; });
-    if (overdue.length) taSection(wrap, "error", "متأخرة", overdue, "");
+    var finished = TA.tasks.filter(function (t) { return t.done && t.completedAt && fmt(new Date(t.completedAt)) === todayStr; })
+      .sort(function (a, b) { return b.completedAt - a.completedAt; });
+    if (late.length) taSection(wrap, "error", "متأخرة", late, "");
     taSection(wrap, "priority_high", "عاجل جدًا", urgent, "لا مهام عاجلة");
     taSection(wrap, "wb_sunny", "مهام اليوم", todayOpen, "لا مهام لليوم");
     if (upcoming.length) taSection(wrap, "upcoming", "القادمة", upcoming, "");
     if (noDate.length) taSection(wrap, "inbox", "بدون موعد", noDate, "");
+    if (finished.length) taSection(wrap, "task_alt", "أُنجزت اليوم", finished, "", "doneToday");
   }
-  function taSection(wrap, icon, title, list, emptyTxt) {
+  function taSection(wrap, icon, title, list, emptyTxt, ckey) {
     var sec = document.createElement("div"); sec.className = "ta-sec";
-    var head = document.createElement("div"); head.className = "ta-sec-h";
-    head.innerHTML = '<div class="t"><span class="msr">' + icon + '</span>' + title + '</div><div class="c">' + toAr(list.length) + '</div>';
+    var head = document.createElement("div"); head.className = "ta-sec-h" + (ckey ? " tap" : "");
+    head.innerHTML = '<div class="t"><span class="msr">' + icon + '</span>' + title + '</div>' +
+      '<div class="cx"><span class="c">' + toAr(list.length) + '</span>' + (ckey ? '<span class="msr">expand_more</span>' : '') + '</div>';
     sec.appendChild(head);
-    if (!list.length) { var e = document.createElement("div"); e.className = "ta-empty"; e.textContent = emptyTxt; sec.appendChild(e); }
-    else list.forEach(function (t) { sec.appendChild(taBuildCard(t)); });
+    var box = document.createElement("div"); box.className = "ta-sec-b";
+    if (!list.length) { var e = document.createElement("div"); e.className = "ta-empty"; e.textContent = emptyTxt; box.appendChild(e); }
+    else list.forEach(function (t) { box.appendChild(taBuildCard(t)); });
+    sec.appendChild(box);
+    if (ckey) {
+      if (!TA.collapsed) TA.collapsed = {};
+      if (TA.collapsed[ckey]) sec.classList.add("collapsed");
+      head.addEventListener("click", function () {
+        TA.collapsed[ckey] = !TA.collapsed[ckey];
+        sec.classList.toggle("collapsed", !!TA.collapsed[ckey]); taSave();
+      });
+    }
     wrap.appendChild(sec);
+  }
+
+  // ---------- البحث والفلاتر ----------
+  var TA_FILTERS = [
+    { key: "all", label: "الكل", icon: "apps", fn: function (t) { return !t.done; } },
+    { key: "today", label: "اليوم", icon: "wb_sunny", fn: function (t, d) { return !t.done && t.date === d; } },
+    { key: "overdue", label: "متأخرة", icon: "error", fn: function (t, d) { return !t.done && t.date && t.date < d; } },
+    { key: "urgent", label: "عاجل جدًا", icon: "priority_high", fn: function (t) { return !t.done && t.priority === "urgent"; } },
+    { key: "nodate", label: "بدون موعد", icon: "inbox", fn: function (t) { return !t.done && !t.date; } },
+    { key: "done", label: "منجزة", icon: "task_alt", fn: function (t) { return t.done; } }
+  ];
+  function taFilterDef(k) { for (var i = 0; i < TA_FILTERS.length; i++) if (TA_FILTERS[i].key === k) return TA_FILTERS[i]; return TA_FILTERS[0]; }
+  function taMatch(t) {
+    if (!taQuery) return true;
+    var q = taNorm(taQuery).toLowerCase();
+    var hay = taNorm([t.title, t.desc, t.notes, taCat(t.category).label, taPrio(t.priority).label,
+      (t.subtasks || []).map(function (s) { return s.text; }).join(" ")].join(" ")).toLowerCase();
+    return hay.indexOf(q) >= 0;
+  }
+  function taRenderFilters(todayStr) {
+    var row = document.getElementById("ta-filters"); if (!row) return;
+    var keep = row.scrollLeft;
+    row.innerHTML = "";
+    TA_FILTERS.forEach(function (f) {
+      var n = TA.tasks.filter(function (t) { return f.fn(t, todayStr); }).length;
+      var b = document.createElement("div"); b.className = "ta-fl" + (f.key === taFilter ? " on" : "");
+      b.innerHTML = '<span class="msr">' + f.icon + '</span>' + f.label + (n ? '<span class="n">' + toAr(n) + '</span>' : '');
+      b.addEventListener("click", function () { taFilter = (taFilter === f.key && f.key !== "all") ? "all" : f.key; taRenderHome(); });
+      row.appendChild(b);
+    });
+    row.scrollLeft = keep;
+  }
+
+  // ---------- الإضافة السريعة ----------
+  function taQuickPreview() {
+    var inp = document.getElementById("ta-qa-in"), pv = document.getElementById("ta-qa-pv"), go = document.getElementById("ta-qa-go");
+    if (!inp) return;
+    var r = taParseQuick(inp.value);
+    pv.innerHTML = "";
+    go.classList.toggle("on", !!(r && r.title));
+    if (!r) return;
+    var chips = [];
+    if (r.date) chips.push({ ic: "event", tx: taDateLabel(r.date) });
+    if (r.time) chips.push({ ic: "schedule", tx: taFmtTime(r.time) });
+    if (r.repeat) chips.push({ ic: "repeat", tx: (TA_REPEATS.filter(function (x) { return x.key === r.repeat; })[0] || {}).label });
+    chips.forEach(function (c) {
+      var s = document.createElement("span"); s.className = "ta-chip pri";
+      s.innerHTML = '<span class="msr">' + c.ic + '</span>' + c.tx; pv.appendChild(s);
+    });
+    if (r.priority) {
+      var p = taPrio(r.priority), sp = document.createElement("span");
+      sp.className = "ta-chip"; sp.style.color = "#fff"; sp.style.background = p.color;
+      sp.innerHTML = '<span class="msr">flag</span>' + p.label; pv.appendChild(sp);
+    }
+    if (r.category) {
+      var c2 = taCat(r.category), sc = document.createElement("span");
+      sc.className = "ta-chip"; sc.style.color = c2.color; sc.style.background = c2.color + "1F";
+      sc.innerHTML = '<span class="msr">' + c2.icon + '</span>' + c2.label; pv.appendChild(sc);
+    }
+  }
+  function taQuickAdd() {
+    var inp = document.getElementById("ta-qa-in");
+    var r = taParseQuick(inp.value);
+    if (!r || !r.title) { inp.focus(); return; }
+    var snap = JSON.stringify(TA.tasks), nid = TA.nid;
+    var t = {
+      id: "k" + (TA.nid++), title: r.title, desc: "", done: false, date: r.date, time: r.time,
+      priority: r.priority || "med", category: r.category || "home", repeat: r.repeat || "none",
+      reminder: !!r.time, notes: "", subtasks: [], created: Date.now(), completedAt: null
+    };
+    TA.tasks.push(t); taSave();
+    inp.value = ""; taQuickPreview();
+    taFilter = "all"; taQuery = ""; taSyncSearchUI();
+    taRenderHome();
+    taSnack("أُضيفت ✓ " + taShort(t.title, 20) + (t.date ? " · " + taDateLabel(t.date) : ""), function () {
+      try { TA.tasks = JSON.parse(snap); } catch (e) { return; }
+      TA.nid = nid; taSave(); taRenderCurrent();
+    });
+  }
+  function taSyncSearchUI() {
+    var box = document.getElementById("ta-search"), inp = document.getElementById("ta-search-in");
+    if (!box) return;
+    if (inp && inp.value !== taQuery) inp.value = taQuery;
+    if (!taQuery) box.classList.remove("on");
   }
 
   // ---------- ADD / EDIT ----------
@@ -1587,14 +2000,35 @@
       '<div class="ta-menu-i" data-a="open"><span class="msr">open_in_full</span> فتح التفاصيل</div>' +
       '<div class="ta-menu-i" data-a="edit"><span class="msr">edit</span> تعديل</div>' +
       '<div class="ta-menu-i" data-a="done"><span class="msr">' + (t.done ? "undo" : "task_alt") + '</span> ' + (t.done ? "إلغاء الإنجاز" : "وضع كمنجزة") + '</div>' +
+      (t.done ? '' :
+        '<div class="ta-menu-i" data-a="sn1"><span class="msr">event_upcoming</span> تأجيل إلى الغد</div>' +
+        '<div class="ta-menu-i" data-a="sn2"><span class="msr">next_week</span> تأجيل يومين</div>' +
+        '<div class="ta-menu-i" data-a="sn7"><span class="msr">date_range</span> تأجيل أسبوعًا</div>') +
+      '<div class="ta-menu-i" data-a="dup"><span class="msr">content_copy</span> إنشاء نسخة منها</div>' +
       '<div class="ta-menu-i danger" data-a="del"><span class="msr">delete</span> حذف</div>';
     Array.prototype.forEach.call(menu.querySelectorAll(".ta-menu-i"), function (el) {
       el.addEventListener("click", function () {
         var a = el.getAttribute("data-a"); taCloseMenu();
         if (a === "open") taOpenSheet(id);
         else if (a === "edit") taOpenAdd(id);
-        else if (a === "done") { var tt = taById(id); tt.done = !tt.done; tt.completedAt = tt.done ? Date.now() : null; taSave(); taRenderCurrent(); }
-        else if (a === "del") { TA.tasks = TA.tasks.filter(function (x) { return x.id !== id; }); taSave(); taRenderCurrent(); }
+        else if (a === "done") { var tt = taById(id); if (tt) taToggle(tt, null); }
+        else if (a === "sn1") taSnooze(id, 1);
+        else if (a === "sn2") taSnooze(id, 2);
+        else if (a === "sn7") taSnooze(id, 7);
+        else if (a === "dup") {
+          taAct("أُنشئت نسخة من المهمة", function () {
+            var o = taById(id); if (!o) return;
+            TA.tasks.push({ id: "k" + (TA.nid++), title: o.title, desc: o.desc || "", done: false, date: o.date, time: o.time,
+              priority: o.priority, category: o.category, repeat: o.repeat || "none", reminder: !!o.reminder, notes: o.notes || "",
+              subtasks: (o.subtasks || []).map(function (s) { return { text: s.text, done: false }; }),
+              created: Date.now(), completedAt: null });
+          });
+        }
+        else if (a === "del") {
+          var nm = taShort((taById(id) || {}).title, 20);
+          if (taSheetId === id) taCloseSheet();
+          taAct("حُذفت «" + nm + "»", function () { TA.tasks = TA.tasks.filter(function (x) { return x.id !== id; }); });
+        }
       });
     });
     document.getElementById("ta-menu-scrim").classList.add("open");
@@ -1664,9 +2098,12 @@
     var act = document.createElement("div"); act.className = "ta-d-actions";
     var dn = document.createElement("button"); dn.className = "ta-d-btn done"; dn.style.background = t.done ? "var(--muted)" : "var(--ok)";
     dn.innerHTML = '<span class="msr">' + (t.done ? "undo" : "task_alt") + '</span>' + (t.done ? "إلغاء الإنجاز" : "إنجاز المهمة");
-    dn.addEventListener("click", function () { t.done = !t.done; t.completedAt = t.done ? Date.now() : null; taSave(); taRenderSheet(); taRenderCurrent(); });
+    dn.addEventListener("click", function () { taToggle(t, null); taRenderSheet(); });
     var del = document.createElement("button"); del.className = "ta-d-btn del"; del.innerHTML = '<span class="msr">delete</span>';
-    del.addEventListener("click", function () { TA.tasks = TA.tasks.filter(function (x) { return x.id !== t.id; }); taSave(); taCloseSheet(); taRenderCurrent(); });
+    del.addEventListener("click", function () {
+      var id = t.id, nm = taShort(t.title, 20); taCloseSheet();
+      taAct("حُذفت «" + nm + "»", function () { TA.tasks = TA.tasks.filter(function (x) { return x.id !== id; }); });
+    });
     act.appendChild(dn); act.appendChild(del); b.appendChild(act);
   }
 
@@ -1843,6 +2280,22 @@
       .catch(function () { taVisitorsLoaded = false; el.textContent = "غير متاح — فعّل «عدّاد الزوّار» في إعدادات GoatCounter"; });
   }
 
+  // ---------- تنبيه داخل التطبيق للمهام المستحقة (يعمل والصفحة مفتوحة) ----------
+  var taAlerted = {};
+  function taHm(s) { var p = String(s).split(":"); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); }
+  function taCheckReminders() {
+    var now = new Date(), ds = fmt(now), nowM = now.getHours() * 60 + now.getMinutes();
+    for (var i = 0; i < TA.tasks.length; i++) {
+      var t = TA.tasks[i];
+      if (t.done || !t.reminder || !t.time || t.date !== ds || taAlerted[t.id]) continue;
+      var diff = nowM - taHm(t.time);
+      if (diff < 0 || diff > 60) continue;
+      taAlerted[t.id] = 1;
+      taSnack("🔔 حان وقت: " + taShort(t.title, 26) + " — " + taFmtTime(t.time), null);
+      break;
+    }
+  }
+
   function initTasksApp() {
     document.getElementById("ta-ver").textContent = "الإصدار " + (typeof APP_VERSION !== "undefined" ? APP_VERSION : "");
     Array.prototype.forEach.call(document.querySelectorAll(".ta-nav-i"), function (n) {
@@ -1864,7 +2317,9 @@
       b.addEventListener("click", function () { TA.theme = b.getAttribute("data-th"); taSave(); taApplyTheme(); });
     });
     document.getElementById("ta-set-clear").addEventListener("click", function () {
-      TA.tasks = TA.tasks.filter(function (t) { return !t.done; }); taSave(); taRenderCurrent();
+      var n = TA.tasks.filter(function (t) { return t.done; }).length;
+      if (!n) { taSnack("لا توجد مهام منجزة", null); return; }
+      taAct("حُذفت " + toAr(n) + " مهمة منجزة", function () { TA.tasks = TA.tasks.filter(function (t) { return !t.done; }); });
     });
     document.getElementById("ta-visitors-refresh").addEventListener("click", function () { taLoadVisitors(true); });
     // «لا تحسب زياراتي» — يمنع تحميل عدّاد الزوّار من هذا الجهاز
@@ -1890,15 +2345,41 @@
       if (this.files && this.files[0]) taImportBackup(this.files[0]);
       this.value = "";
     });
+    // الإضافة السريعة بفهم اللغة العربية
+    var qa = document.getElementById("ta-qa"), qaIn = document.getElementById("ta-qa-in");
+    qaIn.addEventListener("input", taQuickPreview);
+    qaIn.addEventListener("focus", function () { qa.classList.add("focus"); });
+    qaIn.addEventListener("blur", function () { setTimeout(function () { qa.classList.remove("focus"); }, 160); });
+    qaIn.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); taQuickAdd(); } });
+    document.getElementById("ta-qa-go").addEventListener("click", taQuickAdd);
+
+    // البحث
+    var sBox = document.getElementById("ta-search"), sIn = document.getElementById("ta-search-in");
+    document.getElementById("ta-search-btn").addEventListener("click", function () {
+      var on = !sBox.classList.contains("on");
+      sBox.classList.toggle("on", on);
+      if (on) sIn.focus();
+      else if (taQuery) { taQuery = ""; sIn.value = ""; taRenderHome(); }
+    });
+    sIn.addEventListener("input", function () { taQuery = sIn.value.trim(); taRenderHome(); });
+    document.getElementById("ta-search-clr").addEventListener("click", function () {
+      sIn.value = ""; taQuery = ""; sBox.classList.remove("on"); taRenderHome();
+    });
+    document.getElementById("ta-snack-x").addEventListener("click", taHideSnack);
+
     if (window.matchMedia) { try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { if (TA.theme === "auto") taApplyTheme(); }); } catch (e) {} }
     var n = new Date(); taCalY = n.getFullYear(); taCalM = n.getMonth();
-    taApplyTheme(); taRenderHome(); taSave();
+    if (!TA.collapsed) TA.collapsed = {};
+    taApplyTheme(); taQuickPreview(); taRenderHome(); taSave();
+    setInterval(taCheckReminders, 30000); setTimeout(taCheckReminders, 4000);
     // تدرّج آمن: إن تعذّر تحميل خط أيقونات Material Symbols نُخفي نص الأيقونات بدل ظهوره كنص إنجليزي
     function taDetectIcons() {
+      var app = document.getElementById("tasks-app"); if (!app) return;
       var p = document.createElement("span"); p.className = "msr"; p.textContent = "check";
-      p.style.cssText = "position:absolute;visibility:hidden;font-size:24px;top:-999px";
-      document.body.appendChild(p); var w = p.getBoundingClientRect().width; p.parentNode.removeChild(p);
-      document.getElementById("tasks-app").classList.toggle("no-icons", w > 40); // الأيقونة ≈24px، النص «check» أعرض
+      p.style.cssText = "position:absolute;visibility:hidden;font-size:24px;top:-999px;right:-999px";
+      // لا بد أن تكون العيّنة داخل .ta كي تنطبق عليها أنماط ‎.ta .msr‎ وإلا قِيست بخط النص العادي
+      app.appendChild(p); var w = p.getBoundingClientRect().width; p.parentNode.removeChild(p);
+      app.classList.toggle("no-icons", w > 40); // الأيقونة ≈24px، النص «check» أعرض
     }
     try {
       if (document.fonts && document.fonts.ready) Promise.resolve(document.fonts.ready).then(taDetectIcons);
@@ -2714,8 +3195,18 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "5.5.0";
+  var APP_VERSION = "5.6.0";
   var RELEASES = [
+    { v: "5.6.0", date: "٣١ أغسطس ٢٠٢٦", items: [
+      ["new", "إضافة سريعة تفهم العربية: اكتب «اجتماع غدًا ٥ م عاجل #العمل» فيُستخرج التاريخ والوقت والأولوية والتصنيف والتكرار تلقائيًا مع معاينة حيّة قبل الإضافة"],
+      ["new", "سحب المهمة بالإصبع: يمينًا لإنجازها، ويسارًا لتأجيلها إلى الغد"],
+      ["new", "زر تراجع في كل عملية — إنجاز أو حذف أو تأجيل — يعيد الوضع كما كان بضغطة"],
+      ["new", "بحث فوري في العناوين والملاحظات والمهام الفرعية، وشريط فلاتر: اليوم · متأخرة · عاجل · بدون موعد · منجزة"],
+      ["new", "المهام المتكررة صارت تعمل فعلًا: عند إنجاز مهمة يومية أو أسبوعية أو شهرية تُنشأ نسختها التالية تلقائيًا"],
+      ["new", "قائمة خيارات أوسع: تأجيل ليوم أو يومين أو أسبوع، وإنشاء نسخة من المهمة"],
+      ["new", "تنبيه داخل التطبيق عند حلول وقت المهمة المفعّل تذكيرها"],
+      ["imp", "قسم «أُنجزت اليوم» قابل للطي، وترتيب أذكى للمهام حسب التاريخ ثم الوقت ثم الأولوية"]
+    ]},
     { v: "5.5.0", date: "٢٥ يوليو ٢٠٢٦", items: [
       ["imp", "إعادة تصميم قائمة المهام: المهام مجمّعة في أوراق أنيقة بخطوط فاصلة بدل بطاقات مبعثرة، والعناوين كاملة بلا قص، والتصنيف يمينًا والتاريخ يسارًا — مساحة أقل بثلث وقراءة أوضح"]
     ]},
