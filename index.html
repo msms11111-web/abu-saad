@@ -554,7 +554,8 @@
   #quran .icon-btn:hover { background:rgba(201,169,106,0.16); }
   .quran-toggle-btn { width:34px; height:34px; border-radius:10px; background:rgba(255,215,160,0.08); border:1px solid rgba(201,169,106,0.3); color:#E4C687; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; font-size:16px; flex-shrink:0; transition:transform .25s ease, background .2s ease; }
   .quran-toggle-btn:hover { background:rgba(201,169,106,0.18); }
-  .quran-toggle-btn.open { transform:rotate(90deg); }
+  #quran-toggle-btn.open { transform:rotate(90deg); }
+  .quran-head-btns { display:flex; align-items:center; gap:8px; }
   .quran-controls-wrap { display:flex; flex-direction:column; gap:16px; overflow:hidden; max-height:0; opacity:0; margin-bottom:-16px; transition:max-height .3s ease, opacity .2s ease, margin .3s ease; }
   .quran-controls-wrap.open { max-height:800px; opacity:1; margin-bottom:0; }
 
@@ -609,8 +610,17 @@
   #quran:fullscreen { background:#141312; padding:36px; align-items:center; justify-content:center; overflow:auto; }
   /* بديل ملء الشاشة حيث لا يدعم المتصفح requestFullscreen للعناصر (آيفون) */
   #quran.pseudo-fs { position:fixed; inset:0; z-index:9000; margin:0; border-radius:0; background:#141312; overflow:auto; -webkit-overflow-scrolling:touch;
-    padding:calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom)); transform:none !important; opacity:1 !important; }
-  #quran.pseudo-fs .quran-book { max-width:430px; width:100%; margin:0 auto; }
+    padding:calc(64px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom)); transform:none !important; opacity:1 !important;
+    display:flex; flex-direction:column; gap:12px; }
+  /* الصفحة تملأ طول الشاشة بدل نسبة ٣:٤ الثابتة */
+  #quran.pseudo-fs .book-stage { flex:1; min-height:0; }
+  #quran.pseudo-fs .quran-controls-wrap, #quran.pseudo-fs .quran-nav { flex-shrink:0; }
+  #quran.pseudo-fs .quran-book { flex:1; min-height:0; max-width:520px; width:100%; margin:0 auto; }
+  #quran.pseudo-fs .quran-page { flex:1; min-height:0; aspect-ratio:auto; }
+  #quran.pseudo-fs .quran-page .ayat { font-size:20px; line-height:2.4; }
+  #quran.pseudo-fs .quran-nav { flex-shrink:0; }
+  #quran.pseudo-fs:has(> .quran-controls-wrap:not(.open)) .head { top:calc(env(safe-area-inset-top) + 12px); left:16px; right:16px; }
+  #quran.pseudo-fs .quran-toggle-btn { background:rgba(20,19,18,0.72); }
   #quran:fullscreen .quran-book { max-width:430px; width:100%; margin:0 auto; }
   #quran:fullscreen .quran-page .ayat { font-size:20px; line-height:2.5; }
 
@@ -1142,7 +1152,10 @@
       <div id="quran" class="card">
         <div class="head">
           <div class="sub" id="quran-surah-info" style="display:none"></div>
-          <div class="quran-toggle-btn" id="quran-toggle-btn" title="إظهار/إخفاء الأوامر">›</div>
+          <div class="quran-head-btns">
+            <div class="quran-toggle-btn" id="quran-fullscreen-btn" role="button" aria-label="ملء الشاشة" title="ملء الشاشة">⤢</div>
+            <div class="quran-toggle-btn" id="quran-toggle-btn" role="button" aria-label="إظهار أو إخفاء الأوامر" title="إظهار/إخفاء الأوامر">›</div>
+          </div>
         </div>
 
         <div class="quran-controls-wrap" id="quran-controls-wrap">
@@ -1152,7 +1165,6 @@
               <div class="icon-btn" id="quran-font-minus" title="تصغير الخط">A-</div>
             </div>
             <select class="surah-select" id="surah-select"></select>
-            <div class="icon-btn" id="quran-fullscreen-btn" title="تكبير الصفحة">⤢</div>
         </div>
 
         <div class="quran-top-controls">
@@ -2795,7 +2807,7 @@
     var el = document.getElementById("quran");
     el.classList.toggle("pseudo-fs", on);
     document.body.style.overflow = on ? "hidden" : "";
-    document.getElementById("quran-fullscreen-btn").textContent = on ? "×" : "⤢";
+    document.getElementById("quran-fullscreen-btn").textContent = on ? "⤡" : "⤢"; // ⤡ لا تلتبس بـ × إغلاق الكتاب
     if (!on) el.scrollIntoView({ block: "nearest" });
   }
   document.getElementById("quran-fullscreen-btn").addEventListener("click", function () {
@@ -2811,7 +2823,7 @@
   });
   document.addEventListener("fullscreenchange", function () {
     var btn = document.getElementById("quran-fullscreen-btn");
-    btn.textContent = document.fullscreenElement ? "×" : "⤢";
+    btn.textContent = document.fullscreenElement ? "⤡" : "⤢";
   });
 
   var tafsirReq = 0;
@@ -3345,8 +3357,12 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "5.7.0";
+  var APP_VERSION = "5.7.1";
   var RELEASES = [
+    { v: "5.7.1", date: "١٢ نوفمبر ٢٠٢٦", items: [
+      ["imp", "زر ملء الشاشة في المصحف صار ظاهرًا دائمًا أعلى البطاقة بجانب سهم الأوامر، فلا تحتاج لفتح الشريط للوصول إليه"],
+      ["imp", "ملء الشاشة على الآيفون صار يملأ طول الشاشة فعلًا بخط أكبر، وزر الخروج برمز مختلف (⤡) حتى لا يلتبس بزر إغلاق الكتاب ×، ولا يتداخل مع النوتش"]
+    ]},
     { v: "5.7.0", date: "١٢ نوفمبر ٢٠٢٦", items: [
       ["new", "تحديث تلقائي للتطبيق المثبّت: يفحص وجود إصدار جديد كلما عدت إليه ويحدّث نفسه — دون حذف الأيقونة وإعادة إضافتها، ودون أن يقاطعك وأنت تكتب"],
       ["new", "طقس حقيقي في الساعة: درجة الحرارة والرطوبة الفعليتان لموقعك بدل الرقمين الثابتين السابقين"],
