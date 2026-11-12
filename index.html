@@ -234,9 +234,11 @@
   #adhkar .head .icon { font-size:16px; }
   #adhkar .head .counter { font-family:'Space Mono',monospace; font-size:11px; color:#C9A96A; }
   #adhkar .dhikr-text { flex:1; font-family:'Amiri',serif; font-size:16px; line-height:2; color:#F1EEE6; display:flex; align-items:center; }
-  #adhkar .foot { display:flex; align-items:center; justify-content:flex-end; }
+  #adhkar .foot { display:flex; align-items:center; justify-content:flex-end; gap:8px; }
   #adhkar .next-btn { background:linear-gradient(155deg,#C9A96A,#A98243); color:#1A1917; font-size:12.5px; font-weight:700; padding:7px 16px; border-radius:20px; cursor:pointer; user-select:none; display:flex; align-items:center; gap:6px; }
   #adhkar .next-btn:hover { filter:brightness(1.06); }
+  #adhkar .next-btn.ghost { background:rgba(201,169,106,0.1); border:1px solid rgba(201,169,106,0.35); color:#E4C687; }
+  #adhkar .dhikr-text { touch-action:pan-y; }
 
   /* ABOUT */
   #about { grid-area:about; position:relative; overflow:hidden; background:radial-gradient(130% 120% at 100% -20%,rgba(201,169,106,0.06),transparent 44%),repeating-linear-gradient(94deg,rgba(255,240,210,0.015) 0 1px,transparent 1px 5px),linear-gradient(158deg,#272320,#211E1B 52%,#191715); border:1px solid rgba(201,169,106,0.12); box-shadow:inset 0 1px 0 rgba(255,238,200,0.05),0 20px 46px -30px rgba(0,0,0,0.75); padding:28px 30px; display:flex; flex-direction:column; }
@@ -605,6 +607,10 @@
   .quran-nav .loc-label { font-size:12.5px; color:#C9A96A; min-width:140px; text-align:center; }
 
   #quran:fullscreen { background:#141312; padding:36px; align-items:center; justify-content:center; overflow:auto; }
+  /* بديل ملء الشاشة حيث لا يدعم المتصفح requestFullscreen للعناصر (آيفون) */
+  #quran.pseudo-fs { position:fixed; inset:0; z-index:9000; margin:0; border-radius:0; background:#141312; overflow:auto; -webkit-overflow-scrolling:touch;
+    padding:calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom)); transform:none !important; opacity:1 !important; }
+  #quran.pseudo-fs .quran-book { max-width:430px; width:100%; margin:0 auto; }
   #quran:fullscreen .quran-book { max-width:430px; width:100%; margin:0 auto; }
   #quran:fullscreen .quran-page .ayat { font-size:20px; line-height:2.5; }
 
@@ -675,6 +681,8 @@
     transition:transform .45s cubic-bezier(.22,.7,.3,1), opacity .45s ease; }
   #update-toast.show { opacity:1; transform:translate(50%,0); pointer-events:auto; }
   #update-toast .ut-icon { color:#8FC97E; font-size:16px; }
+  #update-toast button { font-family:inherit; font-size:12.5px; font-weight:700; color:#1A1917; background:linear-gradient(155deg,#E4C687,#A98243); border:none; border-radius:10px; padding:8px 13px; cursor:pointer; white-space:nowrap; }
+  #update-toast button[hidden] { display:none; }
   
   /* Audio Player */
   .audio-controls { display:flex; align-items:center; gap:10px; margin-top:10px; background:rgba(201,169,106,0.05); padding:8px 14px; border-radius:12px; border:1px solid rgba(201,169,106,0.15); }
@@ -727,6 +735,8 @@
   .tasbih-count { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:50px; color:#E9C878; line-height:1; }
   .tasbih-phrase { font-family:'Amiri',serif; font-size:16px; line-height:1.4; color:#F1EEE6; margin-top:6px; text-align:center; padding:0 12px; max-height:112px; overflow:hidden; }
   .tasbih-target { font-size:11px; color:#C9A96A; margin-top:4px; }
+  .tasbih-today { text-align:center; font-size:12.5px; color:#BFB3CC; min-height:18px; }
+  .tasbih-today b { color:#E4C687; font-weight:700; }
 
   .tasbih-controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; }
   .tasbih-target-btns { display:flex; gap:6px; }
@@ -882,7 +892,7 @@
             <div class="wc-stats">
               <div class="stat-col">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 14.5V5a2 2 0 1 0-4 0v9.5a4 4 0 1 0 4 0Z"/><line x1="10" y1="7" x2="10" y2="14"/></svg>
-                <div class="num">٢٦°</div>
+                <div class="num" id="wx-temp" title="درجة الحرارة الآن">—</div>
               </div>
               <div class="divider"></div>
               <div class="stat-col">
@@ -893,7 +903,7 @@
               <div class="divider"></div>
               <div class="stat-col">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.6 6 10.5a6 6 0 1 1-12 0C6 9.6 12 3 12 3Z"/></svg>
-                <div class="num">٦٠٪</div>
+                <div class="num" id="wx-hum" title="الرطوبة الآن">—</div>
               </div>
             </div>
           </div>
@@ -927,6 +937,7 @@
         </div>
         <div class="dhikr-text" id="adhkar-text"></div>
         <div class="foot">
+          <div class="next-btn ghost" id="adhkar-prev">› السابق</div>
           <div class="next-btn" id="adhkar-next">الذكر التالي ‹</div>
         </div>
       </div>
@@ -1229,6 +1240,8 @@
           </div>
         </div>
 
+        <div class="tasbih-today" id="tasbih-today"></div>
+
         <div class="tasbih-controls">
           <div class="tasbih-target-btns">
             <div class="t-btn" data-t="33">٣٣</div>
@@ -1296,7 +1309,7 @@
 </div>
 
 <!-- Update toast -->
-<div id="update-toast"><span class="ut-icon">✓</span><span>تم تحديث التطبيق إلى أحدث نسخة</span></div>
+<div id="update-toast"><span class="ut-icon">✓</span><span id="update-toast-msg">تم تحديث التطبيق إلى أحدث نسخة</span><button type="button" id="update-toast-btn" hidden>تحديث الآن</button></div>
 
 <script>
 (function () {
@@ -1307,6 +1320,7 @@
   var fmt = function (d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
 
   // ---------- Clock ----------
+  var clockDay = null;
   function renderClock() {
     var now = new Date();
     var h = now.getHours();
@@ -1326,6 +1340,11 @@
     document.getElementById("svg-sec").setAttribute("transform", "rotate(" + secDeg + " 100 100)");
     document.getElementById("digital-time").textContent = toAr(timeDigital);
     document.getElementById("digital-ampm").textContent = ampmAr;
+
+    // التاريخان لا يتغيّران إلا مرة في اليوم — لا داعي لإعادة بنائهما كل ثانية
+    var dayKey = fmt(now);
+    if (dayKey === clockDay) return;
+    clockDay = dayKey;
 
     var gYear = now.getFullYear(), gDay = now.getDate(), gMonth = "", weekday = "";
     var hYear = "", hDay = "", hMonth = "";
@@ -1441,7 +1460,24 @@
   var taCalY, taCalM, taCalSel = null;
   var taNewPrio = "med", taNewCat = "home", taNewRep = "none", taNewRemind = false;
 
-  function taSave() { try { localStorage.setItem(TA_KEY, JSON.stringify(TA)); } catch (e) {} }
+  /* نص القرآن المخزَّن محليًا قابل لإعادة التحميل، أما المهام فلا — فإن امتلأت المساحة
+     نُفرغ مخزن القرآن ونعيد المحاولة، وإن فشل الحفظ بعدها نُعلم المستخدم بدل الصمت. */
+  function freeQuranCache() {
+    var keys = [];
+    try {
+      for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf("abusaad_quran_cache_v1_") === 0) keys.push(k); }
+      keys.forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) {}
+    return keys.length;
+  }
+  var taSaveWarned = false;
+  function taSave() {
+    var data = JSON.stringify(TA);
+    try { localStorage.setItem(TA_KEY, data); taSaveWarned = false; return true; } catch (e) {}
+    if (freeQuranCache()) { try { localStorage.setItem(TA_KEY, data); taSaveWarned = false; return true; } catch (e2) {} }
+    if (!taSaveWarned) { taSaveWarned = true; setTimeout(function () { taSnack("⚠️ تعذّر حفظ المهام — مساحة التخزين ممتلئة أو محجوبة", null); }, 0); }
+    return false;
+  }
   function taById(id) { for (var i = 0; i < TA.tasks.length; i++) if (TA.tasks[i].id === id) return TA.tasks[i]; return null; }
 
   var TA_HJ_D = null, TA_HJ_MY = null;
@@ -2455,7 +2491,7 @@
     var list = loadQuranBookmarksList().filter(function(b) {
       return !(b.surah === surah && b.ayah === ayah);
     });
-    localStorage.setItem(QURAN_BOOKMARKS_LIST_KEY, JSON.stringify(list));
+    try { localStorage.setItem(QURAN_BOOKMARKS_LIST_KEY, JSON.stringify(list)); } catch (e) {}
     updateQuranBookmarksUI();
     renderQuranBook();
   }
@@ -2526,6 +2562,20 @@
       .catch(function () { callback(null); });
   }
 
+  /* واجهة alquran.cloud تُلصق البسملة بأول آية في كل سورة عدا الفاتحة والتوبة،
+     ونحن نعرضها سطرًا مزخرفًا مستقلاً — فنحذفها من نص الآية حتى لا تتكرر. */
+  function stripBasmala(number, ayahs) {
+    if (number === 1 || number === 9 || !ayahs || !ayahs.length) return ayahs;
+    var first = ayahs[0];
+    var words = String(first.text).replace(/\uFEFF/g, "").trim().split(/\s+/);
+    if (words.length <= 4) return ayahs;
+    var head = words.slice(0, 4).join(" ").replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, "").replace(/[ٱأإآ]/g, "ا");
+    if (head !== "بسم الله الرحمن الرحيم") return ayahs;
+    var out = ayahs.slice();
+    out[0] = { n: first.n, text: words.slice(4).join(" ") };
+    return out;
+  }
+
   function quranChunk(arr, size) {
     var out = [];
     for (var i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
@@ -2570,13 +2620,9 @@
       var num = document.createElement("span");
       num.className = "ayah-num" + (isBookmarked ? " bookmarked" : "");
       num.textContent = toAr(a.n);
-      num.addEventListener("click", function () {
-        saveQuranBookmark(info.number, a.n);
-        renderQuranBook();
-        updateQuranBookmarkBar();
-      });
       num.addEventListener("click", function (e) {
         e.stopPropagation();
+        if (isBookmarked) { removeQuranBookmark(info.number, a.n); return; } // ضغطة ثانية تزيل العلامة
         saveQuranBookmark(info.number, a.n);
         renderQuranBook();
         updateQuranBookmarkBar();
@@ -2627,6 +2673,7 @@
     document.getElementById("surah-select").value = String(number);
     renderQuranBook();
     fetchSurahAyahs(number, function (ayahs) {
+      if (quranState.surah !== number) return; // ردّ متأخر لسورة غادرها القارئ
       if (!ayahs) {
         document.getElementById("quran-page-1").innerHTML =
           '<div class="page-frame"></div><div class="page-error">تعذر تحميل النص، تحقق من الاتصال. <a href="https://quran.com/' + number + '" target="_blank" rel="noopener">افتحها على Quran.com</a></div>';
@@ -2634,6 +2681,7 @@
         if (p2) p2.innerHTML = '<div class="page-frame"></div>';
         return;
       }
+      ayahs = stripBasmala(number, ayahs);
       quranState.ayahs = ayahs;
       var chunks = quranChunk(ayahs, QURAN_PAGE_SIZE);
       if (opts.targetAyah) {
@@ -2743,12 +2791,22 @@
     var open = wrap.classList.toggle("open");
     btn.classList.toggle("open", open);
   });
+  function setPseudoFullscreen(on) {
+    var el = document.getElementById("quran");
+    el.classList.toggle("pseudo-fs", on);
+    document.body.style.overflow = on ? "hidden" : "";
+    document.getElementById("quran-fullscreen-btn").textContent = on ? "×" : "⤢";
+    if (!on) el.scrollIntoView({ block: "nearest" });
+  }
   document.getElementById("quran-fullscreen-btn").addEventListener("click", function () {
     var el = document.getElementById("quran");
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    } else if (el.requestFullscreen) {
-      el.requestFullscreen();
+    if (el.classList.contains("pseudo-fs")) { setPseudoFullscreen(false); return; }
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    if (el.requestFullscreen) {
+      var p = el.requestFullscreen();
+      if (p && p.catch) p.catch(function () { setPseudoFullscreen(true); });
+    } else {
+      setPseudoFullscreen(true); // آيفون: لا يدعم ملء الشاشة للعناصر
     }
   });
   document.addEventListener("fullscreenchange", function () {
@@ -2756,6 +2814,7 @@
     btn.textContent = document.fullscreenElement ? "×" : "⤢";
   });
 
+  var tafsirReq = 0;
   function showTafsir(surah, ayah, text) {
     var modal = document.getElementById("tafsir-modal");
     var title = document.getElementById("tafsir-title");
@@ -2765,13 +2824,14 @@
     modal.style.display = "flex";
     document.body.style.overflow = "hidden";
     
+    var req = ++tafsirReq;
     fetch("https://api.alquran.cloud/v1/ayah/" + surah + ":" + ayah + "/ar.jalalayn")
       .then(function(r) { return r.json(); })
       .then(function(json) {
-        body.textContent = json.data.text;
+        if (req === tafsirReq) body.textContent = json.data.text;
       })
       .catch(function() {
-        body.textContent = "تعذر تحميل التفسير حالياً.";
+        if (req === tafsirReq) body.textContent = "تعذر تحميل التفسير حالياً.";
       });
   }
 
@@ -2787,23 +2847,24 @@
       "https://server7.mp3quran.net/shur/" + String(quranState.surah).padStart(3, '0') + ".mp3"
     ];
     
-    var currentSourceIdx = 0;
-    
+    var attempt = 0;
     function tryPlay(idx) {
+      attempt = idx;
       if (idx >= sources.length) {
+        player.onerror = null;
         info.textContent = "تعذر تشغيل الصوت، جرب سورة أخرى.";
         btn.textContent = "▶";
         return;
       }
-      
+      // فشل المصدر يُبلَّغ مرتين (حدث error ورفض play)؛ الحارس يضمن الانتقال مرة واحدة فقط
+      function fail() { if (attempt === idx) tryPlay(idx + 1); }
+      player.onerror = fail;
       player.src = sources[idx];
-      player.play().then(function() {
+      var pr = player.play();
+      if (pr && pr.then) pr.then(function() {
         btn.textContent = "⏸";
         info.textContent = "تلاوة سورة " + sInfo.name + " - الشيخ سعود الشريم";
-      }).catch(function(e) {
-        console.log("Audio source failed, trying next...");
-        tryPlay(idx + 1);
-      });
+      }).catch(fail);
     }
 
     var surahId = String(quranState.surah).padStart(3, '0');
@@ -2814,7 +2875,8 @@
         info.textContent = "جارِ التحميل...";
         tryPlay(0);
       } else {
-        player.play();
+        var resume = player.play();
+        if (resume && resume.catch) resume.catch(function () { btn.textContent = "▶"; });
         btn.textContent = "⏸";
       }
     } else {
@@ -2824,14 +2886,6 @@
     
     player.onended = function() {
       btn.textContent = "▶";
-    };
-    
-    player.onerror = function() {
-      console.log("Audio player error, trying next source...");
-      if (currentSourceIdx < sources.length - 1) {
-        currentSourceIdx++;
-        tryPlay(currentSourceIdx);
-      }
     };
   }
 
@@ -2860,8 +2914,9 @@
     document.getElementById("quran-search").addEventListener("input", function(e) {
       var val = e.target.value.trim();
       if (!val) return;
+      var q = taNorm(val);
       var found = QURAN_SURAHS.find(function(s) {
-        return s[1].includes(val) || String(s[0]) === val;
+        return String(s[0]) === q || taNorm(s[1]).indexOf(q) >= 0 || taNorm(s[1]).replace(/^ال/, "").indexOf(q) === 0;
       });
       if (found) {
         goToSurah(found[0]);
@@ -2869,9 +2924,18 @@
       }
     });
     
-    document.getElementById("close-tafsir").addEventListener("click", function() {
-      document.getElementById("tafsir-modal").style.display = "none";
-      document.body.style.overflow = "auto";
+    var tafsirModal = document.getElementById("tafsir-modal");
+    function closeTafsir() {
+      tafsirModal.style.display = "none";
+      // "" يعيد قيمة الأنماط (overflow-x:hidden)؛ القيمة "auto" كانت تفتح تمريرًا أفقيًا للصفحة
+      document.body.style.overflow = document.getElementById("quran").classList.contains("pseudo-fs") ? "hidden" : "";
+    }
+    document.getElementById("close-tafsir").addEventListener("click", closeTafsir);
+    tafsirModal.addEventListener("click", function (e) { if (e.target === tafsirModal) closeTafsir(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      if (tafsirModal.style.display === "flex") closeTafsir();
+      else if (document.getElementById("quran").classList.contains("pseudo-fs")) setPseudoFullscreen(false);
     });
     
     var startSurah = 1, startPageIndex = 0;
@@ -2904,7 +2968,8 @@
   function loadTasbihData() {
     try {
       var raw = localStorage.getItem(TASBIH_KEY);
-      if (raw) return JSON.parse(raw);
+      var saved = raw ? JSON.parse(raw) : null;
+      if (saved && saved.counts && saved.active) return saved;
     } catch (e) {}
     var counts = {};
     TASBIH_PHRASES.forEach(function (p) { counts[p.key] = { count: 0, target: 33 }; });
@@ -2912,6 +2977,12 @@
   }
   function saveTasbihData() {
     try { localStorage.setItem(TASBIH_KEY, JSON.stringify(tasbihData)); } catch (e) {}
+  }
+  /* مجموع تسبيحات اليوم عبر كل الأذكار؛ يُصفَّر مع أول تسبيحة في يوم جديد ولا يتأثر بزر «إعادة» */
+  function tasbihToday() {
+    var d = fmt(new Date());
+    if (!tasbihData.day || tasbihData.day.d !== d) tasbihData.day = { d: d, n: 0 };
+    return tasbihData.day;
   }
   function activeTasbihState() {
     if (!tasbihData.counts[tasbihData.active]) tasbihData.counts[tasbihData.active] = { count: 0, target: 33 };
@@ -2921,12 +2992,15 @@
   function renderTasbih() {
     var st = activeTasbihState();
     var phraseObj = TASBIH_PHRASES.filter(function (p) { return p.key === tasbihData.active; })[0];
+    if (!phraseObj) { phraseObj = TASBIH_PHRASES[0]; tasbihData.active = phraseObj.key; st = activeTasbihState(); }
     var phraseEl = document.getElementById("tasbih-phrase");
     phraseEl.textContent = phraseObj.text;
     var len = phraseObj.text.length;
     phraseEl.style.fontSize = len > 120 ? "10px" : (len > 90 ? "11px" : (len > 40 ? "12.5px" : (len > 22 ? "14px" : (len > 12 ? "15px" : "16px"))));
     document.getElementById("tasbih-count").textContent = toAr(st.count);
     document.getElementById("tasbih-target-label").textContent = "الهدف " + toAr(st.target);
+    var todayN = (tasbihData.day && tasbihData.day.d === fmt(new Date())) ? tasbihData.day.n : 0;
+    document.getElementById("tasbih-today").innerHTML = todayN ? "تسبيحات اليوم: <b>" + toAr(todayN) + "</b>" : "";
 
     var ratio = Math.min(st.count / st.target, 1);
     document.getElementById("tasbih-ring-fill").style.strokeDasharray = String(TASBIH_CIRC);
@@ -2958,6 +3032,7 @@
     document.getElementById("tasbih-tap").addEventListener("click", function () {
       var st = activeTasbihState();
       st.count += 1;
+      tasbihToday().n += 1;
       saveTasbihData();
       renderTasbih();
       if (st.count === st.target) {
@@ -3080,42 +3155,85 @@
     });
   }
 
-  function initPrayerTimes() {
-    try {
-      var cached = JSON.parse(localStorage.getItem(PRAYER_CACHE_KEY) || "null");
-      if (cached && cached.date === fmt(new Date()) && cached.timings) {
-        applyPrayerTimings(cached.timings);
-        setInterval(updateNextPrayer, 1000);
-        return;
-      }
-    } catch (e) {}
+  /* الموقع التقريبي (يُقرَّب لمنزلتين ≈ ١ كم) يُحفظ ١٢ ساعة حتى لا يُطلب الإذن في كل مرة.
+     عند الرفض أو التعذّر تُعاد إحداثيات فارغة فيُستخدم الرياض. */
+  var GEO_KEY = "abusaad_geo_v1";
+  var geoWaiters = null;
+  function getCoords(cb) {
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(GEO_KEY) || "null"); } catch (e) {}
+    if (!saved || typeof saved.lat !== "number" || typeof saved.lng !== "number") saved = null;
+    if (saved && Date.now() - saved.ts < 12 * 3600 * 1000) { cb(saved); return; }
+    if (geoWaiters) { geoWaiters.push(cb); return; }
+    geoWaiters = [cb];
+    function finish(c) {
+      var w = geoWaiters; if (!w) return;
+      geoWaiters = null;
+      w.forEach(function (f) { f(c); });
+    }
+    var fallback = saved || { lat: null, lng: null };
+    if (!navigator.geolocation) { finish(fallback); return; }
+    var timer = setTimeout(function () { finish(fallback); }, 4000);
+    navigator.geolocation.getCurrentPosition(
+      function (pos) {
+        clearTimeout(timer);
+        var c = { lat: Math.round(pos.coords.latitude * 100) / 100, lng: Math.round(pos.coords.longitude * 100) / 100, ts: Date.now() };
+        try { localStorage.setItem(GEO_KEY, JSON.stringify(c)); } catch (e) {}
+        finish(c);
+      },
+      function () { clearTimeout(timer); finish(fallback); },
+      { timeout: 3500, maximumAge: 3600000 }
+    );
+  }
 
-    var settled = false;
-    function settle(timings) {
-      if (settled || !timings) return;
-      settled = true;
-      applyPrayerTimings(timings);
-    }
-    function fallbackRiyadh() {
-      if (settled) return;
-      fetchPrayerTimings(null, null, settle);
-    }
-    if (navigator.geolocation) {
-      var timer = setTimeout(fallbackRiyadh, 4000);
-      navigator.geolocation.getCurrentPosition(
-        function (pos) {
-          clearTimeout(timer);
-          fetchPrayerTimings(pos.coords.latitude, pos.coords.longitude, function (t) {
-            if (t) settle(t); else fallbackRiyadh();
-          });
-        },
-        function () { clearTimeout(timer); fallbackRiyadh(); },
-        { timeout: 3500, maximumAge: 3600000 }
-      );
-    } else {
-      fallbackRiyadh();
-    }
+  function refreshPrayerTimings() {
+    getCoords(function (c) {
+      fetchPrayerTimings(c.lat, c.lng, function (t) {
+        if (t) { applyPrayerTimings(t); return; }
+        if (c.lat != null) fetchPrayerTimings(null, null, function (t2) { if (t2) applyPrayerTimings(t2); });
+      });
+    });
+  }
+
+  function initPrayerTimes() {
+    var cached = null;
+    try { cached = JSON.parse(localStorage.getItem(PRAYER_CACHE_KEY) || "null"); } catch (e) {}
+    // مواقيت آخر يوم محفوظ تُعرض فورًا (تفرق دقيقة تقريبًا عن اليوم) حتى لا تبقى البطاقة فارغة بلا اتصال
+    if (cached && cached.timings && cached.timings.Fajr) applyPrayerTimings(cached.timings);
+    if (!cached || cached.date !== fmt(new Date())) refreshPrayerTimings();
     setInterval(updateNextPrayer, 1000);
+  }
+
+  // ---------- Weather (Open-Meteo: مجاني بلا مفتاح) ----------
+  var WEATHER_KEY = "abusaad_weather_v1";
+  var weatherBusy = false;
+  function paintWeather(w) {
+    var t = document.getElementById("wx-temp"), h = document.getElementById("wx-hum");
+    if (!t || !h) return;
+    t.textContent = (w && typeof w.t === "number") ? toAr(Math.round(w.t)) + "°" : "—";
+    h.textContent = (w && typeof w.h === "number") ? toAr(Math.round(w.h)) + "٪" : "—";
+  }
+  function loadWeather() {
+    var cached = null;
+    try { cached = JSON.parse(localStorage.getItem(WEATHER_KEY) || "null"); } catch (e) {}
+    // قراءة أقدم من ٣ ساعات لا تُعرض: رقم قديم أسوأ من شرطة
+    if (cached && Date.now() - cached.ts < 3 * 3600 * 1000) paintWeather(cached); else paintWeather(null);
+    if (weatherBusy || (cached && Date.now() - cached.ts < 30 * 60 * 1000)) return;
+    weatherBusy = true;
+    getCoords(function (c) {
+      var lat = c.lat != null ? c.lat : 24.71, lng = c.lng != null ? c.lng : 46.68; // الرياض
+      fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lng + "&current=temperature_2m,relative_humidity_2m")
+        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        .then(function (j) {
+          var cur = j && j.current;
+          if (!cur || typeof cur.temperature_2m !== "number") throw 0;
+          var w = { t: cur.temperature_2m, h: cur.relative_humidity_2m, ts: Date.now() };
+          try { localStorage.setItem(WEATHER_KEY, JSON.stringify(w)); } catch (e) {}
+          paintWeather(w);
+        })
+        .catch(function () {})
+        .then(function () { weatherBusy = false; });
+    });
   }
 
   // ---------- Adhkar ----------
@@ -3156,13 +3274,23 @@
     document.getElementById("adhkar-counter").textContent = toAr(adhkarIndex + 1) + " / " + toAr(list.length);
   }
 
+  function stepAdhkar(delta) {
+    var n = (isMorningNow() ? ADHKAR_MORNING : ADHKAR_EVENING).length;
+    adhkarIndex = (adhkarIndex + delta + n) % n;
+    renderAdhkar();
+  }
   function initAdhkar() {
     renderAdhkar();
-    document.getElementById("adhkar-next").addEventListener("click", function () {
-      var list = isMorningNow() ? ADHKAR_MORNING : ADHKAR_EVENING;
-      adhkarIndex = (adhkarIndex + 1) % list.length;
-      renderAdhkar();
-    });
+    document.getElementById("adhkar-next").addEventListener("click", function () { stepAdhkar(1); });
+    document.getElementById("adhkar-prev").addEventListener("click", function () { stepAdhkar(-1); });
+    // سحب نص الذكر كتقليب صفحات كتاب عربي: لليمين = التالي، لليسار = السابق
+    var txt = document.getElementById("adhkar-text"), x0 = null, y0 = 0;
+    txt.addEventListener("touchstart", function (e) { if (e.touches.length === 1) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } }, { passive: true });
+    txt.addEventListener("touchend", function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) stepAdhkar(dx > 0 ? 1 : -1);
+    }, { passive: true });
   }
 
   // ---------- Init ----------
@@ -3171,6 +3299,28 @@
   initTasbih();
   initPrayerTimes();
   initAdhkar();
+  loadWeather();
+
+  /* التطبيق المثبّت يبقى مفتوحًا في الذاكرة أيامًا: عند العودة إليه أو تبدّل اليوم
+     نُحدّث كل ما يعتمد على «اليوم» بدل عرض بيانات الأمس. */
+  var liveDay = fmt(new Date());
+  function refreshLiveData() {
+    var today = fmt(new Date());
+    if (today !== liveDay) {
+      liveDay = today;
+      adhkarIndex = 0;
+      refreshPrayerTimings();
+    }
+    renderAdhkar();
+    renderTasbih();
+    loadWeather();
+    var a = document.activeElement;
+    var typing = a && (a.tagName === "INPUT" || a.tagName === "TEXTAREA");
+    if (!typing) taRenderCurrent();
+  }
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) refreshLiveData(); });
+  setInterval(function () { if (!document.hidden && fmt(new Date()) !== liveDay) refreshLiveData(); }, 60000);
+  setInterval(function () { if (!document.hidden) { renderAdhkar(); loadWeather(); } }, 15 * 60000);
 
   // ---------- iOS "Add to Home Screen" hint ----------
   (function () {
@@ -3195,8 +3345,20 @@
   })();
 
   // ===== App version + what's-new (release notes) =====
-  var APP_VERSION = "5.6.0";
+  var APP_VERSION = "5.7.0";
   var RELEASES = [
+    { v: "5.7.0", date: "١٢ نوفمبر ٢٠٢٦", items: [
+      ["new", "تحديث تلقائي للتطبيق المثبّت: يفحص وجود إصدار جديد كلما عدت إليه ويحدّث نفسه — دون حذف الأيقونة وإعادة إضافتها، ودون أن يقاطعك وأنت تكتب"],
+      ["new", "طقس حقيقي في الساعة: درجة الحرارة والرطوبة الفعليتان لموقعك بدل الرقمين الثابتين السابقين"],
+      ["new", "الأذكار: زر «السابق» والتنقّل بسحب النص يمينًا ويسارًا"],
+      ["new", "المسبحة: عدّاد «تسبيحات اليوم» يجمع كل أذكارك ويبدأ من جديد كل يوم"],
+      ["new", "المصحف: ملء الشاشة صار يعمل على الآيفون، وضغطة ثانية على رقم الآية تزيل علامتها، والبحث يقبل الأرقام العربية ويتجاهل الهمزات"],
+      ["fix", "المصحف: لم تعد البسملة تتكرر في أول السورة، ولا تظهر سورة غير التي اخترتها عند التنقّل السريع"],
+      ["fix", "إغلاق نافذة التفسير لم يعد يفتح تمريرًا جانبيًا للصفحة، وصارت تُغلق بالضغط خارجها"],
+      ["fix", "مواقيت الصلاة تظهر بلا اتصال من آخر يوم محفوظ، وتتجدّد تلقائيًا عند دخول يوم جديد والتطبيق مفتوح"],
+      ["fix", "حماية المهام: إن امتلأت مساحة التخزين يُفرَّغ مخزن نص القرآن (القابل لإعادة التحميل) لتُحفظ مهامك دائمًا"],
+      ["imp", "التطبيق المتروك مفتوحًا يحدّث مهام اليوم والأذكار والطقس عند العودة إليه بدل عرض بيانات الأمس"]
+    ]},
     { v: "5.6.0", date: "٣١ أغسطس ٢٠٢٦", items: [
       ["new", "إضافة سريعة تفهم العربية: اكتب «اجتماع غدًا ٥ م عاجل #العمل» فيُستخرج التاريخ والوقت والأولوية والتصنيف والتكرار تلقائيًا مع معاينة حيّة قبل الإضافة"],
       ["new", "سحب المهمة بالإصبع: يمينًا لإنجازها، ويسارًا لتأجيلها إلى الغد"],
@@ -3385,21 +3547,76 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && modal.style.display === "flex") close(); });
   })();
 
-  // ===== Offline support (service worker) + update notice =====
-  if ("serviceWorker" in navigator && location.protocol === "https:") {
+  // ===== Offline support (service worker) + self-update =====
+  /* التطبيق المثبّت على الشاشة الرئيسية يُستأنف من الذاكرة ولا يعيد تحميل الصفحة، فيبقى على
+     الإصدار القديم أيامًا. لذلك: نفحص وجود تحديث عند كل عودة للتطبيق، وحين يتسلّم
+     الـ service worker الجديد نعيد تحميل الصفحة تلقائيًا (أو نعرض زرًا إن كان المستخدم يكتب). */
+  (function () {
+    var toast = document.getElementById("update-toast");
+    var toastMsg = document.getElementById("update-toast-msg");
+    var toastBtn = document.getElementById("update-toast-btn");
+    var JUST_KEY = "abusaad_just_updated";
+    function showToast(msg, withBtn, ms) {
+      if (!toast) return;
+      toastMsg.textContent = msg;
+      toastBtn.hidden = !withBtn;
+      toast.classList.add("show");
+      if (ms) setTimeout(function () { toast.classList.remove("show"); }, ms);
+    }
+    try {
+      if (sessionStorage.getItem(JUST_KEY)) {
+        sessionStorage.removeItem(JUST_KEY);
+        showToast("تم التحديث إلى الإصدار " + toAr(APP_VERSION.replace(/\.0$/, "")), false, 5000);
+      }
+    } catch (e) {}
+
+    var secure = location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
+    if (!("serviceWorker" in navigator) || !secure) return;
+
+    var reg = null, pending = false;
+    function checkForUpdate() {
+      if (!reg || !navigator.onLine) return;
+      try { var p = reg.update(); if (p && p.catch) p.catch(function () {}); } catch (e) {}
+    }
+    /* لا نقطع على المستخدم ما يفعله: كتابة، نموذج مهمة مفتوح، أو تلاوة تعمل */
+    function busy() {
+      var a = document.activeElement;
+      if (a && (a.tagName === "INPUT" || a.tagName === "TEXTAREA" || a.tagName === "SELECT")) return true;
+      if (taView === "ta-add") return true;
+      var au = document.getElementById("quran-audio-player");
+      return !!(au && !au.paused && !au.ended);
+    }
+    function reloadNow() {
+      try {
+        var last = parseInt(sessionStorage.getItem("abusaad_reload_ts") || "0", 10);
+        if (Date.now() - last < 30000) return; // حارس ضد حلقة إعادة تحميل
+        sessionStorage.setItem("abusaad_reload_ts", String(Date.now()));
+        sessionStorage.setItem(JUST_KEY, "1");
+      } catch (e) {}
+      location.reload();
+    }
+    function applyUpdate() {
+      if (!busy()) { reloadNow(); return; }
+      pending = true;
+      showToast("إصدار جديد جاهز", true, 0);
+    }
+    if (toastBtn) toastBtn.addEventListener("click", reloadNow);
+
     window.addEventListener("load", function () {
-      navigator.serviceWorker.register("sw.js").catch(function () {});
+      navigator.serviceWorker.register("sw.js").then(function (r) { reg = r; }).catch(function () {});
     });
-    // When a new version of the app takes over, let the user know.
     var hadController = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener("controllerchange", function () {
-      if (!hadController) { hadController = true; return; } // first install, not an update
-      var t = document.getElementById("update-toast");
-      if (!t) return;
-      t.classList.add("show");
-      setTimeout(function () { t.classList.remove("show"); }, 5000);
+      if (!hadController) { hadController = true; return; } // أول تثبيت وليس تحديثًا
+      applyUpdate();
     });
-  }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) return;
+      if (pending && !busy()) { reloadNow(); return; }
+      checkForUpdate();
+    });
+    setInterval(checkForUpdate, 60 * 60 * 1000);
+  })();
 
   // ===== Card reveal on scroll =====
   (function () {

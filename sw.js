@@ -4,7 +4,7 @@
    - Fonts/icons/other assets: stale-while-revalidate. */
 /* Bump this with each release (kept in sync with APP_VERSION in index.html)
    so old caches are cleared and clients pick up the new version. */
-var CACHE = "abusaad-v5.6.0";
+var CACHE = "abusaad-v5.7.0";
 
 self.addEventListener("install", function (e) {
   self.skipWaiting();
@@ -33,9 +33,12 @@ self.addEventListener("fetch", function (e) {
 
   if (req.mode === "navigate" || url.pathname.endsWith("/index.html")) {
     e.respondWith(
-      fetch(req).then(function (res) {
-        var copy = res.clone();
-        caches.open(CACHE).then(function (c) { c.put(req, copy); });
+      // no-store: تجاوز كاش HTTP للمتصفح (GitHub Pages يسمح بعشر دقائق) حتى تصل الصفحة الجديدة فور النشر
+      fetch(req, { cache: "no-store" }).catch(function () { return fetch(req); }).then(function (res) {
+        if (res && res.ok) {
+          var copy = res.clone();
+          caches.open(CACHE).then(function (c) { c.put(req, copy); });
+        }
         return res;
       }).catch(function () {
         return caches.match(req).then(function (m) { return m || caches.match("./index.html"); });
